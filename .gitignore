@@ -23,3 +23,6 @@ Thumbs.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# Beispielausgaben des Render-Pakets
+packages/render/samples/

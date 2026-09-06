@@ -33,6 +33,7 @@ pnpm install
 
 - `apps/web` – Astro-Website (statischer Output) mit React-Islands für die Generator-UI, Tailwind CSS, Locale-Dateien unter `src/i18n`
 - `packages/engine` – reine TypeScript-Bibliothek mit den Rätsel-Algorithmen (deterministisch per Seed), unit-getestet mit Vitest
+- `packages/render` – Layout-Schicht: Rätsel werden in Layout-Primitive übersetzt und daraus als SVG-Vorschau und als druckfertiges PDF gezeichnet
 - `.github/workflows` – CI (Lint, Format, Typecheck, Test, Build)
 - `wrangler.jsonc` – Cloudflare-Konfiguration für das Deployment als Worker mit statischen Assets
 - `docs` – Anleitungen, z. B. zum Deployment
