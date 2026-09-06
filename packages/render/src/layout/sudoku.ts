@@ -1,5 +1,5 @@
 import type { SudokuPuzzle } from '@raetselheft/engine';
-import type { TextMeasurer } from '../fonts';
+import type { TextMeasurer } from '../measure';
 import type { ContentBox } from '../page';
 import { COLORS, type Element } from '../primitives';
 import { symbolForDigit, symbolPath } from '../symbols';

@@ -7,8 +7,16 @@
  * identisch (PLAN.md Abschnitt 6.1).
  */
 export * from './primitives';
-export { createMeasurer, FONT_FAMILIES, FONT_FILES, FONT_WEIGHTS } from './fonts';
-export type { FontSet, TextMeasurer } from './fonts';
+export {
+  createMeasurer,
+  createTableMeasurer,
+  FONT_FAMILIES,
+  FONT_FILES,
+  FONT_WEIGHTS,
+} from './fonts';
+export type { FontSet } from './fonts';
+export { createMetricsMeasurer } from './measure';
+export type { FontMetrics, MetricsTable, TextMeasurer } from './measure';
 export { createPage, fitText, watermarkElements, MARGIN, ptToMm } from './page';
 export type { ContentBox, PageFrame, PageFrameOptions } from './page';
 export { fitBox, grid, inset } from './layout/box';

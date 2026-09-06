@@ -19,6 +19,8 @@ declare module 'fontkit' {
     xHeight: number;
     familyName: string;
     subfamilyName: string;
+    /** Alle Codepoints, für die die Schrift eine Glyphe hat. */
+    characterSet: number[];
     layout(text: string): GlyphRun;
     hasGlyphForCodePoint(codePoint: number): boolean;
   }

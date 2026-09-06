@@ -1,6 +1,7 @@
 import { generateMaze, generateSudoku, generateWordSearch } from '@raetselheft/engine';
 import { beforeAll, describe, expect, it } from 'vitest';
-import { createMeasurer, type TextMeasurer } from './fonts';
+import { createMeasurer, createTableMeasurer } from './fonts';
+import type { TextMeasurer } from './measure';
 import { loadFontsFromDisk } from './node';
 import { createPage, fitText, MARGIN } from './page';
 import { puzzlePage, solutionPages, type PuzzleItem } from './pages';
@@ -81,6 +82,40 @@ function coordinates(page: PageLayout): { x: number; y: number }[] {
   }
   return points;
 }
+
+describe('Metrik-Tabelle', () => {
+  it('misst exakt gleich wie fontkit', () => {
+    const table = createTableMeasurer();
+    const samples = [
+      'Wortsuchrätsel',
+      'Finde alle 12 Wörter',
+      'raetselheft.ch',
+      '«Grösse» – Übung für Zoë',
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+      'abcdefghijklmnopqrstuvwxyz',
+      '0123456789 .,;:!?-–—()',
+      'ÄÖÜäöüßÉèçñŁł',
+    ];
+    for (const font of ['display', 'body', 'bodyBold'] as const) {
+      for (const text of samples) {
+        for (const size of [8, 10.5, 22]) {
+          expect(table.width(text, font, size), `${font}/${text}`).toBeCloseTo(
+            measurer.width(text, font, size),
+            9,
+          );
+        }
+      }
+      expect(table.capHeight(font, 12)).toBeCloseTo(measurer.capHeight(font, 12), 9);
+      expect(table.ascent(font, 12)).toBeCloseTo(measurer.ascent(font, 12), 9);
+      expect(table.descent(font, 12)).toBeCloseTo(measurer.descent(font, 12), 9);
+    }
+  });
+
+  it('nutzt für unbekannte Zeichen die Ersatzbreite', () => {
+    const table = createTableMeasurer();
+    expect(table.width('\u{1F600}', 'body', 10)).toBeGreaterThan(0);
+  });
+});
 
 describe('Textmessung', () => {
   it('misst breitere Texte breiter und skaliert linear mit der Schriftgrösse', () => {

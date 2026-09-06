@@ -1,0 +1,13 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PuzzleGenerator from '@/components/PuzzleGenerator';
+import { t } from '@/i18n';
+---
+
+<BaseLayout title={t('nav.maze')} description={t('home.cards.maze')}>
+  <h1 class="text-3xl font-bold tracking-tight">{t('nav.maze')}</h1>
+  <p class="mt-2 max-w-2xl text-slate-600">{t('home.cards.maze')}</p>
+  <div class="mt-8">
+    <PuzzleGenerator kind="maze" client:load />
+  </div>
+</BaseLayout>

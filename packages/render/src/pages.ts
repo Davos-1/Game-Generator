@@ -1,5 +1,5 @@
 import type { Maze, SudokuPuzzle, WordSearchPuzzle } from '@raetselheft/engine';
-import type { TextMeasurer } from './fonts';
+import type { TextMeasurer } from './measure';
 import { grid as gridBoxes, inset } from './layout/box';
 import { mazeElements } from './layout/maze';
 import { sudokuElements, sudokuLegendElements } from './layout/sudoku';

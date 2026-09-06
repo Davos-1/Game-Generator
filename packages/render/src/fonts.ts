@@ -1,36 +1,25 @@
 import * as fontkit from 'fontkit';
-import { MM_PER_PT, type FontKey, type Mm, type Pt } from './primitives';
+import {
+  createMetricsMeasurer,
+  FONT_FAMILIES,
+  FONT_FILES,
+  FONT_WEIGHTS,
+  type TextMeasurer,
+} from './measure';
+import metricsTable from './metrics.json';
+import { MM_PER_PT, type FontKey, type Pt } from './primitives';
 
 /** Rohdaten der drei Schriftrollen (TrueType). Laden übernimmt Node (fs) oder der Browser (fetch). */
 export type FontSet = Readonly<Record<FontKey, Uint8Array>>;
 
-export const FONT_FILES: Readonly<Record<FontKey, string>> = {
-  display: 'Nunito-Bold.ttf',
-  body: 'Inter-Regular.ttf',
-  bodyBold: 'Inter-SemiBold.ttf',
-};
+export { FONT_FAMILIES, FONT_FILES, FONT_WEIGHTS };
+export type { TextMeasurer };
 
-/** CSS-Familiennamen für die SVG-Vorschau (@font-face mit denselben Dateien). */
-export const FONT_FAMILIES: Readonly<Record<FontKey, string>> = {
-  display: 'Nunito',
-  body: 'Inter',
-  bodyBold: 'Inter',
-};
-
-export const FONT_WEIGHTS: Readonly<Record<FontKey, number>> = {
-  display: 700,
-  body: 400,
-  bodyBold: 600,
-};
-
-export interface TextMeasurer {
-  /** Breite eines Textes in mm bei Schriftgrösse `size` pt. */
-  width(text: string, font: FontKey, size: Pt): Mm;
-  /** Höhe der Versalien (cap height) in mm, für vertikales Zentrieren. */
-  capHeight(font: FontKey, size: Pt): Mm;
-  ascent(font: FontKey, size: Pt): Mm;
-  descent(font: FontKey, size: Pt): Mm;
-}
+/**
+ * Messer aus der vorbereiteten Metrik-Tabelle. Für den Browser gedacht: kein
+ * fontkit, keine Schriftdateien im Speicher.
+ */
+export const createTableMeasurer = (): TextMeasurer => createMetricsMeasurer(metricsTable);
 
 type ParsedFont = fontkit.Font;
 
@@ -41,9 +30,8 @@ function parse(bytes: Uint8Array): ParsedFont {
 }
 
 /**
- * Textmessung über fontkit. Summiert die Vorschubbreiten der Glyphen ohne
- * Kerning, exakt wie pdf-lib beim Zeichnen; die SVG-Vorschau schaltet Kerning
- * ebenfalls aus, damit alle drei Wege dieselben Breiten ergeben.
+ * Textmessung direkt aus den Schriftdateien über fontkit. Wird in Node
+ * (Skripte, Tests) verwendet; im Browser übernimmt createTableMeasurer().
  */
 export function createMeasurer(fonts: FontSet): TextMeasurer {
   const parsed: Record<FontKey, ParsedFont> = {

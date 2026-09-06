@@ -1,6 +1,7 @@
 {
   "site": {
     "name": "Rätselheft",
+    "domain": "raetselheft.ch",
     "tagline": "Personalisierte Rätsel zum Ausdrucken",
     "description": "Wortsuchrätsel, Labyrinthe und Sudokus als PDF erstellen – gratis für Einzelrätsel, personalisierte Rätselhefte für Kindergeburtstag, Hochzeit und Firmenfeier."
   },
@@ -13,8 +14,13 @@
   },
   "home": {
     "title": "Rätsel zum Ausdrucken – in Sekunden erstellt",
-    "intro": "Bald verfügbar: Wortsuchrätsel, Labyrinth und Sudoku als druckfertiges PDF. Einzelrätsel gratis, personalisierte Rätselhefte mit Themen-Design als Premium.",
-    "status": "Die Seite befindet sich im Aufbau."
+    "intro": "Wortsuchrätsel, Labyrinth und Sudoku als druckfertiges PDF. Einzelrätsel gratis und ohne Wasserzeichen. Personalisierte Rätselhefte mit Themen-Design folgen als Premium.",
+    "status": "Wähle einen Rätseltyp und lege los.",
+    "cards": {
+      "wordsearch": "Eigene Wörter oder Namen der Gäste im Buchstabengitter verstecken.",
+      "maze": "Ein Weg vom Start zum Ziel, in drei Grössen.",
+      "sudoku": "Klassisch mit Zahlen oder als Kindervariante mit Symbolen."
+    }
   },
   "footer": {
     "imprint": "Impressum",
@@ -25,5 +31,72 @@
     "title": "Seite nicht gefunden",
     "text": "Diese Seite gibt es leider nicht (mehr).",
     "back": "Zur Startseite"
+  },
+  "generator": {
+    "common": {
+      "settings": "Einstellungen",
+      "preview": "Vorschau",
+      "title": "Titel",
+      "titlePlaceholder": "Titel über dem Rätsel",
+      "subtitle": "Untertitel",
+      "subtitlePlaceholder": "Zum Beispiel «Lucas Geburtstag»",
+      "difficulty": "Schwierigkeit",
+      "shuffle": "Neu würfeln",
+      "shuffleHint": "Erzeugt eine neue Variante mit denselben Einstellungen.",
+      "download": "PDF herunterladen",
+      "downloading": "PDF wird erstellt …",
+      "share": "Link kopieren",
+      "shared": "Link kopiert",
+      "shareHint": "Der Link enthält alle Einstellungen.",
+      "tabPuzzle": "Rätsel",
+      "tabSolution": "Lösung",
+      "solutionTitle": "Lösung",
+      "loading": "Vorschau wird geladen …",
+      "error": "Das Rätsel konnte nicht erzeugt werden.",
+      "notes": "Hinweise",
+      "free": "Gratis, ohne Wasserzeichen"
+    },
+    "difficulty": {
+      "easy": "Leicht",
+      "medium": "Mittel",
+      "hard": "Schwer"
+    },
+    "wordsearch": {
+      "defaultTitle": "Wortsuchrätsel",
+      "words": "Wörter",
+      "wordsHint": "Mit Komma oder Zeilenumbruch trennen. Namen der Gäste funktionieren auch.",
+      "wordsPlaceholder": "Schatz, Kapitän, Papagei …",
+      "examples": "Beispiele einsetzen",
+      "count": "Wörter",
+      "size": "Gittergrösse",
+      "umlauts": "Umlaute",
+      "umlautsKeep": "Ä bleibt Ä",
+      "umlautsExpand": "Ä wird zu AE",
+      "empty": "Bitte mindestens ein Wort eingeben.",
+      "unplaced": "Kein Platz im Gitter",
+      "rejected": {
+        "too-long": "Zu lang für die Gittergrösse",
+        "blacklisted": "Nicht erlaubt",
+        "duplicate": "Doppelt"
+      }
+    },
+    "maze": {
+      "defaultTitle": "Labyrinth",
+      "size": "Grösse"
+    },
+    "sudoku": {
+      "defaultTitle": "Sudoku",
+      "size": "Grösse",
+      "size4": "4 × 4 mit Symbolen",
+      "size6": "6 × 6 mit Symbolen",
+      "size9": "9 × 9 mit Zahlen",
+      "kidsHint": "Kindervariante: statt Zahlen stehen Symbole im Gitter."
+    },
+    "themes": {
+      "piraten": "Piraten",
+      "einhorn": "Einhörner",
+      "dschungel": "Dschungel",
+      "hochzeit": "Hochzeit"
+    }
   }
 }

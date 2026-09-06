@@ -1,4 +1,4 @@
-import { FONT_FAMILIES, FONT_WEIGHTS } from './fonts';
+import { FONT_FAMILIES, FONT_WEIGHTS } from './measure';
 import {
   COLORS,
   MM_PER_PT,

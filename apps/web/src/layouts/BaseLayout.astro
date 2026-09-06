@@ -29,13 +29,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <header class="border-b border-slate-200">
       <div class="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
         <a href="/" class="text-xl font-bold tracking-tight text-brand-700">{t('site.name')}</a>
-        <nav class="hidden gap-6 text-sm text-slate-600 sm:flex">
-          <span class="cursor-not-allowed opacity-50" title="Bald verfügbar"
-            >{t('nav.wordsearch')}</span
-          >
-          <span class="cursor-not-allowed opacity-50" title="Bald verfügbar">{t('nav.maze')}</span>
-          <span class="cursor-not-allowed opacity-50" title="Bald verfügbar">{t('nav.sudoku')}</span
-          >
+        <nav class="flex gap-4 text-sm text-slate-600 sm:gap-6">
+          <a class="hover:text-brand-700" href="/wortsuchraetsel">{t('nav.wordsearch')}</a>
+          <a class="hover:text-brand-700" href="/labyrinth">{t('nav.maze')}</a>
+          <a class="hover:text-brand-700" href="/sudoku">{t('nav.sudoku')}</a>
         </nav>
       </div>
     </header>

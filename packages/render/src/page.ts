@@ -1,4 +1,4 @@
-import type { TextMeasurer } from './fonts';
+import type { TextMeasurer } from './measure';
 import {
   A4,
   COLORS,

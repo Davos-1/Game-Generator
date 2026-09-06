@@ -1,0 +1,13 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PuzzleGenerator from '@/components/PuzzleGenerator';
+import { t } from '@/i18n';
+---
+
+<BaseLayout title={t('nav.wordsearch')} description={t('home.cards.wordsearch')}>
+  <h1 class="text-3xl font-bold tracking-tight">{t('nav.wordsearch')}</h1>
+  <p class="mt-2 max-w-2xl text-slate-600">{t('home.cards.wordsearch')}</p>
+  <div class="mt-8">
+    <PuzzleGenerator kind="wordsearch" client:load />
+  </div>
+</BaseLayout>

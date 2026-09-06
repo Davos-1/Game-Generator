@@ -11,6 +11,12 @@
       "@/*": ["src/*"]
     }
   },
-  "include": [".astro/types.d.ts", "src/**/*", "astro.config.mjs", "vitest.config.ts"],
+  "include": [
+    ".astro/types.d.ts",
+    "src/**/*",
+    "astro.config.mjs",
+    "vitest.config.ts",
+    "../../packages/render/src/fontkit.d.ts"
+  ],
   "exclude": ["dist"]
 }
