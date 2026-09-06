@@ -12,6 +12,7 @@ import { loadFontsFromDisk } from '../src/node';
 import { puzzlePage, solutionPages, type PuzzleItem } from '../src/pages';
 import { renderPdf } from '../src/pdf';
 import { pageToSvg } from '../src/svg';
+import { THEMES } from '../src/themes';
 
 const PIRATEN = [
   'Schatz',
@@ -130,6 +131,51 @@ async function main(): Promise<void> {
     join(outDir, 'heft-vorschau.svg'),
     pageToSvg(watermarked[0] as (typeof watermarked)[number]),
   );
+
+  // Je ein Blatt pro Theme, damit sich Farbwelt und Deko vergleichen lassen.
+  for (const theme of THEMES) {
+    const words = theme.words.slice(0, 12);
+    const themedItems: { item: PuzzleItem; caption: string }[] = [
+      {
+        item: {
+          kind: 'wordsearch',
+          puzzle: generateWordSearch({ words, seed: theme.id, width: 14, difficulty: 'medium' }),
+        },
+        caption: 'Wortsuchrätsel',
+      },
+      {
+        item: { kind: 'maze', puzzle: generateMaze({ seed: theme.id, difficulty: 'medium' }) },
+        caption: 'Labyrinth',
+      },
+      {
+        item: {
+          kind: 'sudoku',
+          puzzle: generateSudoku({ seed: theme.id, size: 6, difficulty: 'easy' }),
+        },
+        caption: 'Sudoku für Kinder',
+      },
+    ];
+    const pages = themedItems.map((entry) =>
+      puzzlePage(entry.item, measurer, {
+        theme,
+        title: entry.caption,
+        subtitle: `Thema ${theme.name}`,
+        footerLeft: 'raetselheft.ch',
+      }),
+    );
+    const solutions = solutionPages(themedItems, measurer, {
+      theme,
+      title: 'Lösungen',
+      footerLeft: 'raetselheft.ch',
+    });
+    await writeFile(
+      join(outDir, `theme-${theme.id}.pdf`),
+      await renderPdf([...pages, ...solutions], fonts, { title: `${theme.name}-Rätsel` }),
+    );
+    for (const [index, page] of pages.entries()) {
+      await writeFile(join(outDir, `theme-${theme.id}-${index + 1}.svg`), pageToSvg(page));
+    }
+  }
 
   process.stdout.write(`Beispiele geschrieben nach ${outDir}\n`);
 }

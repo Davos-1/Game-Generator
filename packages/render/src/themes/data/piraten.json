@@ -1,0 +1,21 @@
+{
+  "id": "piraten",
+  "name": "Piraten",
+  "colors": {
+    "ink": "#12304a",
+    "muted": "#5b7186",
+    "light": "#cbd9e3",
+    "grid": "#93aec2",
+    "accent": "#0e7490",
+    "solution": "#c2410c",
+    "watermark": "#93aec2",
+    "decor": "#b45309"
+  },
+  "icons": {
+    "corner": "anchor",
+    "cover": "ship",
+    "mazeStart": "ship",
+    "mazeEnd": "chest"
+  },
+  "sudokuIcons": ["ship", "chest", "anchor", "compass", "flag", "sparkle"]
+}

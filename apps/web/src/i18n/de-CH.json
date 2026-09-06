@@ -54,7 +54,9 @@
       "loading": "Vorschau wird geladen …",
       "error": "Das Rätsel konnte nicht erzeugt werden.",
       "notes": "Hinweise",
-      "free": "Gratis, ohne Wasserzeichen"
+      "free": "Gratis, ohne Wasserzeichen",
+      "theme": "Themen-Design",
+      "themeHint": "Färbt Rätsel und PDF ein. Die Website selbst bleibt neutral."
     },
     "difficulty": {
       "easy": "Leicht",
@@ -66,7 +68,7 @@
       "words": "Wörter",
       "wordsHint": "Mit Komma oder Zeilenumbruch trennen. Namen der Gäste funktionieren auch.",
       "wordsPlaceholder": "Schatz, Kapitän, Papagei …",
-      "examples": "Beispiele einsetzen",
+      "examples": "Wörter eines Themas",
       "count": "Wörter",
       "size": "Gittergrösse",
       "umlauts": "Umlaute",

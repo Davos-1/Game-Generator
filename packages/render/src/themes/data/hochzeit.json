@@ -1,0 +1,21 @@
+{
+  "id": "hochzeit",
+  "name": "Hochzeit",
+  "colors": {
+    "ink": "#38343a",
+    "muted": "#7a7480",
+    "light": "#e6e0e6",
+    "grid": "#bfb6c2",
+    "accent": "#9f1239",
+    "solution": "#be123c",
+    "watermark": "#bfb6c2",
+    "decor": "#c4a747"
+  },
+  "icons": {
+    "corner": "flower",
+    "cover": "ring",
+    "mazeStart": "heart",
+    "mazeEnd": "ring"
+  },
+  "sudokuIcons": ["ring", "heart", "flower", "sparkle", "leaf", "sun"]
+}

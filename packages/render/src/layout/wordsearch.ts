@@ -1,10 +1,12 @@
 import type { WordSearchPuzzle } from '@raetselheft/engine';
 import type { TextMeasurer } from '../measure';
 import type { ContentBox } from '../page';
-import { COLORS, type Element, type Mm } from '../primitives';
+import { COLORS, type Element, type Mm, type Palette } from '../primitives';
 import { fitBox } from './box';
 
 export interface WordSearchDrawOptions {
+  /** Farbwelt; ohne Angabe das neutrale Standarddesign. */
+  palette?: Palette;
   /** Lösung einzeichnen (Wörter umranden). */
   solution?: boolean;
   /** Wortliste unter dem Gitter zeigen. Standard true. */
@@ -26,6 +28,7 @@ export function wordSearchElements(
 ): Element[] {
   const showWords = options.showWords ?? true;
   const compact = options.compact ?? false;
+  const palette = options.palette ?? COLORS;
   const elements: Element[] = [];
 
   const wordsHeight = showWords ? wordListHeight(puzzle, box.width, compact) : 0;
@@ -48,7 +51,7 @@ export function wordSearchElements(
       y1: y,
       x2: gridBox.x + gridBox.width,
       y2: y,
-      stroke: { color: COLORS.grid, width: lineWidth },
+      stroke: { color: palette.grid, width: lineWidth },
     });
   }
   for (let c = 0; c <= puzzle.width; c++) {
@@ -59,7 +62,7 @@ export function wordSearchElements(
       y1: gridBox.y,
       x2: x,
       y2: gridBox.y + cell * puzzle.height,
-      stroke: { color: COLORS.grid, width: lineWidth },
+      stroke: { color: palette.grid, width: lineWidth },
     });
   }
 
@@ -76,7 +79,7 @@ export function wordSearchElements(
         x2: gridBox.x + (last.col + 0.5) * cell,
         y2: gridBox.y + (last.row + 0.5) * cell,
         stroke: {
-          color: COLORS.solution,
+          color: palette.solution,
           width: cell * 0.82,
           lineCap: 'round',
         },
@@ -96,7 +99,7 @@ export function wordSearchElements(
         text: letter,
         font: 'bodyBold',
         size: letterSize,
-        color: COLORS.ink,
+        color: palette.ink,
         align: 'middle',
       });
     });
@@ -109,6 +112,7 @@ export function wordSearchElements(
         { ...box, y: gridBox.y + cell * puzzle.height + 6 },
         measurer,
         compact,
+        palette,
       ),
     );
   }
@@ -127,6 +131,7 @@ function wordListElements(
   box: ContentBox,
   measurer: TextMeasurer,
   compact: boolean,
+  palette: Palette,
 ): Element[] {
   const words = puzzle.placed.map((p) => p.word);
   const cols = wordListColumns(words.length);
@@ -144,7 +149,7 @@ function wordListElements(
       text: word,
       font: 'body',
       size,
-      color: COLORS.ink,
+      color: palette.ink,
     };
   });
 }

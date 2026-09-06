@@ -5,7 +5,8 @@ import { mazeElements } from './layout/maze';
 import { sudokuElements, sudokuLegendElements } from './layout/sudoku';
 import { wordSearchElements } from './layout/wordsearch';
 import { createPage, type ContentBox, type PageFrameOptions } from './page';
-import { COLORS, type Element, type PageLayout } from './primitives';
+import type { Element, PageLayout } from './primitives';
+import { NEUTRAL_THEME, type Theme } from './themes';
 
 /** Ein Rätsel mit seinem Typ; die Layout-Schicht kennt nur diese drei Formen. */
 export type PuzzleItem =
@@ -18,6 +19,13 @@ export interface PuzzlePageOptions extends PageFrameOptions {
   symbols?: boolean;
 }
 
+interface DrawOptions {
+  solution: boolean;
+  compact?: boolean;
+  symbols?: boolean;
+  theme: Theme;
+}
+
 /** Erzeugt eine vollständige Rätselseite (A4) für ein einzelnes Rätsel. */
 export function puzzlePage(
   item: PuzzleItem,
@@ -28,6 +36,7 @@ export function puzzlePage(
   page.elements.push(
     ...drawItem(item, content, measurer, {
       solution: false,
+      theme: options.theme ?? NEUTRAL_THEME,
       ...(options.symbols !== undefined ? { symbols: options.symbols } : {}),
     }),
     ...watermark,
@@ -74,7 +83,7 @@ export function solutionPages(
       row.forEach((entry, cellIndex) => {
         const cell = cells[cellIndex];
         if (!cell) return;
-        page.elements.push(...captionedTile(entry, cell, measurer));
+        page.elements.push(...captionedTile(entry, cell, measurer, options.theme ?? NEUTRAL_THEME));
       });
     });
     page.elements.push(...watermark);
@@ -90,6 +99,7 @@ function captionedTile(
   entry: { item: PuzzleItem; caption: string },
   box: ContentBox,
   measurer: TextMeasurer,
+  theme: Theme,
 ): Element[] {
   const captionSize = 10;
   const capHeight = measurer.capHeight('bodyBold', captionSize);
@@ -101,7 +111,7 @@ function captionedTile(
       text: entry.caption,
       font: 'bodyBold',
       size: captionSize,
-      color: COLORS.muted,
+      color: theme.colors.muted,
     },
   ];
   const area: ContentBox = {
@@ -110,7 +120,7 @@ function captionedTile(
     width: box.width,
     height: box.height - capHeight - 3,
   };
-  elements.push(...drawItem(entry.item, area, measurer, { solution: true, compact: true }));
+  elements.push(...drawItem(entry.item, area, measurer, { solution: true, compact: true, theme }));
   return elements;
 }
 
@@ -118,29 +128,39 @@ function drawItem(
   item: PuzzleItem,
   box: ContentBox,
   measurer: TextMeasurer,
-  options: { solution: boolean; compact?: boolean; symbols?: boolean },
+  options: DrawOptions,
 ): Element[] {
   const compact = options.compact ?? false;
+  const { theme } = options;
+  const palette = theme.colors;
   switch (item.kind) {
     case 'wordsearch':
       return wordSearchElements(item.puzzle, box, measurer, {
         solution: options.solution,
         compact,
         showWords: !options.solution,
+        palette,
       });
     case 'maze':
       return mazeElements(item.puzzle, inset(box, compact ? 2 : 6), {
         solution: options.solution,
         compact,
+        palette,
+        ...(theme.id === NEUTRAL_THEME.id
+          ? {}
+          : { icons: { start: theme.icons.mazeStart, end: theme.icons.mazeEnd } }),
       });
     case 'sudoku': {
       const useSymbols = options.symbols ?? item.puzzle.size <= 6;
+      const icons = theme.sudokuIcons.length > 0 ? theme.sudokuIcons : undefined;
       const legendHeight = useSymbols && !compact ? 12 : 0;
       const gridArea: ContentBox = { ...box, height: box.height - legendHeight };
       const elements = sudokuElements(item.puzzle, gridArea, measurer, {
         solution: options.solution,
         compact,
         symbols: useSymbols,
+        palette,
+        ...(icons ? { icons } : {}),
       });
       if (legendHeight > 0) {
         const width = Math.min(box.width, item.puzzle.size * 18);
@@ -154,6 +174,7 @@ function drawItem(
               height: 8,
             },
             measurer,
+            { palette, ...(icons ? { icons } : {}) },
           ),
         );
       }

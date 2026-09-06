@@ -9,9 +9,10 @@
   "exports": {
     ".": "./src/index.ts",
     "./node": "./src/node.ts",
+    "./themes": "./src/themes/index.ts",
     "./fonts/*": "./fonts/*",
-    "./*": "./src/*.ts",
-    "./metrics.json": "./src/metrics.json"
+    "./metrics.json": "./src/metrics.json",
+    "./*": "./src/*.ts"
   },
   "scripts": {
     "build": "tsc --noEmit",

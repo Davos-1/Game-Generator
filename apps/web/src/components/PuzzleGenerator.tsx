@@ -16,7 +16,8 @@ import {
   newSeed,
   parseWords,
   saveConfig,
-  WORD_EXAMPLES,
+  THEME_CHOICES,
+  themeWords,
   type PuzzleConfig,
   type PuzzleKind,
 } from '../lib/puzzleConfig';
@@ -56,7 +57,21 @@ export default function PuzzleGenerator({ kind }: Props): React.ReactElement {
   }, [kind]);
 
   const update = useCallback((patch: Partial<PuzzleConfig>): void => {
-    setConfig((current) => ({ ...current, ...patch }) as PuzzleConfig);
+    setConfig((current) => {
+      const next = { ...current, ...patch } as PuzzleConfig;
+      // Beim Themewechsel die Wortliste mitnehmen, solange sie unverändert
+      // aus einem Theme stammt. Selbst eingegebene Wörter bleiben stehen.
+      if (
+        patch.theme !== undefined &&
+        current.kind === 'wordsearch' &&
+        next.kind === 'wordsearch' &&
+        isUntouchedThemeList(current.words)
+      ) {
+        const words = themeWords(patch.theme);
+        if (words.length > 0) next.words = words.join(', ');
+      }
+      return next;
+    });
   }, []);
 
   // Rätsel erzeugen und Vorschau rendern, leicht verzögert wegen Texteingaben.
@@ -150,6 +165,31 @@ export default function PuzzleGenerator({ kind }: Props): React.ReactElement {
           </Field>
         )}
         {config.kind === 'sudoku' && <SudokuFields config={config} update={update} />}
+
+        <Field label={t('generator.common.theme')} hint={t('generator.common.themeHint')}>
+          <div className="flex flex-wrap gap-2">
+            {THEME_CHOICES.map((choice) => (
+              <button
+                key={choice.id}
+                type="button"
+                aria-pressed={config.theme === choice.id}
+                className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm ${
+                  config.theme === choice.id
+                    ? 'border-brand-500 bg-brand-50 text-brand-700'
+                    : 'border-slate-300 text-slate-600 hover:bg-slate-50'
+                }`}
+                onClick={() => update({ theme: choice.id })}
+              >
+                <span
+                  aria-hidden="true"
+                  className="h-3 w-3 rounded-full"
+                  style={{ backgroundColor: choice.color }}
+                />
+                {choice.name}
+              </button>
+            ))}
+          </div>
+        </Field>
 
         <Field label={t('generator.common.title')}>
           <input
@@ -248,6 +288,15 @@ export default function PuzzleGenerator({ kind }: Props): React.ReactElement {
   );
 }
 
+/** Stammt die Wortliste unverändert aus einem Theme? */
+function isUntouchedThemeList(words: string): boolean {
+  const current = parseWords(words).join('|');
+  return THEME_CHOICES.some((choice) => {
+    const list = themeWords(choice.id);
+    return list.length > 0 && list.join('|') === current;
+  });
+}
+
 const inputClass =
   'w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20';
 const primaryButton =
@@ -321,14 +370,14 @@ function WordSearchFields({
       </Field>
       <div className="-mt-3 flex flex-wrap gap-2">
         <span className="text-xs text-slate-500">{t('generator.wordsearch.examples')}:</span>
-        {Object.keys(WORD_EXAMPLES).map((key) => (
+        {THEME_CHOICES.filter((choice) => choice.id !== 'neutral').map((choice) => (
           <button
-            key={key}
+            key={choice.id}
             type="button"
             className="rounded-full border border-slate-300 px-2.5 py-0.5 text-xs hover:bg-slate-50"
-            onClick={() => update({ words: (WORD_EXAMPLES[key] ?? []).join(', ') })}
+            onClick={() => update({ words: themeWords(choice.id).join(', ') })}
           >
-            {t(`generator.themes.${key}`)}
+            {choice.name}
           </button>
         ))}
       </div>

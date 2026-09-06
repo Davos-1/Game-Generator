@@ -1,0 +1,21 @@
+{
+  "id": "dschungel",
+  "name": "Dschungel",
+  "colors": {
+    "ink": "#14432a",
+    "muted": "#5c7a63",
+    "light": "#cfe0d2",
+    "grid": "#94b79e",
+    "accent": "#15803d",
+    "solution": "#b45309",
+    "watermark": "#94b79e",
+    "decor": "#ca8a04"
+  },
+  "icons": {
+    "corner": "leaf",
+    "cover": "palm",
+    "mazeStart": "palm",
+    "mazeEnd": "sun"
+  },
+  "sudokuIcons": ["leaf", "palm", "sun", "flower", "sparkle", "cloud"]
+}

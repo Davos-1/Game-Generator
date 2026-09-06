@@ -1,3 +1,4 @@
+import { NEUTRAL_THEME, THEMES, themeById } from '@raetselheft/render/themes';
 import type {
   Difficulty,
   MazeDifficulty,
@@ -9,6 +10,8 @@ import type {
 export type PuzzleKind = 'wordsearch' | 'maze' | 'sudoku';
 
 interface BaseConfig {
+  /** Id des Themen-Designs; «neutral» ist das Standarddesign. */
+  theme: string;
   /** Freier Titel über dem Rätsel. */
   title: string;
   /** Zweite Zeile, z. B. Anlass oder Name. */
@@ -39,64 +42,16 @@ export interface SudokuConfig extends BaseConfig {
 
 export type PuzzleConfig = WordSearchConfig | MazeConfig | SudokuConfig;
 
-export const WORD_EXAMPLES: Readonly<Record<string, readonly string[]>> = {
-  piraten: [
-    'Schatz',
-    'Kapitän',
-    'Papagei',
-    'Schiff',
-    'Anker',
-    'Säbel',
-    'Insel',
-    'Kanone',
-    'Kompass',
-    'Truhe',
-    'Segel',
-    'Möwe',
-  ],
-  einhorn: [
-    'Einhorn',
-    'Regenbogen',
-    'Zauber',
-    'Glitzer',
-    'Wolke',
-    'Fee',
-    'Horn',
-    'Mähne',
-    'Sterne',
-    'Wunsch',
-    'Krone',
-    'Wiese',
-  ],
-  dschungel: [
-    'Affe',
-    'Tiger',
-    'Liane',
-    'Papagei',
-    'Schlange',
-    'Urwald',
-    'Frosch',
-    'Elefant',
-    'Banane',
-    'Fluss',
-    'Käfer',
-    'Blatt',
-  ],
-  hochzeit: [
-    'Braut',
-    'Bräutigam',
-    'Ringe',
-    'Torte',
-    'Tanz',
-    'Blumen',
-    'Kirche',
-    'Liebe',
-    'Ehe',
-    'Sekt',
-    'Kutsche',
-    'Kuss',
-  ],
-};
+/** Wortliste eines Themas, gekürzt auf eine bequeme Anzahl fürs Gitter. */
+export function themeWords(themeId: string, count = 12): string[] {
+  return themeById(themeId).words.slice(0, count);
+}
+
+/** Auswahlliste für die Oberfläche: Standarddesign zuerst, dann die Themes. */
+export const THEME_CHOICES: readonly { id: string; name: string; color: string }[] = [
+  { id: NEUTRAL_THEME.id, name: NEUTRAL_THEME.name, color: NEUTRAL_THEME.colors.accent },
+  ...THEMES.map((theme) => ({ id: theme.id, name: theme.name, color: theme.colors.accent })),
+];
 
 const randomSeed = (): string => Math.random().toString(36).slice(2, 8);
 
@@ -106,18 +61,34 @@ export function defaultConfig(kind: PuzzleKind): PuzzleConfig {
     case 'wordsearch':
       return {
         kind,
+        theme: NEUTRAL_THEME.id,
         title: 'Wortsuchrätsel',
         subtitle: '',
         seed,
-        words: (WORD_EXAMPLES.piraten ?? []).join(', '),
+        words: themeWords('piraten').join(', '),
         size: 12,
         difficulty: 'medium',
         umlauts: 'keep',
       };
     case 'maze':
-      return { kind, title: 'Labyrinth', subtitle: '', seed, difficulty: 'medium' };
+      return {
+        kind,
+        theme: NEUTRAL_THEME.id,
+        title: 'Labyrinth',
+        subtitle: '',
+        seed,
+        difficulty: 'medium',
+      };
     case 'sudoku':
-      return { kind, title: 'Sudoku', subtitle: '', seed, size: 9, difficulty: 'easy' };
+      return {
+        kind,
+        theme: NEUTRAL_THEME.id,
+        title: 'Sudoku',
+        subtitle: '',
+        seed,
+        size: 9,
+        difficulty: 'easy',
+      };
   }
 }
 
@@ -146,6 +117,7 @@ export function configToParams(config: PuzzleConfig): URLSearchParams {
   const set = (key: string, value: string, fallback: string): void => {
     if (value !== fallback) params.set(key, value);
   };
+  set('th', config.theme, base.theme);
   set('t', config.title, base.title);
   set('u', config.subtitle, base.subtitle);
   params.set('s', config.seed);
@@ -175,6 +147,7 @@ export function configToParams(config: PuzzleConfig): URLSearchParams {
 export function configFromParams(kind: PuzzleKind, params: URLSearchParams): PuzzleConfig {
   const base = defaultConfig(kind);
   const common = {
+    theme: themeById(params.get('th') ?? undefined).id,
     title: params.get('t') ?? base.title,
     subtitle: params.get('u') ?? base.subtitle,
     seed: params.get('s') ?? base.seed,

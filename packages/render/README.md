@@ -25,6 +25,27 @@ bereits beim Vorbereiten auf den benötigten Zeichenvorrat reduziert; zusammen
 sind sie rund 76 KB gross. Ein Test prüft, dass jedes gezeichnete Zeichen im
 eingebetteten Schriftprogramm eine Glyphe hat.
 
+## Themen-Designs
+
+`src/themes/` enthält die vier Themes Piraten, Einhörner, Dschungel und
+Hochzeit. Ein Theme besteht aus zwei JSON-Dateien:
+
+- `data/<id>.json` – Farbwelt, Deko-Icons, Symbole für das Kinder-Sudoku
+- `data/<id>.words.json` – Wortliste für das Wortsuchrätsel (mindestens 30 Wörter)
+
+Ein neues Theme braucht diese zwei Dateien und einen Eintrag in der Liste
+`REGISTRY` in `src/themes/index.ts`. Die Layout-Logik bleibt unberührt.
+`validateTheme()` prüft Farben, Icons und Wortliste; ein Test führt das für
+alle mitgelieferten Themes aus.
+
+Die Deko-Icons sind **kein Zukauf**, sondern parametrische Pfade in
+`src/icons.ts`: keine Lizenzfragen, beliebig skalierbar, wenige Byte im PDF.
+Ineinanderliegende Formen (Kompass-Ring, Truhen-Schloss, Blütenmitte) werden
+mit gegenläufigen Teilpfaden ausgeschnitten, sonst verschmelzen sie beim Füllen
+zu einer Fläche.
+
+Themes färben nur Vorschau und PDF. Die Website selbst bleibt neutral.
+
 ## Masse und Einheiten
 
 - Koordinaten und Längen in Millimetern, Ursprung oben links, y nach unten

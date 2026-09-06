@@ -3,6 +3,7 @@ import interSemiBold from '@raetselheft/render/fonts/Inter-SemiBold.ttf?url';
 import nunitoBold from '@raetselheft/render/fonts/Nunito-Bold.ttf?url';
 import type { FontSet, PageLayout, PuzzleItem, TextMeasurer } from '@raetselheft/render';
 import { generateMaze, generateSudoku, generateWordSearch } from '@raetselheft/engine';
+import { themeById } from '@raetselheft/render/themes';
 import type { PuzzleConfig } from './puzzleConfig';
 import { parseWords } from './puzzleConfig';
 import { t } from '../i18n';
@@ -100,10 +101,16 @@ function pageOptions(config: PuzzleConfig): {
   title: string;
   subtitle?: string;
   footerLeft: string;
+  theme: ReturnType<typeof themeById>;
 } {
   const title = config.title.trim() || t(`generator.${config.kind}.defaultTitle`);
   const subtitle = config.subtitle.trim();
-  return { title, ...(subtitle ? { subtitle } : {}), footerLeft: t('site.domain') };
+  return {
+    title,
+    ...(subtitle ? { subtitle } : {}),
+    footerLeft: t('site.domain'),
+    theme: themeById(config.theme),
+  };
 }
 
 export interface RenderedPages {
@@ -122,6 +129,7 @@ export async function buildPages(config: PuzzleConfig, item: PuzzleItem): Promis
   const [solution] = solutionPages([{ item, caption: options.title }], measurer, {
     title: t('generator.common.solutionTitle'),
     footerLeft: t('site.domain'),
+    theme: options.theme,
   });
   return { puzzle, solution: solution ?? puzzle };
 }

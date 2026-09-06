@@ -1,7 +1,8 @@
 import type { SudokuPuzzle } from '@raetselheft/engine';
 import type { TextMeasurer } from '../measure';
 import type { ContentBox } from '../page';
-import { COLORS, type Element } from '../primitives';
+import { iconPath, type IconName } from '../icons';
+import { COLORS, type Element, type Palette } from '../primitives';
 import { symbolForDigit, symbolPath } from '../symbols';
 import { fitBox } from './box';
 
@@ -14,6 +15,9 @@ export interface SudokuDrawOptions {
    * (neun klar unterscheidbare Formen sind für Kinder zu viel).
    */
   symbols?: boolean;
+  palette?: Palette;
+  /** Themen-Icons statt der geometrischen Standardsymbole. */
+  icons?: readonly IconName[];
 }
 
 /** Zeichnet ein Sudoku mit dünnen Zell- und dicken Boxlinien. */
@@ -25,12 +29,13 @@ export function sudokuElements(
 ): Element[] {
   const compact = options.compact ?? false;
   const useSymbols = options.symbols ?? puzzle.size <= 6;
+  const palette = options.palette ?? COLORS;
   const area = fitBox(box, 1);
   const cell = area.width / puzzle.size;
   const elements: Element[] = [];
 
-  const thin = { color: COLORS.grid, width: compact ? 0.25 : 0.35 };
-  const thick = { color: COLORS.ink, width: compact ? 0.5 : 0.9 };
+  const thin = { color: palette.grid, width: compact ? 0.25 : 0.35 };
+  const thick = { color: palette.ink, width: compact ? 0.5 : 0.9 };
 
   for (let r = 0; r <= puzzle.size; r++) {
     const y = area.y + r * cell;
@@ -64,13 +69,16 @@ export function sudokuElements(
       const given = puzzle.givens[r]?.[c] ?? 0;
       const value = given || (options.solution ? (puzzle.solution[r]?.[c] ?? 0) : 0);
       if (!value) continue;
-      const color = given ? COLORS.ink : COLORS.solution;
+      const color = given ? palette.ink : palette.solution;
       const cx = area.x + (c + 0.5) * cell;
       const cy = area.y + (r + 0.5) * cell;
       if (useSymbols) {
+        const themeIcon = options.icons?.[value - 1];
         elements.push({
           type: 'path',
-          d: symbolPath(symbolForDigit(value), cx, cy, cell * 0.56),
+          d: themeIcon
+            ? iconPath(themeIcon, cx, cy, cell * 0.6)
+            : symbolPath(symbolForDigit(value), cx, cy, cell * 0.56),
           fill: color,
         });
       } else {
@@ -95,16 +103,21 @@ export function sudokuLegendElements(
   puzzle: SudokuPuzzle,
   box: ContentBox,
   measurer: TextMeasurer,
+  options: { palette?: Palette; icons?: readonly IconName[] } = {},
 ): Element[] {
+  const palette = options.palette ?? COLORS;
   const elements: Element[] = [];
   const size = 6;
   const gap = box.width / puzzle.size;
   for (let d = 1; d <= puzzle.size; d++) {
     const cx = box.x + (d - 0.5) * gap;
+    const icon = options.icons?.[d - 1];
     elements.push({
       type: 'path',
-      d: symbolPath(symbolForDigit(d), cx - 3, box.y + size / 2, size),
-      fill: COLORS.ink,
+      d: icon
+        ? iconPath(icon, cx - 3, box.y + size / 2, size)
+        : symbolPath(symbolForDigit(d), cx - 3, box.y + size / 2, size),
+      fill: palette.ink,
     });
     elements.push({
       type: 'text',
@@ -113,7 +126,7 @@ export function sudokuLegendElements(
       text: `= ${d}`,
       font: 'body',
       size: 10,
-      color: COLORS.muted,
+      color: palette.muted,
     });
   }
   return elements;

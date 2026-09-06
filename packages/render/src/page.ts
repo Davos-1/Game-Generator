@@ -1,3 +1,4 @@
+import { iconPath } from './icons';
 import type { TextMeasurer } from './measure';
 import {
   A4,
@@ -8,6 +9,7 @@ import {
   type PageLayout,
   type TextElement,
 } from './primitives';
+import { NEUTRAL_THEME, type Theme } from './themes';
 
 /** Druckfreundlicher Seitenrahmen: 12 mm Rand (PLAN.md Abschnitt 4). */
 export const MARGIN: Mm = 12;
@@ -22,6 +24,8 @@ export interface ContentBox {
 }
 
 export interface PageFrameOptions {
+  /** Themen-Design; ohne Angabe das neutrale Standarddesign. */
+  theme?: Theme;
   title: string;
   /** Zweite Zeile, z. B. «Für Luca» oder «Kindergeburtstag, 12. Oktober». */
   subtitle?: string;
@@ -46,6 +50,8 @@ export interface PageFrame {
 
 /** Erzeugt eine A4-Seite mit Titel, optionaler Unterzeile und Fusszeile. */
 export function createPage(measurer: TextMeasurer, options: PageFrameOptions): PageFrame {
+  const theme = options.theme ?? NEUTRAL_THEME;
+  const colors = theme.colors;
   const elements: Element[] = [];
   const innerWidth = A4.width - 2 * MARGIN;
   const titleSize = 22;
@@ -57,7 +63,7 @@ export function createPage(measurer: TextMeasurer, options: PageFrameOptions): P
     text: fitText(measurer, options.title, 'display', titleSize, innerWidth),
     font: 'display',
     size: titleSize,
-    color: COLORS.ink,
+    color: theme.id === NEUTRAL_THEME.id ? colors.ink : colors.accent,
   });
   let contentTop = MARGIN + HEADER_HEIGHT;
   if (options.subtitle) {
@@ -69,7 +75,7 @@ export function createPage(measurer: TextMeasurer, options: PageFrameOptions): P
       text: fitText(measurer, options.subtitle, 'body', subSize, innerWidth),
       font: 'body',
       size: subSize,
-      color: COLORS.muted,
+      color: colors.muted,
     });
     contentTop += 4;
   }
@@ -80,15 +86,15 @@ export function createPage(measurer: TextMeasurer, options: PageFrameOptions): P
     y1: contentTop - 3,
     x2: A4.width - MARGIN,
     y2: contentTop - 3,
-    stroke: { color: COLORS.light, width: 0.3 },
+    stroke: { color: theme.id === NEUTRAL_THEME.id ? colors.light : colors.decor, width: 0.3 },
   });
 
   const footerY = A4.height - MARGIN;
   if (options.footerLeft) {
-    elements.push(footerText(options.footerLeft, MARGIN, footerY, 'start'));
+    elements.push(footerText(options.footerLeft, MARGIN, footerY, 'start', colors.muted));
   }
   if (options.footerRight) {
-    elements.push(footerText(options.footerRight, A4.width - MARGIN, footerY, 'end'));
+    elements.push(footerText(options.footerRight, A4.width - MARGIN, footerY, 'end', colors.muted));
   }
 
   const content: ContentBox = {
@@ -98,8 +104,27 @@ export function createPage(measurer: TextMeasurer, options: PageFrameOptions): P
     height: footerY - FOOTER_HEIGHT - contentTop,
   };
 
+  // Ecken-Deko: zwei kleine Icons, die den Rätselbereich nicht stören.
+  if (theme.id !== NEUTRAL_THEME.id) {
+    const size = 9;
+    elements.push(
+      {
+        type: 'path',
+        d: iconPath(theme.icons.corner, A4.width - MARGIN - size / 2, MARGIN + size / 2, size),
+        fill: colors.decor,
+        opacity: 0.85,
+      },
+      {
+        type: 'path',
+        d: iconPath(theme.icons.corner, MARGIN + size / 2, A4.height - MARGIN - size, size),
+        fill: colors.decor,
+        opacity: 0.35,
+      },
+    );
+  }
+
   const watermark = options.watermark
-    ? watermarkElements(measurer, options.watermark, content)
+    ? watermarkElements(measurer, options.watermark, content, colors.watermark)
     : [];
 
   return {
@@ -109,8 +134,14 @@ export function createPage(measurer: TextMeasurer, options: PageFrameOptions): P
   };
 }
 
-function footerText(text: string, x: Mm, y: Mm, align: 'start' | 'end'): TextElement {
-  return { type: 'text', x, y, text, font: 'body', size: 8, color: COLORS.muted, align };
+function footerText(
+  text: string,
+  x: Mm,
+  y: Mm,
+  align: 'start' | 'end',
+  color: string,
+): TextElement {
+  return { type: 'text', x, y, text, font: 'body', size: 8, color, align };
 }
 
 /** Kürzt einen Text mit «…», bis er in `maxWidth` passt. */
@@ -136,6 +167,7 @@ export function watermarkElements(
   measurer: TextMeasurer,
   text: string,
   box: ContentBox,
+  color: string = COLORS.watermark,
 ): Element[] {
   const elements: Element[] = [];
   const size = 28;
@@ -156,7 +188,7 @@ export function watermarkElements(
         text,
         font: 'display',
         size,
-        color: COLORS.watermark,
+        color,
         opacity: 0.28,
         rotate: -30,
       });

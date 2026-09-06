@@ -97,8 +97,26 @@ export const A4 = { width: 210, height: 297 } as const;
 
 export const round3 = (n: number): number => Math.round(n * 1000) / 1000;
 
-/** Neutrale Standardfarben (Tintenfreundlich: kein flächiger Hintergrund). */
-export const COLORS = {
+/** Farbrollen eines Designs. Themen liefern eigene Werte (siehe themes/). */
+export interface Palette {
+  /** Schrift und Rätsellinien. */
+  ink: string;
+  /** Nebentexte, Fusszeile. */
+  muted: string;
+  /** Feine Trennlinien. */
+  light: string;
+  /** Gitterlinien der Rätsel. */
+  grid: string;
+  /** Akzent für Titel, Marken und Deko. */
+  accent: string;
+  /** Lösungen und Markierungen. */
+  solution: string;
+  /** Wasserzeichen der Premium-Vorschau. */
+  watermark: string;
+}
+
+/** Neutrales Standarddesign (tintenfreundlich: kein flächiger Hintergrund). */
+export const COLORS: Palette = {
   ink: '#1f2937',
   muted: '#6b7280',
   light: '#d1d5db',
@@ -106,4 +124,4 @@ export const COLORS = {
   accent: '#2f6df6',
   solution: '#e11d48',
   watermark: '#9ca3af',
-} as const;
+};
