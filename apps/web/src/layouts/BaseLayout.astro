@@ -1,0 +1,54 @@
+---
+import '@/styles/global.css';
+import { t, DEFAULT_LOCALE } from '@/i18n';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = t('site.description') } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang={DEFAULT_LOCALE}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · {t('site.name')}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <header class="border-b border-slate-200">
+      <div class="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
+        <a href="/" class="text-xl font-bold tracking-tight text-brand-700">{t('site.name')}</a>
+        <nav class="hidden gap-6 text-sm text-slate-600 sm:flex">
+          <span class="cursor-not-allowed opacity-50" title="Bald verfügbar"
+            >{t('nav.wordsearch')}</span
+          >
+          <span class="cursor-not-allowed opacity-50" title="Bald verfügbar">{t('nav.maze')}</span>
+          <span class="cursor-not-allowed opacity-50" title="Bald verfügbar">{t('nav.sudoku')}</span
+          >
+        </nav>
+      </div>
+    </header>
+    <main class="mx-auto w-full max-w-5xl flex-1 px-4 py-12">
+      <slot />
+    </main>
+    <footer class="border-t border-slate-200 text-sm text-slate-500">
+      <div class="mx-auto flex max-w-5xl flex-wrap gap-4 px-4 py-6">
+        <span>© {new Date().getFullYear()} {t('site.name')}</span>
+        <span class="opacity-50">{t('footer.imprint')}</span>
+        <span class="opacity-50">{t('footer.privacy')}</span>
+        <span class="opacity-50">{t('footer.terms')}</span>
+      </div>
+    </footer>
+  </body>
+</html>

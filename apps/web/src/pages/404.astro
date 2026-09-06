@@ -1,0 +1,10 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { t } from '@/i18n';
+---
+
+<BaseLayout title={t('notFound.title')}>
+  <h1 class="text-3xl font-bold">{t('notFound.title')}</h1>
+  <p class="mt-4 text-slate-600">{t('notFound.text')}</p>
+  <a href="/" class="mt-6 inline-block text-brand-700 underline">{t('notFound.back')}</a>
+</BaseLayout>

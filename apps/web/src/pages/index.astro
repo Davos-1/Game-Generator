@@ -1,0 +1,14 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import EngineStatus from '@/components/EngineStatus';
+import { t } from '@/i18n';
+---
+
+<BaseLayout title={t('site.tagline')}>
+  <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">{t('home.title')}</h1>
+  <p class="mt-4 max-w-2xl text-lg text-slate-600">{t('home.intro')}</p>
+  <p class="mt-6 inline-block rounded-full bg-brand-50 px-3 py-1 text-sm text-brand-700">
+    {t('home.status')}
+  </p>
+  <EngineStatus client:load />
+</BaseLayout>

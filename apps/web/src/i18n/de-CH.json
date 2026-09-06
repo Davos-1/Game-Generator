@@ -1,0 +1,29 @@
+{
+  "site": {
+    "name": "Rätselheft",
+    "tagline": "Personalisierte Rätsel zum Ausdrucken",
+    "description": "Wortsuchrätsel, Labyrinthe und Sudokus als PDF erstellen – gratis für Einzelrätsel, personalisierte Rätselhefte für Kindergeburtstag, Hochzeit und Firmenfeier."
+  },
+  "nav": {
+    "home": "Start",
+    "wordsearch": "Wortsuchrätsel",
+    "maze": "Labyrinth",
+    "sudoku": "Sudoku",
+    "booklet": "Rätselheft"
+  },
+  "home": {
+    "title": "Rätsel zum Ausdrucken – in Sekunden erstellt",
+    "intro": "Bald verfügbar: Wortsuchrätsel, Labyrinth und Sudoku als druckfertiges PDF. Einzelrätsel gratis, personalisierte Rätselhefte mit Themen-Design als Premium.",
+    "status": "Die Seite befindet sich im Aufbau."
+  },
+  "footer": {
+    "imprint": "Impressum",
+    "privacy": "Datenschutz",
+    "terms": "AGB"
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "text": "Diese Seite gibt es leider nicht (mehr).",
+    "back": "Zur Startseite"
+  }
+}
