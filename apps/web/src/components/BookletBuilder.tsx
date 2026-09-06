@@ -14,6 +14,16 @@ import {
   type BookletConfig,
   type BookletEntry,
 } from '../lib/bookletConfig';
+import {
+  fetchPaymentInfo,
+  fetchStatus,
+  formatPrice,
+  rememberToken,
+  startCheckout,
+  tokenFor,
+  unlock,
+  type PaymentInfo,
+} from '../lib/payment';
 import { newSeed, THEME_CHOICES, themeWords, type PuzzleKind } from '../lib/puzzleConfig';
 import {
   buildBookletItems,
@@ -39,15 +49,56 @@ export default function BookletBuilder(): React.ReactElement {
   const [linkState, setLinkState] = useState<'idle' | 'copied' | 'too-long'>('idle');
   const layoutRef = useRef<Awaited<ReturnType<typeof buildBookletPages>> | undefined>(undefined);
   const [dragId, setDragId] = useState<string | undefined>(undefined);
+  const [payment, setPayment] = useState<PaymentInfo>({
+    enabled: false,
+    priceRappen: 500,
+    currency: 'CHF',
+  });
+  const [unlocked, setUnlocked] = useState(false);
+  const [paymentNote, setPaymentNote] = useState<string>('');
 
   // Beim Start: Link schlägt gespeichertes Heft, sonst Standard.
   useEffect(() => {
-    const param = new URLSearchParams(window.location.search).get('h');
+    const params = new URLSearchParams(window.location.search);
+    const param = params.get('h');
     void (async () => {
       const shared = param ? await decodeBooklet(param) : undefined;
-      setConfig(shared ?? loadBooklet() ?? defaultBooklet());
+      const loaded = shared ?? loadBooklet() ?? defaultBooklet();
+      setConfig(loaded);
+      setPayment(await fetchPaymentInfo());
+
+      // Rückkehr von der Bezahlseite: Stand abfragen und freischalten.
+      const paymentId = params.get('zahlung');
+      if (!paymentId) return;
+      if (params.get('status') === 'abbruch') {
+        setPaymentNote(t('booklet.paymentCancelled'));
+        return;
+      }
+      for (let attempt = 0; attempt < 8; attempt++) {
+        const status = await fetchStatus(paymentId);
+        if (status.paid && status.token) {
+          rememberToken(loaded, status.token);
+          setPaymentNote(t('booklet.paymentDone'));
+          return;
+        }
+        await new Promise((resolve) => window.setTimeout(resolve, 1500));
+      }
+      setPaymentNote(t('booklet.paymentPending'));
     })();
   }, []);
+
+  // Freischaltung gilt für genau diese Heft-Konfiguration.
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      const token = tokenFor(config);
+      const ok = token ? await unlock(token, config) : false;
+      if (!cancelled) setUnlocked(ok);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [config, paymentNote]);
 
   const update = useCallback((patch: Partial<BookletConfig>): void => {
     setConfig((current) => ({ ...current, ...patch }));
@@ -95,7 +146,7 @@ export default function BookletBuilder(): React.ReactElement {
       cancelled = true;
       window.clearTimeout(handle);
     };
-  }, [config]);
+  }, [config, unlocked]);
 
   useEffect(() => {
     saveBooklet(config);
@@ -132,6 +183,19 @@ export default function BookletBuilder(): React.ReactElement {
       link.remove();
       window.setTimeout(() => URL.revokeObjectURL(url), 10_000);
     } finally {
+      setBusy(false);
+    }
+  }, [config]);
+
+  const buy = useCallback(async (): Promise<void> => {
+    setBusy(true);
+    setPaymentNote('');
+    try {
+      const purpose = `${t('booklet.defaultTitle')}: ${config.title.trim() || t('booklet.defaultTitle')}`;
+      const { url } = await startCheckout(config, purpose);
+      window.location.href = url;
+    } catch (cause) {
+      setPaymentNote(cause instanceof Error ? cause.message : t('generator.common.error'));
       setBusy(false);
     }
   }, [config]);
@@ -363,19 +427,47 @@ export default function BookletBuilder(): React.ReactElement {
         </section>
 
         <section className="grid gap-3">
-          <button type="button" className={primaryButton} disabled>
-            {t('booklet.buy')}
-          </button>
-          <p className="text-sm text-slate-500">{t('booklet.buyHint')}</p>
+          {unlocked ? (
+            <>
+              <button
+                type="button"
+                className={primaryButton}
+                disabled={loading || busy}
+                onClick={() => void download()}
+              >
+                {busy ? t('generator.common.downloading') : t('booklet.downloadClean')}
+              </button>
+              <p className="text-sm text-emerald-700">{t('booklet.unlocked')}</p>
+            </>
+          ) : (
+            <>
+              <button
+                type="button"
+                className={primaryButton}
+                disabled={!payment.enabled || busy}
+                onClick={() => void buy()}
+              >
+                {payment.enabled
+                  ? `${t('booklet.buy')} – ${formatPrice(payment)}`
+                  : t('booklet.buy')}
+              </button>
+              <p className="text-sm text-slate-500">
+                {payment.enabled ? t('booklet.buyReady') : t('booklet.buyHint')}
+              </p>
+            </>
+          )}
+          {paymentNote && <p className="text-sm text-brand-700">{paymentNote}</p>}
           <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              className={secondaryButton}
-              disabled={loading || busy}
-              onClick={() => void download()}
-            >
-              {busy ? t('generator.common.downloading') : t('booklet.downloadPreview')}
-            </button>
+            {!unlocked && (
+              <button
+                type="button"
+                className={secondaryButton}
+                disabled={loading || busy}
+                onClick={() => void download()}
+              >
+                {busy ? t('generator.common.downloading') : t('booklet.downloadPreview')}
+              </button>
+            )}
             <button type="button" className={secondaryButton} onClick={() => void share()}>
               {linkState === 'copied' ? t('generator.common.shared') : t('generator.common.share')}
             </button>

@@ -1,0 +1,22 @@
+// Zahlungs-Worker. Wird getrennt von der Website deployt (siehe docs/PAYMENT.md).
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "raetselheft-payment",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-01",
+  "observability": { "enabled": true },
+  "kv_namespaces": [
+    {
+      // Zahlungen: Schlüssel «payment:<id>», TTL 30 Tage.
+      // Die Id wird beim Anlegen des Namespace eingetragen.
+      "binding": "PAYMENTS",
+      "id": "placeholder-namespace-id",
+    },
+  ],
+  "vars": {
+    "PRICE_RAPPEN": "500",
+    "CURRENCY": "CHF",
+    "SITE_ORIGIN": "https://raetselheft.ch",
+    "PAYREXX_API_VERSION": "v1.15",
+  },
+}

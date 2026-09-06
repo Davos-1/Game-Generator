@@ -141,6 +141,12 @@
       "wordsearch": "Wortsuchrätsel",
       "maze": "Labyrinth",
       "sudoku": "Sudoku"
-    }
+    },
+    "buyReady": "Bezahlung mit Karte oder TWINT, ohne Konto. Danach lädt das PDF ohne Wasserzeichen.",
+    "downloadClean": "PDF herunterladen (ohne Wasserzeichen)",
+    "unlocked": "Dieses Heft ist freigeschaltet.",
+    "paymentDone": "Zahlung bestätigt. Das Heft ist freigeschaltet.",
+    "paymentPending": "Die Zahlung ist noch nicht bestätigt. Lade die Seite in einer Minute neu.",
+    "paymentCancelled": "Die Zahlung wurde abgebrochen. Das Heft bleibt gespeichert."
   }
 }
