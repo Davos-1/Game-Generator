@@ -56,7 +56,8 @@
       "notes": "Hinweise",
       "free": "Gratis, ohne Wasserzeichen",
       "theme": "Themen-Design",
-      "themeHint": "Färbt Rätsel und PDF ein. Die Website selbst bleibt neutral."
+      "themeHint": "Färbt Rätsel und PDF ein. Die Website selbst bleibt neutral.",
+      "solutionsTitle": "Lösungen"
     },
     "difficulty": {
       "easy": "Leicht",
@@ -99,6 +100,47 @@
       "einhorn": "Einhörner",
       "dschungel": "Dschungel",
       "hochzeit": "Hochzeit"
+    }
+  },
+  "booklet": {
+    "defaultTitle": "Rätselheft",
+    "title": "Rätselheft zusammenstellen",
+    "intro": "Mehrere Rätsel, ein Deckblatt mit Namen und der Lösungsteil hinten. Die Vorschau trägt ein Wasserzeichen; der Kauf schaltet das saubere PDF frei.",
+    "cover": "Deckblatt",
+    "coverTitle": "Titel",
+    "coverTitlePlaceholder": "Zum Beispiel «Piraten-Rätselheft»",
+    "name": "Für wen",
+    "namePlaceholder": "Zum Beispiel «Für Luca»",
+    "occasion": "Anlass",
+    "occasionPlaceholder": "Zum Beispiel «Kindergeburtstag»",
+    "date": "Datum",
+    "datePlaceholder": "Zum Beispiel «12. Oktober 2026»",
+    "greeting": "Gruss",
+    "greetingPlaceholder": "Zum Beispiel «Viel Spass beim Rätseln, Mama und Papa»",
+    "puzzles": "Rätsel",
+    "addPuzzle": "Rätsel hinzufügen",
+    "remove": "Entfernen",
+    "moveUp": "Nach oben",
+    "moveDown": "Nach unten",
+    "shuffleEntry": "Neu würfeln",
+    "caption": "Seitentitel",
+    "captionPlaceholder": "Leer lassen für den Standardtitel",
+    "count": "Rätsel im Heft",
+    "minEntries": "Ein Heft braucht mindestens vier Rätsel.",
+    "maxEntries": "Mehr als sechzehn Rätsel sind nicht möglich.",
+    "pageOf": "Seite {n} von {total}",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "downloadPreview": "Vorschau als PDF (mit Wasserzeichen)",
+    "buy": "Heft kaufen",
+    "buyHint": "Der Kauf wird als Nächstes umgesetzt. Bis dahin gibt es die Vorschau mit Wasserzeichen.",
+    "watermark": "VORSCHAU",
+    "linkTooLong": "Das Heft ist für einen Teilen-Link zu umfangreich. Es bleibt aber in diesem Browser gespeichert.",
+    "building": "Heft wird gebaut …",
+    "kinds": {
+      "wordsearch": "Wortsuchrätsel",
+      "maze": "Labyrinth",
+      "sudoku": "Sudoku"
     }
   }
 }

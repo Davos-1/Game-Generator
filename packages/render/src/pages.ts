@@ -1,11 +1,18 @@
 import type { Maze, SudokuPuzzle, WordSearchPuzzle } from '@raetselheft/engine';
 import type { TextMeasurer } from './measure';
 import { grid as gridBoxes, inset } from './layout/box';
+import { coverElements, COVER_BOX, type CoverInfo } from './layout/cover';
 import { mazeElements } from './layout/maze';
 import { sudokuElements, sudokuLegendElements } from './layout/sudoku';
 import { wordSearchElements } from './layout/wordsearch';
-import { createPage, type ContentBox, type PageFrameOptions } from './page';
-import type { Element, PageLayout } from './primitives';
+import {
+  createPage,
+  MARGIN,
+  watermarkElements,
+  type ContentBox,
+  type PageFrameOptions,
+} from './page';
+import { A4, type Element, type PageLayout } from './primitives';
 import { NEUTRAL_THEME, type Theme } from './themes';
 
 /** Ein Rätsel mit seinem Typ; die Layout-Schicht kennt nur diese drei Formen. */
@@ -42,6 +49,68 @@ export function puzzlePage(
     ...watermark,
   );
   return page;
+}
+
+export interface CoverPageOptions extends CoverInfo {
+  theme?: Theme;
+  /** Diagonal wiederholter Text über der Seite (Premium-Vorschau). */
+  watermark?: string;
+}
+
+/** Deckblatt eines Rätselhefts. */
+export function coverPage(measurer: TextMeasurer, options: CoverPageOptions): PageLayout {
+  const theme = options.theme ?? NEUTRAL_THEME;
+  const box = COVER_BOX(MARGIN);
+  const elements = coverElements(options, box, measurer, theme);
+  if (options.watermark) {
+    elements.push(...watermarkElements(measurer, options.watermark, box, theme.colors.watermark));
+  }
+  return { width: A4.width, height: A4.height, elements, label: options.title };
+}
+
+export interface BookletOptions extends CoverPageOptions {
+  /** Fusszeile links auf jeder Rätselseite. */
+  footerLeft?: string;
+  /** Überschrift des Lösungsteils. */
+  solutionsTitle: string;
+}
+
+/**
+ * Stellt ein vollständiges Heft zusammen: Deckblatt, Rätselseiten in der
+ * gewählten Reihenfolge, Lösungsteil hinten. Das Wasserzeichen liegt auf
+ * jeder Seite (Premium-Vorschau, PLAN.md Abschnitt 4).
+ */
+export function bookletPages(
+  entries: readonly { item: PuzzleItem; caption: string; subtitle?: string }[],
+  measurer: TextMeasurer,
+  options: BookletOptions,
+): PageLayout[] {
+  const theme = options.theme ?? NEUTRAL_THEME;
+  const watermark = options.watermark;
+  const pages: PageLayout[] = [coverPage(measurer, options)];
+
+  entries.forEach((entry, index) => {
+    pages.push(
+      puzzlePage(entry.item, measurer, {
+        theme,
+        title: entry.caption,
+        ...(entry.subtitle ? { subtitle: entry.subtitle } : {}),
+        ...(options.footerLeft ? { footerLeft: options.footerLeft } : {}),
+        footerRight: `${index + 1}`,
+        ...(watermark ? { watermark } : {}),
+      }),
+    );
+  });
+
+  pages.push(
+    ...solutionPages(entries, measurer, {
+      theme,
+      title: options.solutionsTitle,
+      ...(options.footerLeft ? { footerLeft: options.footerLeft } : {}),
+      ...(watermark ? { watermark } : {}),
+    }),
+  );
+  return pages;
 }
 
 /**

@@ -4,6 +4,7 @@ import nunitoBold from '@raetselheft/render/fonts/Nunito-Bold.ttf?url';
 import type { FontSet, PageLayout, PuzzleItem, TextMeasurer } from '@raetselheft/render';
 import { generateMaze, generateSudoku, generateWordSearch } from '@raetselheft/engine';
 import { themeById } from '@raetselheft/render/themes';
+import type { BookletConfig } from './bookletConfig';
 import type { PuzzleConfig } from './puzzleConfig';
 import { parseWords } from './puzzleConfig';
 import { t } from '../i18n';
@@ -151,6 +152,77 @@ export async function buildPdf(config: PuzzleConfig, pages: RenderedPages): Prom
   ]);
   const bytes = await renderPdf([pages.puzzle, pages.solution], fonts, {
     title: config.title.trim() || t(`generator.${config.kind}.defaultTitle`),
+    subject: t('site.description'),
+  });
+  return new Blob([bytes as BlobPart], { type: 'application/pdf' });
+}
+
+/** Baut alle Rätsel eines Hefts; Fehler einzelner Einträge werden gemeldet. */
+export function buildBookletItems(config: BookletConfig): {
+  entries: { item: PuzzleItem; caption: string }[];
+  notes: string[];
+} {
+  const entries: { item: PuzzleItem; caption: string }[] = [];
+  const notes: string[] = [];
+  config.entries.forEach((entry, index) => {
+    const caption = entry.caption.trim() || t(`generator.${entry.kind}.defaultTitle`);
+    try {
+      // Achtung: «size» bedeutet je nach Rätseltyp etwas anderes – beim
+      // Wortsuchrätsel die Gittergrösse, beim Sudoku 4, 6 oder 9.
+      const { item, notes: entryNotes } = buildPuzzle({
+        kind: entry.kind,
+        theme: config.theme,
+        title: caption,
+        subtitle: '',
+        seed: entry.seed,
+        words: entry.words,
+        size: entry.kind === 'sudoku' ? entry.sudokuSize : entry.size,
+        difficulty: entry.difficulty,
+        umlauts: 'keep',
+      } as PuzzleConfig);
+      entries.push({ item, caption });
+      for (const note of entryNotes) notes.push(`${index + 1}. ${caption}: ${note}`);
+    } catch (cause) {
+      notes.push(`${index + 1}. ${caption}: ${cause instanceof Error ? cause.message : ''}`);
+    }
+  });
+  return { entries, notes };
+}
+
+/** Seiten eines Hefts: Deckblatt, Rätsel, Lösungsteil. */
+export async function buildBookletPages(
+  config: BookletConfig,
+  entries: readonly { item: PuzzleItem; caption: string }[],
+  options: { watermark?: string } = {},
+): Promise<PageLayout[]> {
+  const [{ bookletPages }, measurer] = await Promise.all([
+    import('@raetselheft/render/pages'),
+    getMeasurer(),
+  ]);
+  return bookletPages(entries, measurer, {
+    theme: themeById(config.theme),
+    title: config.title.trim() || t('booklet.defaultTitle'),
+    ...(config.name.trim() ? { name: config.name.trim() } : {}),
+    ...(config.occasion.trim() ? { occasion: config.occasion.trim() } : {}),
+    ...(config.date.trim() ? { date: config.date.trim() } : {}),
+    ...(config.greeting.trim() ? { greeting: config.greeting.trim() } : {}),
+    solutionsTitle: t('generator.common.solutionsTitle'),
+    footerLeft: t('site.domain'),
+    ...(options.watermark ? { watermark: options.watermark } : {}),
+  });
+}
+
+/** Erzeugt das Heft-PDF als Blob. */
+export async function buildBookletPdf(
+  config: BookletConfig,
+  pages: readonly PageLayout[],
+): Promise<Blob> {
+  const [{ renderPdf }, fonts] = await Promise.all([
+    import('@raetselheft/render/pdf'),
+    loadFonts(),
+  ]);
+  const bytes = await renderPdf(pages, fonts, {
+    title: config.title.trim() || t('booklet.defaultTitle'),
     subject: t('site.description'),
   });
   return new Blob([bytes as BlobPart], { type: 'application/pdf' });
