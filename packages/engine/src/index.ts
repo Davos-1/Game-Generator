@@ -7,5 +7,7 @@
 export { createRng, hashSeed } from './random';
 export type { Rng } from './random';
 
+export * from './wordsearch';
+
 /** Version der Engine-API; wird in gespeicherten Heft-Konfigurationen mitgeführt. */
-export const ENGINE_VERSION = '0.1.0';
+export const ENGINE_VERSION = '0.2.0';
