@@ -33,7 +33,8 @@ pnpm install
 
 - `apps/web` – Astro-Website (statischer Output) mit React-Islands für die Generator-UI, Tailwind CSS, Locale-Dateien unter `src/i18n`
 - `packages/engine` – reine TypeScript-Bibliothek mit den Rätsel-Algorithmen (deterministisch per Seed), unit-getestet mit Vitest
-- `.github/workflows` – CI (Lint, Format, Typecheck, Test, Build) und Deploy auf Cloudflare Pages
+- `.github/workflows` – CI (Lint, Format, Typecheck, Test, Build)
+- `wrangler.jsonc` – Cloudflare-Konfiguration für das Deployment als Worker mit statischen Assets
 - `docs` – Anleitungen, z. B. zum Deployment
 
 ## Sprache
@@ -42,7 +43,7 @@ Alle Texte der Website sind in Schweizer Standarddeutsch: Umlaute (ä, ö, ü) w
 
 ## Deployment
 
-Pull Requests durchlaufen die CI-Pipeline. Ein Push auf `main` löst zusätzlich das Deployment auf Cloudflare Pages aus. Die Einrichtung ist in [`docs/DEPLOY.md`](docs/DEPLOY.md) beschrieben.
+Pull Requests durchlaufen die CI-Pipeline (GitHub Actions). Cloudflare baut und deployt das Repository per Git-Integration bei jedem Push, produktiv ab `main`. Details in [`docs/DEPLOY.md`](docs/DEPLOY.md).
 
 ## Plan
 

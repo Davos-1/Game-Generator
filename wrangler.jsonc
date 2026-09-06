@@ -1,0 +1,14 @@
+// Cloudflare Workers (Git-Integration): statische Astro-Site als Worker mit Assets.
+// Wird von «npx wrangler deploy» im Repo-Root gelesen (Build davor: pnpm run build).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "raetselheft",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./apps/web/dist",
+    // Astro baut «seite.html» (build.format = file, trailingSlash = never):
+    // /seite wird bedient, /seite/ auf /seite umgeleitet.
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "404-page",
+  },
+}
