@@ -1,3 +1,4 @@
+import type { Cell } from '../grid';
 /**
  * Richtung, in der ein Wort im Gitter verläuft (Kompassrichtungen).
  * E = links nach rechts, S = oben nach unten, SE/NE = Diagonalen,
@@ -19,10 +20,7 @@ export const DIRECTIONS_BY_DIFFICULTY: Readonly<Record<Difficulty, readonly Dire
 /** Umgang mit Umlauten: «keep» lässt Ä/Ö/Ü im Gitter stehen, «expand» schreibt AE/OE/UE. */
 export type UmlautMode = 'keep' | 'expand';
 
-export interface Cell {
-  row: number;
-  col: number;
-}
+export type { Cell } from '../grid';
 
 export interface WordSearchOptions {
   /** Wörter in beliebiger Schreibweise; werden normalisiert (Grossbuchstaben, ohne Sonderzeichen). */
