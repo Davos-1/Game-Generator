@@ -1,0 +1,32 @@
+---
+/**
+ * Abschnitt über die volle Breite, Inhalt auf der gemeinsamen Spaltenbreite.
+ * Der wechselnde Grund gliedert die Seite, ohne dass Karten nötig wären.
+ */
+interface Props {
+  ground?: 'paper' | 'surface' | 'hero';
+  /** Grosszügig für Hero und Abschluss, dicht für Listen. */
+  space?: 'loose' | 'normal' | 'tight';
+  class?: string;
+  id?: string;
+}
+
+const { ground = 'paper', space = 'normal', class: className, id } = Astro.props;
+
+const grounds = {
+  paper: 'bg-paper text-ink',
+  surface: 'bg-surface text-ink border-y border-line',
+  hero: 'bg-hero text-hero-ink',
+};
+const spaces = {
+  loose: 'py-14 sm:py-20',
+  normal: 'py-10 sm:py-14',
+  tight: 'py-8',
+};
+---
+
+<section id={id} class:list={[grounds[ground], spaces[space], className]}>
+  <div class="mx-auto w-full max-w-5xl px-4">
+    <slot />
+  </div>
+</section>

@@ -1,0 +1,38 @@
+---
+/**
+ * Symbole der Website kommen aus derselben Quelle wie die Symbole im PDF
+ * (packages/render/src/icons.ts). Kein zweites Icon-Set, keine Lizenzfragen,
+ * und die Website zeigt genau die Formen, die später gedruckt werden.
+ */
+import { iconPath, type IconName } from '@raetselheft/render/icons';
+
+interface Props {
+  name: IconName;
+  size?: number;
+  class?: string;
+  /** Für Farben, die erst zur Laufzeit feststehen (Themenfarbe). */
+  style?: string;
+  /** Nur setzen, wenn das Symbol allein steht und Bedeutung trägt. */
+  label?: string;
+}
+
+const { name, size = 20, class: className, style, label } = Astro.props;
+// Die Pfade sind auf (cx, cy) zentriert; 24er-Raster mit 20er-Kantenlänge
+// lässt genug Luft, damit nichts am Rand klebt.
+const path = iconPath(name, 12, 12, 20);
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="currentColor"
+  class={className}
+  style={style}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+>
+  {label && <title>{label}</title>}
+  <path d={path}></path>
+</svg>

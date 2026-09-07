@@ -1,0 +1,30 @@
+---
+/**
+ * Eine Schaltflächenform für die ganze Website. Vorher war jeder Aufruf
+ * einzeln im Markup ausformuliert und wich in Radius und Farbe ab.
+ */
+interface Props {
+  href: string;
+  variant?: 'primary' | 'secondary' | 'quiet';
+  /** Für Schaltflächen auf dem dunklen Hero-Grund. */
+  onDark?: boolean;
+  download?: boolean;
+  class?: string;
+}
+
+const { href, variant = 'primary', onDark = false, download, class: className } = Astro.props;
+
+const base =
+  'inline-flex items-center gap-2 rounded-sheet px-5 py-3 text-sm font-semibold transition-colors';
+const styles = {
+  primary: 'bg-accent text-accent-ink hover:bg-accent-deep hover:text-white',
+  secondary: onDark
+    ? 'border border-hero-line text-hero-ink hover:border-hero-ink'
+    : 'border border-line-strong text-ink hover:border-ink',
+  quiet: onDark ? 'text-hero-muted hover:text-hero-ink' : 'text-brand-700 hover:text-ink',
+};
+---
+
+<a href={href} download={download} class:list={[base, styles[variant], className]}>
+  <slot />
+</a>

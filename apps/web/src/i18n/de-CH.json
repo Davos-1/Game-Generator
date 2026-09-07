@@ -20,9 +20,26 @@
       "wordsearch": "Eigene Wörter oder Namen der Gäste im Buchstabengitter verstecken.",
       "maze": "Ein Weg vom Start zum Ziel, in drei Grössen.",
       "sudoku": "Klassisch mit Zahlen oder als Kindervariante mit Symbolen."
-    }
+    },
+    "lead": "Rätsel, die aus dem Drucker kommen.",
+    "primary": "Rätsel erstellen",
+    "secondary": "Beispiel gratis ansehen",
+    "trust": {
+      "format": "A4, druckfertiges PDF",
+      "solution": "Lösungsblatt inklusive",
+      "account": "Ohne Konto, ohne Anmeldung"
+    },
+    "sections": {
+      "kinds": "Rätseltypen",
+      "kindsHint": "Jedes mit echter Vorschau",
+      "themes": "Themen",
+      "themesHint": "Bestimmen Farben, Symbole und Wortlisten"
+    },
+    "open": "Öffnen"
   },
   "footer": {
+    "puzzles": "Rätsel",
+    "legal": "Rechtliches",
     "imprint": "Impressum",
     "privacy": "Datenschutz",
     "terms": "AGB",
