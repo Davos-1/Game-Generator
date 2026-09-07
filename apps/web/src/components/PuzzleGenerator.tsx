@@ -194,7 +194,7 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
     <div className="grid gap-8 lg:grid-cols-[22rem_1fr] lg:items-start">
       {/* Auf dem Handy steht die Vorschau oben: Änderungen sind sofort sichtbar. */}
       <form className="order-2 grid gap-5 lg:order-1" onSubmit={(event) => event.preventDefault()}>
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
           {t('generator.common.settings')}
         </h2>
 
@@ -218,8 +218,8 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
                 aria-pressed={config.theme === choice.id}
                 className={`flex items-center gap-1.5 rounded-full border px-3 py-2 text-sm ${
                   config.theme === choice.id
-                    ? 'border-brand-500 bg-brand-50 text-brand-700'
-                    : 'border-slate-300 text-slate-600 hover:bg-slate-50'
+                    ? 'border-accent-deep bg-paper text-ink'
+                    : 'border-line-strong text-muted hover:bg-paper'
                 }`}
                 onClick={() => update({ theme: choice.id })}
               >
@@ -291,7 +291,7 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
                   ? `${t('payment.buySingle')} – ${purchase.price}`
                   : t('payment.buySingle')}
               </button>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-muted">
                 {purchase.enabled ? t('payment.ready') : t('payment.notReady')}
               </p>
               <button
@@ -308,7 +308,7 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
         </div>
 
         {notes.length > 0 && (
-          <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+          <div className="rounded-group border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
             <p className="font-medium">{t('generator.common.notes')}</p>
             <ul className="mt-1 list-inside list-disc">
               {notes.map((note) => (
@@ -321,15 +321,15 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
 
       <div className="order-1 lg:order-2 lg:sticky lg:top-6">
         <div className="mb-3 flex items-center justify-between gap-4">
-          <div className="inline-flex rounded-lg border border-slate-200 p-0.5" role="tablist">
+          <div className="inline-flex rounded-group border border-line p-0.5" role="tablist">
             {(['puzzle', 'solution'] as const).map((value) => (
               <button
                 key={value}
                 type="button"
                 role="tab"
                 aria-selected={tab === value}
-                className={`rounded-md px-3 py-2 text-sm ${
-                  tab === value ? 'bg-brand-500 text-white' : 'text-slate-600 hover:bg-slate-50'
+                className={`rounded-sheet px-3 py-2 text-sm ${
+                  tab === value ? 'bg-accent text-accent-ink' : 'text-muted hover:bg-paper'
                 }`}
                 onClick={() => setTab(value)}
               >
@@ -341,7 +341,7 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="overflow-hidden rounded-group border border-line bg-white shadow-sm">
           {status === 'error' ? (
             <p className="p-8 text-center text-rose-700">{error || t('generator.common.error')}</p>
           ) : preview ? (
@@ -350,7 +350,7 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
               dangerouslySetInnerHTML={{ __html: preview }}
             />
           ) : (
-            <div className="flex aspect-[210/297] items-center justify-center text-slate-400">
+            <div className="flex aspect-[210/297] items-center justify-center text-muted">
               {t('generator.common.loading')}
             </div>
           )}
@@ -370,10 +370,10 @@ function isUntouchedThemeList(words: string): boolean {
 }
 
 const inputClass =
-  'w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20';
+  'w-full rounded-group border border-line-strong px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/25';
 const primaryButton =
-  'w-full rounded-lg bg-brand-500 px-4 py-2.5 font-medium text-white hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-50';
-const secondaryButton = 'rounded-lg border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50';
+  'w-full rounded-group bg-accent px-4 py-2.5 font-semibold text-accent-ink hover:bg-accent-deep hover:text-white disabled:cursor-not-allowed disabled:opacity-50';
+const secondaryButton = 'rounded-group border border-line-strong px-3 py-2 text-sm hover:bg-paper';
 
 function Field({
   label,
@@ -386,9 +386,9 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-sm font-medium text-slate-700">{label}</span>
+      <span className="mb-1 block text-sm font-medium text-ink">{label}</span>
       {children}
-      {hint && <span className="mt-1 block text-xs text-slate-500">{hint}</span>}
+      {hint && <span className="mt-1 block text-xs text-muted">{hint}</span>}
     </label>
   );
 }
@@ -401,14 +401,14 @@ function DifficultySelect({
   onChange: (value: 'easy' | 'medium' | 'hard') => void;
 }) {
   return (
-    <div className="inline-flex w-full rounded-lg border border-slate-300 p-0.5">
+    <div className="inline-flex w-full rounded-group border border-line-strong p-0.5">
       {(['easy', 'medium', 'hard'] as const).map((level) => (
         <button
           key={level}
           type="button"
           aria-pressed={value === level}
-          className={`flex-1 rounded-md px-2 py-2 text-sm ${
-            value === level ? 'bg-brand-500 text-white' : 'text-slate-600 hover:bg-slate-50'
+          className={`flex-1 rounded-sheet px-2 py-2 text-sm ${
+            value === level ? 'bg-accent text-accent-ink' : 'text-muted hover:bg-paper'
           }`}
           onClick={() => onChange(level)}
         >
@@ -441,12 +441,12 @@ function WordSearchFields({
         />
       </Field>
       <div className="-mt-3 flex flex-wrap gap-2">
-        <span className="text-xs text-slate-500">{t('generator.wordsearch.examples')}:</span>
+        <span className="text-xs text-muted">{t('generator.wordsearch.examples')}:</span>
         {THEME_CHOICES.filter((choice) => choice.id !== 'neutral').map((choice) => (
           <button
             key={choice.id}
             type="button"
-            className="rounded-full border border-slate-300 px-3 py-1.5 text-xs hover:bg-slate-50"
+            className="rounded-full border border-line-strong px-3 py-1.5 text-xs hover:bg-paper"
             onClick={() => update({ words: themeWords(choice.id).join(', ') })}
           >
             {choice.name}
@@ -456,7 +456,7 @@ function WordSearchFields({
       <Field label={`${t('generator.wordsearch.size')}: ${config.size} × ${config.size}`}>
         <input
           type="range"
-          className="w-full accent-brand-500"
+          className="w-full accent-accent"
           min={8}
           max={20}
           value={config.size}
@@ -510,7 +510,7 @@ function SudokuFields({
       </Field>
       {config.size < 9 && (
         <Field label={t('generator.sudoku.display')} hint={t('generator.sudoku.kidsHint')}>
-          <div className="inline-flex w-full rounded-lg border border-slate-300 p-0.5">
+          <div className="inline-flex w-full rounded-group border border-line-strong p-0.5">
             {[
               { value: true, label: t('generator.sudoku.displaySymbols') },
               { value: false, label: t('generator.sudoku.displayNumbers') },
@@ -519,10 +519,10 @@ function SudokuFields({
                 key={String(option.value)}
                 type="button"
                 aria-pressed={config.symbols === option.value}
-                className={`flex-1 rounded-md px-2 py-2 text-sm ${
+                className={`flex-1 rounded-sheet px-2 py-2 text-sm ${
                   config.symbols === option.value
-                    ? 'bg-brand-500 text-white'
-                    : 'text-slate-600 hover:bg-slate-50'
+                    ? 'bg-accent text-accent-ink'
+                    : 'text-muted hover:bg-paper'
                 }`}
                 onClick={() => update({ symbols: option.value })}
               >

@@ -163,7 +163,7 @@ export default function BookletBuilder(): React.ReactElement {
     <div className="grid gap-8 lg:grid-cols-[26rem_1fr] lg:items-start">
       <form className="order-2 grid gap-6 lg:order-1" onSubmit={(event) => event.preventDefault()}>
         <section className="grid gap-4">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
             {t('booklet.cover')}
           </h2>
           <Field label={t('generator.common.theme')} hint={t('generator.common.themeHint')}>
@@ -175,8 +175,8 @@ export default function BookletBuilder(): React.ReactElement {
                   aria-pressed={config.theme === choice.id}
                   className={`flex items-center gap-1.5 rounded-full border px-3 py-2 text-sm ${
                     config.theme === choice.id
-                      ? 'border-brand-500 bg-brand-50 text-brand-700'
-                      : 'border-slate-300 text-slate-600 hover:bg-slate-50'
+                      ? 'border-accent-deep bg-paper text-ink'
+                      : 'border-line-strong text-muted hover:bg-paper'
                   }`}
                   onClick={() => update({ theme: choice.id })}
                 >
@@ -230,7 +230,7 @@ export default function BookletBuilder(): React.ReactElement {
         </section>
 
         <section className="grid gap-3">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
             {t('booklet.puzzles')} ({config.entries.length})
           </h2>
           <ol className="grid gap-3">
@@ -246,12 +246,12 @@ export default function BookletBuilder(): React.ReactElement {
                   if (from >= 0) move(from, index);
                   setDragId(undefined);
                 }}
-                className={`rounded-xl border p-3 ${
-                  dragId === entry.id ? 'border-brand-500 bg-brand-50' : 'border-slate-200'
+                className={`rounded-group border p-3 ${
+                  dragId === entry.id ? 'border-accent-deep bg-paper' : 'border-line'
                 }`}
               >
                 <div className="flex items-center gap-2">
-                  <span className="cursor-grab text-slate-400" aria-hidden="true">
+                  <span className="cursor-grab text-muted" aria-hidden="true">
                     ⠿
                   </span>
                   <select
@@ -336,7 +336,7 @@ export default function BookletBuilder(): React.ReactElement {
                       </Field>
                       {entry.sudokuSize < 9 && (
                         <Field label={t('generator.sudoku.display')}>
-                          <div className="inline-flex rounded-lg border border-slate-300 p-0.5">
+                          <div className="inline-flex rounded-group border border-line-strong p-0.5">
                             {[
                               { value: true, label: t('generator.sudoku.displaySymbols') },
                               { value: false, label: t('generator.sudoku.displayNumbers') },
@@ -345,10 +345,10 @@ export default function BookletBuilder(): React.ReactElement {
                                 key={String(option.value)}
                                 type="button"
                                 aria-pressed={entry.sudokuSymbols === option.value}
-                                className={`rounded-md px-3 py-2 text-xs ${
+                                className={`rounded-sheet px-3 py-2 text-xs ${
                                   entry.sudokuSymbols === option.value
-                                    ? 'bg-brand-500 text-white'
-                                    : 'text-slate-600 hover:bg-slate-50'
+                                    ? 'bg-accent text-accent-ink'
+                                    : 'text-muted hover:bg-paper'
                                 }`}
                                 onClick={() =>
                                   updateEntry(entry.id, { sudokuSymbols: option.value })
@@ -364,16 +364,16 @@ export default function BookletBuilder(): React.ReactElement {
                   )}
                   <div className="flex items-end gap-2">
                     <Field label={t('generator.common.difficulty')}>
-                      <div className="inline-flex rounded-lg border border-slate-300 p-0.5">
+                      <div className="inline-flex rounded-group border border-line-strong p-0.5">
                         {(['easy', 'medium', 'hard'] as const).map((level) => (
                           <button
                             key={level}
                             type="button"
                             aria-pressed={entry.difficulty === level}
-                            className={`rounded-md px-3 py-2 text-xs ${
+                            className={`rounded-sheet px-3 py-2 text-xs ${
                               entry.difficulty === level
-                                ? 'bg-brand-500 text-white'
-                                : 'text-slate-600 hover:bg-slate-50'
+                                ? 'bg-accent text-accent-ink'
+                                : 'text-muted hover:bg-paper'
                             }`}
                             onClick={() => updateEntry(entry.id, { difficulty: level })}
                           >
@@ -384,7 +384,7 @@ export default function BookletBuilder(): React.ReactElement {
                     </Field>
                     <button
                       type="button"
-                      className="rounded-lg border border-slate-300 px-3 py-2 text-xs hover:bg-slate-50"
+                      className="rounded-group border border-line-strong px-3 py-2 text-xs hover:bg-paper"
                       onClick={() => updateEntry(entry.id, { seed: newSeed() })}
                     >
                       {t('booklet.shuffleEntry')}
@@ -401,7 +401,7 @@ export default function BookletBuilder(): React.ReactElement {
                 key={kind}
                 type="button"
                 disabled={!canAdd}
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50 disabled:opacity-50"
+                className="rounded-group border border-line-strong px-3 py-2 text-sm hover:bg-paper disabled:opacity-50"
                 onClick={() =>
                   update({ entries: [...config.entries, newEntry(kind, config.theme)] })
                 }
@@ -410,8 +410,8 @@ export default function BookletBuilder(): React.ReactElement {
               </button>
             ))}
           </div>
-          {!canAdd && <p className="text-xs text-slate-500">{t('booklet.maxEntries')}</p>}
-          {!canRemove && <p className="text-xs text-slate-500">{t('booklet.minEntries')}</p>}
+          {!canAdd && <p className="text-xs text-muted">{t('booklet.maxEntries')}</p>}
+          {!canRemove && <p className="text-xs text-muted">{t('booklet.minEntries')}</p>}
         </section>
 
         <section className="grid gap-3">
@@ -437,7 +437,7 @@ export default function BookletBuilder(): React.ReactElement {
               >
                 {purchase.enabled ? `${t('booklet.buy')} – ${purchase.price}` : t('booklet.buy')}
               </button>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-muted">
                 {purchase.enabled ? t('payment.ready') : t('payment.notReady')}
               </p>
             </>
@@ -464,7 +464,7 @@ export default function BookletBuilder(): React.ReactElement {
         </section>
 
         {notes.length > 0 && (
-          <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+          <div className="rounded-group border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
             <p className="font-medium">{t('generator.common.notes')}</p>
             <ul className="mt-1 list-inside list-disc">
               {notes.map((note) => (
@@ -485,7 +485,7 @@ export default function BookletBuilder(): React.ReactElement {
           >
             {t('booklet.previous')}
           </button>
-          <span className="text-sm text-slate-600">
+          <span className="text-sm text-muted">
             {t('booklet.pageOf')
               .replace('{n}', String(pageIndex + 1))
               .replace('{total}', String(Math.max(1, pages.length)))}
@@ -499,14 +499,14 @@ export default function BookletBuilder(): React.ReactElement {
             {t('booklet.next')}
           </button>
         </div>
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="overflow-hidden rounded-group border border-line bg-white shadow-sm">
           {pages[pageIndex] ? (
             <div
               className="[&>svg]:h-auto [&>svg]:w-full"
               dangerouslySetInnerHTML={{ __html: pages[pageIndex] }}
             />
           ) : (
-            <div className="flex aspect-[210/297] items-center justify-center text-slate-400">
+            <div className="flex aspect-[210/297] items-center justify-center text-muted">
               {t('booklet.building')}
             </div>
           )}
@@ -517,11 +517,11 @@ export default function BookletBuilder(): React.ReactElement {
 }
 
 const inputClass =
-  'w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20';
+  'w-full rounded-group border border-line-strong px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/25';
 const primaryButton =
-  'w-full rounded-lg bg-brand-500 px-4 py-2.5 font-medium text-white hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-50';
+  'w-full rounded-group bg-accent px-4 py-2.5 font-semibold text-accent-ink hover:bg-accent-deep hover:text-white disabled:cursor-not-allowed disabled:opacity-50';
 const secondaryButton =
-  'rounded-lg border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50 disabled:opacity-50';
+  'rounded-group border border-line-strong px-3 py-2 text-sm hover:bg-paper disabled:opacity-50';
 
 function Field({
   label,
@@ -534,9 +534,9 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-sm font-medium text-slate-700">{label}</span>
+      <span className="mb-1 block text-sm font-medium text-ink">{label}</span>
       {children}
-      {hint && <span className="mt-1 block text-xs text-slate-500">{hint}</span>}
+      {hint && <span className="mt-1 block text-xs text-muted">{hint}</span>}
     </label>
   );
 }
@@ -584,7 +584,7 @@ function IconButton({
       title={label}
       aria-label={label}
       disabled={disabled ?? false}
-      className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 disabled:opacity-40"
+      className="rounded-group border border-line-strong px-3 py-2 text-sm text-muted hover:bg-paper disabled:opacity-40"
       onClick={onClick}
     >
       {children}
