@@ -1,5 +1,12 @@
 import { NEUTRAL_THEME, themeById } from '@raetselheft/render/themes';
-import { defaultSymbols, newSeed, parseWords, themeWords, type PuzzleKind } from './puzzleConfig';
+import {
+  defaultSymbols,
+  newSeed,
+  parseWords,
+  SHAPE_CHOICES,
+  themeWords,
+  type PuzzleKind,
+} from './puzzleConfig';
 
 export const MIN_ENTRIES = 4;
 export const MAX_ENTRIES = 16;
@@ -21,6 +28,8 @@ export interface BookletEntry {
   sudokuSize: 4 | 6 | 9;
   /** Sudoku: Symbole statt Zahlen (nur bei 4×4 und 6×6). */
   sudokuSymbols: boolean;
+  /** Punkte-zu-Punkte: welche Form verbunden wird. */
+  dotToDotShapeId: string;
 }
 
 export interface BookletConfig {
@@ -48,6 +57,7 @@ export function newEntry(kind: PuzzleKind, themeId: string): BookletEntry {
     // unverändert übersteht; wirksam ist er nur beim Sudoku.
     sudokuSize: 6,
     sudokuSymbols: true,
+    dotToDotShapeId: SHAPE_CHOICES[0]?.id ?? 'stern',
   };
 }
 
@@ -79,6 +89,7 @@ interface CompactEntry {
   g?: number;
   z?: number;
   y?: 0 | 1;
+  f?: string;
 }
 
 interface CompactBooklet {
@@ -109,6 +120,12 @@ export function toCompact(config: BookletConfig): CompactBooklet {
           item.y = entry.sudokuSymbols ? 1 : 0;
         }
       }
+      if (
+        entry.kind === 'dot-to-dot' &&
+        entry.dotToDotShapeId !== (SHAPE_CHOICES[0]?.id ?? 'stern')
+      ) {
+        item.f = entry.dotToDotShapeId;
+      }
       return item;
     }),
   };
@@ -123,7 +140,7 @@ const asDifficulty = (value: unknown): 'easy' | 'medium' | 'hard' =>
   value === 'easy' || value === 'hard' ? value : 'medium';
 
 const asKind = (value: unknown): PuzzleKind =>
-  value === 'maze' || value === 'sudoku' ? value : 'wordsearch';
+  value === 'maze' || value === 'sudoku' || value === 'dot-to-dot' ? value : 'wordsearch';
 
 export function fromCompact(input: unknown): BookletConfig {
   const base = defaultBooklet();
@@ -155,6 +172,10 @@ export function fromCompact(input: unknown): BookletConfig {
               size: typeof item?.g === 'number' && item.g >= 8 && item.g <= 20 ? item.g : 12,
               sudokuSize,
               sudokuSymbols: item?.y === undefined ? defaultSymbols(sudokuSize) : item.y === 1,
+              dotToDotShapeId:
+                typeof item?.f === 'string' && SHAPE_CHOICES.some((choice) => choice.id === item.f)
+                  ? item.f
+                  : fallback.dotToDotShapeId,
             };
           })
         : base.entries,

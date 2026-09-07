@@ -1,13 +1,15 @@
 import { NEUTRAL_THEME, THEMES, themeById } from '@raetselheft/render/themes';
+import { SHAPE_IDS } from '@raetselheft/engine';
 import type {
   Difficulty,
+  DotToDotDifficulty,
   MazeDifficulty,
   SudokuDifficulty,
   SudokuSize,
   UmlautMode,
 } from '@raetselheft/engine';
 
-export type PuzzleKind = 'wordsearch' | 'maze' | 'sudoku';
+export type PuzzleKind = 'wordsearch' | 'maze' | 'sudoku' | 'dot-to-dot';
 
 interface BaseConfig {
   /** Id des Themen-Designs; «neutral» ist das Standarddesign. */
@@ -45,7 +47,20 @@ export interface SudokuConfig extends BaseConfig {
   symbols: boolean;
 }
 
-export type PuzzleConfig = WordSearchConfig | MazeConfig | SudokuConfig;
+export interface DotToDotConfig extends BaseConfig {
+  kind: 'dot-to-dot';
+  difficulty: DotToDotDifficulty;
+  /** Welche Form verbunden wird; siehe SHAPE_CHOICES. */
+  shapeId: string;
+}
+
+export type PuzzleConfig = WordSearchConfig | MazeConfig | SudokuConfig | DotToDotConfig;
+
+/** Auswahlliste der Punkte-zu-Punkte-Formen für die Oberfläche. */
+export const SHAPE_CHOICES: readonly { id: string; name: string }[] = SHAPE_IDS.map((id) => ({
+  id,
+  name: id.charAt(0).toUpperCase() + id.slice(1),
+}));
 
 /** Wortliste eines Themas, gekürzt auf eine bequeme Anzahl fürs Gitter. */
 export function themeWords(themeId: string, count = 12): string[] {
@@ -97,6 +112,16 @@ export function defaultConfig(kind: PuzzleKind): PuzzleConfig {
         size: 9,
         difficulty: 'easy',
         symbols: defaultSymbols(9),
+      };
+    case 'dot-to-dot':
+      return {
+        kind,
+        theme: NEUTRAL_THEME.id,
+        title: 'Punkte-zu-Punkte',
+        subtitle: '',
+        seed,
+        difficulty: 'medium',
+        shapeId: SHAPE_IDS[0] as string,
       };
   }
 }
@@ -150,6 +175,12 @@ export function configToParams(config: PuzzleConfig): URLSearchParams {
       set('sy', config.symbols ? '1' : '0', defaultSymbols(config.size) ? '1' : '0');
       break;
     }
+    case 'dot-to-dot': {
+      const b = base as DotToDotConfig;
+      set('d', config.difficulty, b.difficulty);
+      set('fo', config.shapeId, b.shapeId);
+      break;
+    }
   }
   return params;
 }
@@ -197,6 +228,15 @@ export function configFromParams(kind: PuzzleKind, params: URLSearchParams): Puz
         size,
         difficulty: oneOf(params.get('d'), ['easy', 'medium', 'hard'] as const, b.difficulty),
         symbols: symbols === null ? defaultSymbols(size) : symbols === '1',
+      };
+    }
+    case 'dot-to-dot': {
+      const b = base as DotToDotConfig;
+      return {
+        kind,
+        ...common,
+        difficulty: oneOf(params.get('d'), ['easy', 'medium', 'hard'] as const, b.difficulty),
+        shapeId: oneOf(params.get('fo'), SHAPE_IDS, b.shapeId),
       };
     }
   }

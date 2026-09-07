@@ -10,7 +10,12 @@
  */
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { generateMaze, generateSudoku, generateWordSearch } from '@raetselheft/engine';
+import {
+  generateDotToDot,
+  generateMaze,
+  generateSudoku,
+  generateWordSearch,
+} from '@raetselheft/engine';
 import { createMeasurer } from '@raetselheft/render/fonts';
 import { loadFontsFromDisk } from '@raetselheft/render/node';
 import { puzzlePage, solutionPages, type PuzzleItem } from '@raetselheft/render/pages';
@@ -34,6 +39,12 @@ const FALLBACK_WORDS = [
   'Spalte',
 ];
 
+/** Passende Form, wo ein Thema eindeutig dazu passt; sonst entscheidet der Seed. */
+const THEME_SHAPE: Readonly<Record<string, string>> = {
+  hochzeit: 'herz',
+  weihnachten: 'tannenbaum',
+};
+
 function buildItem(kind: ExampleKind, theme: Theme, seed: string): PuzzleItem {
   switch (kind) {
     case 'wordsearch':
@@ -50,6 +61,13 @@ function buildItem(kind: ExampleKind, theme: Theme, seed: string): PuzzleItem {
       return { kind, puzzle: generateMaze({ seed, width: 20, height: 26 }) };
     case 'sudoku':
       return { kind, puzzle: generateSudoku({ seed, size: 9, difficulty: 'easy' }) };
+    case 'dot-to-dot': {
+      const shapeId = THEME_SHAPE[theme.id];
+      return {
+        kind,
+        puzzle: generateDotToDot({ seed, difficulty: 'hard', ...(shapeId ? { shapeId } : {}) }),
+      };
+    }
   }
 }
 

@@ -2,7 +2,12 @@ import interRegular from '@raetselheft/render/fonts/Inter-Regular.ttf?url';
 import interSemiBold from '@raetselheft/render/fonts/Inter-SemiBold.ttf?url';
 import nunitoBold from '@raetselheft/render/fonts/Nunito-Bold.ttf?url';
 import type { FontSet, PageLayout, PuzzleItem, TextMeasurer } from '@raetselheft/render';
-import { generateMaze, generateSudoku, generateWordSearch } from '@raetselheft/engine';
+import {
+  generateDotToDot,
+  generateMaze,
+  generateSudoku,
+  generateWordSearch,
+} from '@raetselheft/engine';
 import { themeById } from '@raetselheft/render/themes';
 import type { BookletConfig } from './bookletConfig';
 import type { PuzzleConfig } from './puzzleConfig';
@@ -91,6 +96,18 @@ export function buildPuzzle(config: PuzzleConfig): PuzzleResult {
             seed: config.seed,
             size: config.size,
             difficulty: config.difficulty,
+          }),
+        },
+        notes: [],
+      };
+    case 'dot-to-dot':
+      return {
+        item: {
+          kind: 'dot-to-dot',
+          puzzle: generateDotToDot({
+            seed: config.seed,
+            difficulty: config.difficulty,
+            shapeId: config.shapeId,
           }),
         },
         notes: [],
@@ -191,6 +208,7 @@ export function buildBookletItems(config: BookletConfig): {
         size: entry.kind === 'sudoku' ? entry.sudokuSize : entry.size,
         difficulty: entry.difficulty,
         symbols: entry.sudokuSymbols,
+        shapeId: entry.dotToDotShapeId,
         umlauts: 'keep',
       } as PuzzleConfig);
       entries.push({

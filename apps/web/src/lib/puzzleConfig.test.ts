@@ -9,7 +9,7 @@ import {
   type WordSearchConfig,
 } from './puzzleConfig';
 
-const KINDS: PuzzleKind[] = ['wordsearch', 'maze', 'sudoku'];
+const KINDS: PuzzleKind[] = ['wordsearch', 'maze', 'sudoku', 'dot-to-dot'];
 
 describe('parseWords', () => {
   it('trennt bei Komma, Semikolon und Zeilenumbruch', () => {
@@ -62,6 +62,12 @@ describe('URL-Parameter', () => {
   it('begrenzt die Sudoku-Grösse auf 4, 6 oder 9', () => {
     expect(configFromParams('sudoku', new URLSearchParams({ g: '7' }))).toMatchObject({ size: 9 });
     expect(configFromParams('sudoku', new URLSearchParams({ g: '4' }))).toMatchObject({ size: 4 });
+  });
+
+  it('fällt bei einer unbekannten Punkte-zu-Punkte-Form auf den Standard zurück', () => {
+    const base = defaultConfig('dot-to-dot');
+    const config = configFromParams('dot-to-dot', new URLSearchParams({ fo: 'unbekannt' }));
+    expect(config).toMatchObject({ shapeId: (base as { shapeId: string }).shapeId });
   });
 });
 

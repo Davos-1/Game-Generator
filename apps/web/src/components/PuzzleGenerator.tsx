@@ -14,6 +14,7 @@ import {
   newSeed,
   parseWords,
   saveConfig,
+  SHAPE_CHOICES,
   THEME_CHOICES,
   themeWords,
   type PuzzleConfig,
@@ -28,13 +29,14 @@ interface Props {
 
 /**
  * Seite je Rätseltyp, auf die Payrexx zurückführt. Landing-Pages sind nicht
- * dabei: der Worker lässt nur diese drei Adressen zu, und die Einstellungen
+ * dabei: der Worker lässt nur diese Adressen zu, und die Einstellungen
  * kommen ohnehin aus dem Speicher zurück.
  */
 const RETURN_PATHS: Record<PuzzleKind, string> = {
   wordsearch: '/wortsuchraetsel',
   maze: '/labyrinth',
   sudoku: '/sudoku',
+  'dot-to-dot': '/punkte-zu-punkte',
 };
 
 /** Parameter der Bezahlseite; sie gehören nicht zur Rätsel-Konfiguration. */
@@ -208,6 +210,7 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
           </Field>
         )}
         {config.kind === 'sudoku' && <SudokuFields config={config} update={update} />}
+        {config.kind === 'dot-to-dot' && <DotToDotFields config={config} update={update} />}
 
         <Field label={t('generator.common.theme')} hint={t('generator.common.themeHint')}>
           <div className="flex flex-wrap gap-2">
@@ -533,6 +536,47 @@ function SudokuFields({
         </Field>
       )}
       <Field label={t('generator.common.difficulty')}>
+        <DifficultySelect
+          value={config.difficulty}
+          onChange={(difficulty) => update({ difficulty })}
+        />
+      </Field>
+    </>
+  );
+}
+
+function DotToDotFields({
+  config,
+  update,
+}: {
+  config: Extract<PuzzleConfig, { kind: 'dot-to-dot' }>;
+  update: (patch: Partial<PuzzleConfig>) => void;
+}) {
+  return (
+    <>
+      <Field label={t('generator.dot-to-dot.shape')}>
+        <div className="flex flex-wrap gap-2">
+          {SHAPE_CHOICES.map((choice) => (
+            <button
+              key={choice.id}
+              type="button"
+              aria-pressed={config.shapeId === choice.id}
+              className={`rounded-group border px-3 py-2 text-sm ${
+                config.shapeId === choice.id
+                  ? 'border-brand-500 bg-brand-50 text-brand-700'
+                  : 'border-line-strong text-muted hover:bg-paper'
+              }`}
+              onClick={() => update({ shapeId: choice.id })}
+            >
+              {choice.name}
+            </button>
+          ))}
+        </div>
+      </Field>
+      <Field
+        label={t('generator.common.difficulty')}
+        hint={t('generator.dot-to-dot.difficultyHint')}
+      >
         <DifficultySelect
           value={config.difficulty}
           onChange={(difficulty) => update({ difficulty })}

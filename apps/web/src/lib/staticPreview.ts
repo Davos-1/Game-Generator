@@ -6,9 +6,15 @@
  * Seite ein echtes, zum Thema passendes Rätselbild, ohne dass der Besucher
  * dafür Javascript ausführen muss.
  */
-import { generateMaze, generateSudoku, generateWordSearch } from '@raetselheft/engine';
+import {
+  generateDotToDot,
+  generateMaze,
+  generateSudoku,
+  generateWordSearch,
+} from '@raetselheft/engine';
 import { createMetricsMeasurer, type TextMeasurer } from '@raetselheft/render/measure';
 import metrics from '@raetselheft/render/metrics.json';
+import { dotToDotElements } from '@raetselheft/render/layout/dotToDot';
 import { mazeElements } from '@raetselheft/render/layout/maze';
 import { sudokuElements } from '@raetselheft/render/layout/sudoku';
 import { wordSearchElements } from '@raetselheft/render/layout/wordsearch';
@@ -64,6 +70,10 @@ export function previewSvg(kind: PuzzleKind, themeId: string, seed: string): str
             ...(theme.sudokuIcons.length > 0 ? { icons: theme.sudokuIcons } : {}),
           },
         );
+      case 'dot-to-dot':
+        return dotToDotElements(generateDotToDot({ seed, difficulty: 'medium' }), BOX, measurer, {
+          palette,
+        });
     }
   })();
 

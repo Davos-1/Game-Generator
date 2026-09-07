@@ -35,13 +35,28 @@ describe('Heft-Konfiguration', () => {
     expect(compact.e[0]?.d).toBeUndefined();
   });
 
+  it('übersteht die kompakte Form auch mit einer gewählten Punkte-zu-Punkte-Form', () => {
+    const booklet = defaultBooklet();
+    const withShape = {
+      ...booklet,
+      entries: [{ ...newEntry('dot-to-dot', booklet.theme), dotToDotShapeId: 'pfeil' }],
+    };
+    const restored = fromCompact(toCompact(withShape));
+    expect(restored.entries[0]?.dotToDotShapeId).toBe('pfeil');
+  });
+
   it('verträgt kaputte Eingaben', () => {
     expect(fromCompact(null).entries).toHaveLength(MIN_ENTRIES);
     expect(fromCompact({ th: 'gibt-es-nicht', e: [] }).theme).toBe('neutral');
-    const wild = fromCompact({ th: 'piraten', t: 'X', e: [{ k: 'unfug', s: 5, g: 99, z: 7 }] });
+    const wild = fromCompact({
+      th: 'piraten',
+      t: 'X',
+      e: [{ k: 'unfug', s: 5, g: 99, z: 7, f: 'gibt-es-nicht' }],
+    });
     expect(wild.entries[0]?.kind).toBe('wordsearch');
     expect(wild.entries[0]?.size).toBe(12);
     expect(wild.entries[0]?.sudokuSize).toBe(6);
+    expect(wild.entries[0]?.dotToDotShapeId).toBe('stern');
   });
 
   it('begrenzt die Anzahl Rätsel', () => {
@@ -73,6 +88,24 @@ describe('Rätsel eines Hefts', () => {
       entry.item.kind === 'sudoku' ? [entry.item.puzzle.size] : [],
     );
     expect(sizes).toEqual([6, 4, 9]);
+  });
+
+  it('erzeugt auch Punkte-zu-Punkte-Einträge mit ihrer gewählten Form', () => {
+    const booklet = defaultBooklet();
+    const withDots = {
+      ...booklet,
+      entries: [
+        ...booklet.entries,
+        { ...newEntry('dot-to-dot', booklet.theme), dotToDotShapeId: 'herz' },
+      ],
+    };
+    const { entries, notes } = buildBookletItems(withDots);
+    expect(notes).toEqual([]);
+    expect(entries).toHaveLength(withDots.entries.length);
+    const shapeIds = entries.flatMap((entry) =>
+      entry.item.kind === 'dot-to-dot' ? [entry.item.puzzle.shapeId] : [],
+    );
+    expect(shapeIds).toEqual(['herz']);
   });
 
   it('meldet fehlerhafte Einträge, statt sie stumm zu verwerfen', () => {

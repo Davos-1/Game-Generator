@@ -13,6 +13,7 @@ export const EXAMPLES: readonly { kind: ExampleKind }[] = [
   { kind: 'wordsearch' },
   { kind: 'maze' },
   { kind: 'sudoku' },
+  { kind: 'dot-to-dot' },
 ];
 
 /** Adresse des Beispiel-PDF; «neutral» ist das Standarddesign. */

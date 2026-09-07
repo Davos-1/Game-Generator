@@ -10,7 +10,8 @@
     "wordsearch": "Wortsuchrätsel",
     "maze": "Labyrinth",
     "sudoku": "Sudoku",
-    "booklet": "Rätselheft"
+    "booklet": "Rätselheft",
+    "dotToDot": "Punkte-zu-Punkte"
   },
   "home": {
     "title": "Rätsel zum Ausdrucken – in Sekunden erstellt",
@@ -121,6 +122,11 @@
       "einhorn": "Einhörner",
       "dschungel": "Dschungel",
       "hochzeit": "Hochzeit"
+    },
+    "dot-to-dot": {
+      "defaultTitle": "Punkte-zu-Punkte",
+      "shape": "Form",
+      "difficultyHint": "Bestimmt die Anzahl Punkte: wenige für kleine Kinder, viele für ein feines Bild."
     }
   },
   "booklet": {
@@ -158,7 +164,8 @@
     "kinds": {
       "wordsearch": "Wortsuchrätsel",
       "maze": "Labyrinth",
-      "sudoku": "Sudoku"
+      "sudoku": "Sudoku",
+      "dot-to-dot": "Punkte-zu-Punkte"
     }
   },
   "payment": {
@@ -179,7 +186,8 @@
     "title": {
       "wordsearch": "Wortsuchrätsel",
       "maze": "Labyrinth",
-      "sudoku": "Sudoku"
+      "sudoku": "Sudoku",
+      "dot-to-dot": "Punkte-zu-Punkte"
     },
     "download": "Beispiel als PDF (gratis)",
     "hint": "Fertiges Blatt mit Lösung zum Ausdrucken. Dein eigenes Rätsel mit Namen und Wunschwörtern stellst du oben zusammen."

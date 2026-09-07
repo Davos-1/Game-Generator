@@ -19,6 +19,7 @@ import { usePurchase } from '../lib/purchase';
 import {
   defaultSymbols,
   newSeed,
+  SHAPE_CHOICES,
   THEME_CHOICES,
   themeWords,
   type PuzzleKind,
@@ -30,7 +31,7 @@ import {
   pageToSvgString,
 } from '../lib/render';
 
-const KINDS: PuzzleKind[] = ['wordsearch', 'maze', 'sudoku'];
+const KINDS: PuzzleKind[] = ['wordsearch', 'maze', 'sudoku', 'dot-to-dot'];
 
 /**
  * Heft-Builder: Deckblatt, Rätsel zusammenstellen und ordnen, Vorschau mit
@@ -361,6 +362,27 @@ export default function BookletBuilder(): React.ReactElement {
                         </Field>
                       )}
                     </>
+                  )}
+                  {entry.kind === 'dot-to-dot' && (
+                    <Field label={t('generator.dot-to-dot.shape')}>
+                      <div className="flex flex-wrap gap-2">
+                        {SHAPE_CHOICES.map((choice) => (
+                          <button
+                            key={choice.id}
+                            type="button"
+                            aria-pressed={entry.dotToDotShapeId === choice.id}
+                            className={`rounded-group border px-3 py-2 text-xs ${
+                              entry.dotToDotShapeId === choice.id
+                                ? 'border-brand-500 bg-brand-50 text-brand-700'
+                                : 'border-line-strong text-muted hover:bg-paper'
+                            }`}
+                            onClick={() => updateEntry(entry.id, { dotToDotShapeId: choice.id })}
+                          >
+                            {choice.name}
+                          </button>
+                        ))}
+                      </div>
+                    </Field>
                   )}
                   <div className="flex items-end gap-2">
                     <Field label={t('generator.common.difficulty')}>

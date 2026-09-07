@@ -47,6 +47,22 @@
         "Ein Bleistift mit Radiergummi ist bei Sudoku fast Pflicht, weil sich Kandidaten laufend wieder ändern.",
         "Drucke die Lösungsseite erst nach dem Lösen aus oder lege sie separat weg, damit die Versuchung zum Nachschauen kleiner bleibt."
       ]
+    },
+    "dot-to-dot": {
+      "name": "Punkte-zu-Punkte",
+      "plural": "Punkte-zu-Punkte-Rätsel",
+      "short": "Nummerierte Punkte, die in der richtigen Reihenfolge verbunden ein Bild ergeben.",
+      "intro": "Punkte-zu-Punkte verlangt, nummerierte Punkte der Reihe nach mit Linien zu verbinden, bis am Ende ein zusammenhängendes Bild entsteht. Dabei wird nicht nur gezählt: Man muss die nächste Zahl unter vielen anderen im Feld erst finden, was Aufmerksamkeit und die Reihenfolge der Zahlen einübt, während das Ziehen gerader Linien die Stifthaltung schult. Wenige, weit auseinanderliegende Punkte eignen sich schon für Kinder, die gerade erst zählen lernen; viele dicht gesetzte Punkte ergeben ein feineres, «extremes» Punkte-zu-Punkte für ältere Kinder und Erwachsene. Der Reiz liegt darin, dass sich das Bild erst ganz am Schluss zeigt, wenn die letzte Linie gezogen ist – eine Überraschung, die sich am Bildschirm mit einer fertigen Grafik nicht wiederholen liesse.",
+      "howTo": [
+        "Du wählst die Form und die Schwierigkeit, die bestimmt, wie viele Punkte es gibt.",
+        "Die Vorschau zeigt dir die verstreuten, nummerierten Punkte, bevor du dich entscheidest.",
+        "Nach der Zahlung von CHF 2 lädst du das Punkte-zu-Punkte als PDF herunter, inklusive Lösungsseite und ohne Wasserzeichen."
+      ],
+      "tips": [
+        "Verbinde die Punkte mit einem Lineal, dann bleibt der Umriss auch bei vierzig Punkten sauber gerade.",
+        "Bei jüngeren Kindern hilft lautes Mitzählen, welche Zahl als Nächstes an der Reihe ist.",
+        "Das fertige Bild lässt sich anschliessend ausmalen – der Umriss macht daraus gleich ein zweites Rätsel."
+      ]
     }
   },
   "themes": {
@@ -161,6 +177,20 @@
       {
         "q": "Wird die Lösung mitgeliefert?",
         "a": "Jedes erzeugte Sudoku bringt eine eigene Lösungsseite mit, auf der das vollständig ausgefüllte Gitter zu sehen ist. So kannst du am Ende gegenprüfen, ob deine Eintragungen tatsächlich stimmen."
+      }
+    ],
+    "dot-to-dot": [
+      {
+        "q": "Wie viele Punkte hat ein Punkte-zu-Punkte-Rätsel?",
+        "a": "Je nach Schwierigkeitsgrad zwischen vierzehn und vierzig Punkten. Wenige, weit auseinanderliegende Punkte eignen sich für kleine Kinder, viele dicht gesetzte Punkte für geübte Rätsler, die ein «extremes» Punkte-zu-Punkte suchen."
+      },
+      {
+        "q": "Welche Formen kann ich wählen?",
+        "a": "Zur Auswahl stehen mehrere Umrisse wie Stern, Herz, Haus, Pfeil und Tannenbaum. Jede Form ergibt beim Verbinden immer dasselbe Bild, nur die Anzahl und Dichte der Punkte ändert sich mit der Schwierigkeit."
+      },
+      {
+        "q": "Ab welchem Alter eignet sich dieser Rätseltyp?",
+        "a": "Punkte-zu-Punkte funktioniert bereits, sobald ein Kind bis zur gewählten Punktzahl zählen kann, oft schon im Vorschulalter. Damit richtet er sich an die jüngste Zielgruppe unter den Rätseltypen dieser Seite."
       }
     ]
   }

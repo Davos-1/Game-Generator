@@ -4,19 +4,21 @@ import copy from './copy.json';
 
 export type OccasionId = 'kindergeburtstag' | 'hochzeit' | 'regentag' | 'weihnachten';
 
-export const PUZZLE_KINDS: PuzzleKind[] = ['wordsearch', 'maze', 'sudoku'];
+export const PUZZLE_KINDS: PuzzleKind[] = ['wordsearch', 'maze', 'sudoku', 'dot-to-dot'];
 
 /** Adressteil je Rätseltyp; bestimmt auch den Ordner der Landing-Pages. */
 export const KIND_SLUG: Readonly<Record<PuzzleKind, string>> = {
   wordsearch: 'wortsuchraetsel',
   maze: 'labyrinth',
   sudoku: 'sudoku',
+  'dot-to-dot': 'punkte-zu-punkte',
 };
 
 export const SLUG_TO_KIND: Readonly<Record<string, PuzzleKind>> = {
   wortsuchraetsel: 'wordsearch',
   labyrinth: 'maze',
   sudoku: 'sudoku',
+  'punkte-zu-punkte': 'dot-to-dot',
 };
 
 /**
