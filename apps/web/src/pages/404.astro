@@ -1,39 +1,36 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/Section.astro';
+import Button from '@/components/Button.astro';
 import { copy, KIND_SLUG, PUZZLE_KINDS } from '@/content/landing';
 import { t } from '@/i18n';
 ---
 
 <BaseLayout title={t('notFound.title')} description={t('notFound.text')}>
-  <div class="mx-auto max-w-xl py-8 text-center">
-    <p class="text-sm font-semibold uppercase tracking-wide text-slate-400">404</p>
-    <h1 class="mt-2 text-3xl font-bold tracking-tight">{t('notFound.title')}</h1>
-    <p class="mt-4 text-slate-600">{t('notFound.text')}</p>
-    <p class="mt-2 text-slate-600">{t('notFound.help')}</p>
+  <Section ground="paper" space="loose">
+    <div class="mx-auto max-w-xl text-center">
+      <p class="text-section font-bold tracking-widest text-muted uppercase">404</p>
+      <h1 class="mt-2 text-headline font-extrabold">{t('notFound.title')}</h1>
+      <p class="mt-4 text-muted">{t('notFound.text')}</p>
+      <p class="mt-2 text-muted">{t('notFound.help')}</p>
 
-    <div class="mt-8 grid gap-3 sm:grid-cols-3">
-      {
-        PUZZLE_KINDS.map((kind) => (
-          <a
-            href={`/${KIND_SLUG[kind]}`}
-            class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-medium transition hover:border-brand-500 hover:text-brand-700"
-          >
-            {copy.puzzleTypes[kind].name}
-          </a>
-        ))
-      }
-    </div>
+      <div class="mt-8 grid gap-3 sm:grid-cols-3">
+        {
+          PUZZLE_KINDS.map((kind) => (
+            <a
+              href={`/${KIND_SLUG[kind]}`}
+              class="rounded-group border border-line bg-surface px-4 py-3 text-sm font-medium transition-colors hover:border-accent-deep"
+            >
+              {copy.puzzleTypes[kind].name}
+            </a>
+          ))
+        }
+      </div>
 
-    <div class="mt-6 flex flex-wrap justify-center gap-3 text-sm">
-      <a
-        class="rounded-lg bg-brand-500 px-4 py-2 font-medium text-white hover:bg-brand-700"
-        href="/"
-      >
-        {t('notFound.back')}
-      </a>
-      <a class="rounded-lg border border-slate-300 px-4 py-2 hover:bg-slate-50" href="/vorlagen">
-        {t('landing.allPages')}
-      </a>
+      <div class="mt-6 flex flex-wrap justify-center gap-3">
+        <Button href="/">{t('notFound.back')}</Button>
+        <Button href="/vorlagen" variant="secondary">{t('landing.allPages')}</Button>
+      </div>
     </div>
-  </div>
+  </Section>
 </BaseLayout>

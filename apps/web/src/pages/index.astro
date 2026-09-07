@@ -1,41 +1,99 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/Section.astro';
+import Card from '@/components/Card.astro';
+import Button from '@/components/Button.astro';
+import Icon from '@/components/Icon.astro';
+import { previewSvg } from '@/lib/staticPreview';
+import { KIND_SLUG, PUZZLE_KINDS, copy } from '@/content/landing';
+import { THEMES } from '@raetselheft/render/themes';
 import { t } from '@/i18n';
 
-const cards = [
-  { href: '/wortsuchraetsel', label: t('nav.wordsearch'), text: t('home.cards.wordsearch') },
-  { href: '/labyrinth', label: t('nav.maze'), text: t('home.cards.maze') },
-  { href: '/sudoku', label: t('nav.sudoku'), text: t('home.cards.sudoku') },
-];
+// Echte Rätsel als Vorschau, beim Bauen erzeugt: der Besucher sieht das
+// Produkt, ohne dass dafür Javascript laufen muss.
+const cards = PUZZLE_KINDS.map((kind) => ({
+  kind,
+  href: `/${KIND_SLUG[kind]}`,
+  label: copy.puzzleTypes[kind].name,
+  text: t(`home.cards.${kind}`),
+  svg: previewSvg(kind, 'neutral', `home-${kind}`),
+}));
+
+const trust = ['format', 'solution', 'account'] as const;
 ---
 
 <BaseLayout title={t('site.tagline')}>
-  <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">{t('home.title')}</h1>
-  <p class="mt-4 max-w-2xl text-lg text-slate-600">{t('home.intro')}</p>
+  <Section ground="hero" space="loose" class="relative overflow-hidden">
+    {/* Grosse, sehr blasse Marke aus dem eigenen Symbolsatz statt eines Stockbilds. */}
+    <Icon
+      name="compass"
+      size={340}
+      class="pointer-events-none absolute -right-16 -bottom-32 text-hero-line opacity-40"
+    />
+    <div class="relative">
+      <h1 class="max-w-[17ch] text-display font-extrabold">{t('home.lead')}</h1>
+      <p class="mt-5 max-w-2xl text-lg text-hero-muted">{t('home.intro')}</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <Button href="/wortsuchraetsel">{t('home.primary')}</Button>
+        <Button href="/vorlagen" variant="secondary" onDark>{t('home.secondary')}</Button>
+      </div>
+      <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-hero-muted">
+        {
+          trust.map((key) => (
+            <li class="flex items-center gap-2">
+              <Icon name="sparkle" size={14} class="text-accent" />
+              {t(`home.trust.${key}`)}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </Section>
 
-  <div class="mt-10 grid gap-4 sm:grid-cols-3">
-    {
-      cards.map((card) => (
-        <a
-          href={card.href}
-          class="rounded-xl border border-slate-200 p-5 transition hover:border-brand-500 hover:shadow-sm"
-        >
-          <h2 class="text-lg font-semibold text-brand-700">{card.label}</h2>
-          <p class="mt-2 text-sm text-slate-600">{card.text}</p>
-        </a>
-      ))
-    }
-  </div>
-  <div class="mt-10 rounded-xl border border-brand-500/30 bg-brand-50 p-5">
-    <h2 class="text-lg font-semibold text-brand-700">{t('booklet.title')}</h2>
-    <p class="mt-2 max-w-2xl text-sm text-slate-600">{t('booklet.intro')}</p>
-    <a
-      href="/raetselheft"
-      class="mt-4 inline-block rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
-    >
-      {t('booklet.title')}
-    </a>
-  </div>
+  <Section ground="paper">
+    <div class="mb-6 flex items-baseline justify-between gap-4 border-b border-line pb-3">
+      <h2 class="text-section font-bold tracking-widest uppercase">{t('home.sections.kinds')}</h2>
+      <span class="text-sm text-muted">{t('home.sections.kindsHint')}</span>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-3">
+      {
+        cards.map((card) => (
+          <Card href={card.href}>
+            <div class="rounded-sheet border border-line bg-surface p-3" set:html={card.svg} />
+            <h3 class="text-lg font-bold">{card.label}</h3>
+            <p class="text-sm text-muted">{card.text}</p>
+          </Card>
+        ))
+      }
+    </div>
+  </Section>
 
-  <p class="mt-6 text-sm text-slate-500">{t('home.status')}</p>
+  <Section ground="surface">
+    <div class="mb-6 flex items-baseline justify-between gap-4 border-b border-line pb-3">
+      <h2 class="text-section font-bold tracking-widest uppercase">{t('home.sections.themes')}</h2>
+      <span class="text-sm text-muted">{t('home.sections.themesHint')}</span>
+    </div>
+    <div class="flex flex-wrap gap-3">
+      {
+        THEMES.map((theme) => (
+          <a
+            href={`/wortsuchraetsel/${theme.id}`}
+            class="flex items-center gap-2 rounded-sheet border px-4 py-2 text-sm font-medium transition-colors"
+            style={`border-color:${theme.colors.grid};color:${theme.colors.ink}`}
+          >
+            <Icon name={theme.icons.cover} size={18} />
+            {theme.name}
+          </a>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section ground="paper" space="loose">
+    <div class="flex flex-col gap-4 rounded-group border border-line-strong bg-surface p-6 sm:p-8">
+      <h2 class="text-headline font-extrabold">{t('booklet.title')}</h2>
+      <p class="max-w-2xl text-muted">{t('booklet.intro')}</p>
+      <div><Button href="/raetselheft">{t('nav.booklet')}</Button></div>
+    </div>
+  </Section>
 </BaseLayout>

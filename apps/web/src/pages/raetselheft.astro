@@ -1,13 +1,17 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/Section.astro';
 import BookletBuilder from '@/components/BookletBuilder';
 import { t } from '@/i18n';
 ---
 
 <BaseLayout title={t('booklet.title')} description={t('booklet.intro')}>
-  <h1 class="text-3xl font-bold tracking-tight">{t('booklet.title')}</h1>
-  <p class="mt-2 max-w-2xl text-slate-600">{t('booklet.intro')}</p>
-  <div class="mt-8">
+  <Section ground="hero" space="normal">
+    <h1 class="text-headline font-extrabold">{t('booklet.title')}</h1>
+    <p class="mt-3 max-w-2xl text-hero-muted">{t('booklet.intro')}</p>
+  </Section>
+
+  <Section ground="paper" space="tight">
     <BookletBuilder client:load />
-  </div>
+  </Section>
 </BaseLayout>

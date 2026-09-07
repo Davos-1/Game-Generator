@@ -15,13 +15,13 @@ const { kind, themeId } = Astro.props;
 const href = examplePdfPath(kind, themeId ?? 'neutral');
 ---
 
-<div class="rounded-xl border border-slate-200 bg-slate-50 p-4 sm:flex sm:items-center sm:gap-4">
+<div class="rounded-group border border-line bg-surface p-4 sm:flex sm:items-center sm:gap-4">
   <a
-    class="inline-flex rounded-lg bg-white px-3 py-2 text-sm font-medium text-brand-700 shadow-sm ring-1 ring-slate-300 hover:bg-slate-50"
+    class="inline-flex shrink-0 rounded-sheet border border-line-strong px-4 py-2 text-sm font-semibold whitespace-nowrap text-brand-700 transition-colors hover:border-accent-deep"
     href={href}
     download
   >
     {t('example.download')}
   </a>
-  <p class="mt-2 text-sm text-slate-600 sm:mt-0">{t('example.hint')}</p>
+  <p class="mt-2 text-sm text-muted sm:mt-0">{t('example.hint')}</p>
 </div>

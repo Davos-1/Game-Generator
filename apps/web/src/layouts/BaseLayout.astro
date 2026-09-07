@@ -1,6 +1,8 @@
 ---
 import '@/styles/global.css';
 import { t, DEFAULT_LOCALE } from '@/i18n';
+import { isActive } from '@/lib/nav';
+import Icon from '@/components/Icon.astro';
 
 interface Props {
   title: string;
@@ -21,6 +23,12 @@ const analyticsToken = import.meta.env.PUBLIC_ANALYTICS_TOKEN ?? '';
 // alle internen Links und die Sitemap.
 const cleanPath = Astro.url.pathname.replace(/index\.html$/, '').replace(/\.html$/, '');
 const canonical = new URL(cleanPath, Astro.site);
+
+const NAV = [
+  { href: '/wortsuchraetsel', label: t('nav.wordsearch') },
+  { href: '/labyrinth', label: t('nav.maze') },
+  { href: '/sudoku', label: t('nav.sudoku') },
+];
 ---
 
 <!doctype html>
@@ -42,6 +50,13 @@ const canonical = new URL(cleanPath, Astro.site);
     <meta property="og:site_name" content={t('site.name')} />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link
+      rel="preload"
+      href="/fonts/BricolageGrotesque-Latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <slot name="head" />
     {
       /* Cloudflare Web Analytics: ohne Cookies, daher kein Banner nötig.
@@ -58,35 +73,73 @@ const canonical = new URL(cleanPath, Astro.site);
     }
   </head>
   <body class="flex min-h-screen flex-col">
-    <header class="border-b border-slate-200">
+    <header class="sticky top-0 z-20 bg-hero text-hero-ink">
       <div
-        class="mx-auto flex max-w-5xl flex-col gap-1 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:py-4"
+        class="mx-auto flex max-w-5xl flex-col gap-1 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
       >
-        <a href="/" class="text-xl font-bold tracking-tight text-brand-700">{t('site.name')}</a>
+        <a href="/" class="flex items-center gap-2 font-display text-xl font-extrabold">
+          <Icon name="sparkle" size={24} class="text-accent" />
+          {t('site.name')}
+        </a>
         {/* Umbricht auf schmalen Bildschirmen; vier Links passen sonst nicht nebeneinander. */}
-        <nav class="-mx-2 flex flex-wrap items-center gap-x-2 gap-y-0 text-sm text-slate-600">
-          <a class="rounded px-2 py-2 hover:text-brand-700" href="/wortsuchraetsel"
-            >{t('nav.wordsearch')}</a
-          >
-          <a class="rounded px-2 py-2 hover:text-brand-700" href="/labyrinth">{t('nav.maze')}</a>
-          <a class="rounded px-2 py-2 hover:text-brand-700" href="/sudoku">{t('nav.sudoku')}</a>
+        <nav class="-mx-2 flex flex-wrap items-center gap-x-1 gap-y-0 text-sm">
+          {
+            NAV.map((entry) => (
+              <a
+                href={entry.href}
+                aria-current={isActive(cleanPath, entry.href) ? 'page' : undefined}
+                class:list={[
+                  'rounded-sheet px-2 py-2 transition-colors',
+                  isActive(cleanPath, entry.href)
+                    ? 'font-semibold text-hero-ink shadow-[inset_0_-2px_0_var(--color-accent)]'
+                    : 'text-hero-muted hover:text-hero-ink',
+                ]}
+              >
+                {entry.label}
+              </a>
+            ))
+          }
           <a
-            class="rounded px-2 py-2 font-medium text-brand-700 hover:underline"
+            class="ml-1 rounded-sheet bg-accent px-3 py-2 font-semibold text-accent-ink transition-colors hover:bg-accent-deep hover:text-white"
             href="/raetselheft">{t('nav.booklet')}</a
           >
         </nav>
       </div>
     </header>
-    <main class="mx-auto w-full max-w-5xl flex-1 px-4 py-12">
+    <main class="flex-1">
       <slot />
     </main>
-    <footer class="border-t border-slate-200 text-sm text-slate-500">
-      <div class="mx-auto flex max-w-5xl flex-wrap items-center gap-x-4 gap-y-1 px-4 py-5">
-        <span>© {new Date().getFullYear()} {t('site.name')}</span>
-        <a class="rounded py-2 hover:text-brand-700" href="/vorlagen">{t('footer.templates')}</a>
-        <a class="rounded py-2 hover:text-brand-700" href="/impressum">{t('footer.imprint')}</a>
-        <a class="rounded py-2 hover:text-brand-700" href="/datenschutz">{t('footer.privacy')}</a>
-        <a class="rounded py-2 hover:text-brand-700" href="/agb">{t('footer.terms')}</a>
+    <footer class="border-t border-line bg-surface text-sm text-muted">
+      <div class="mx-auto grid max-w-5xl gap-6 px-4 py-8 sm:grid-cols-3">
+        <div class="flex flex-col gap-2">
+          <span class="font-display text-base font-bold text-ink">{t('site.name')}</span>
+          <span>{t('site.tagline')}</span>
+        </div>
+        <nav class="flex flex-col gap-1">
+          <span class="text-xs font-semibold tracking-widest text-ink uppercase">
+            {t('footer.puzzles')}
+          </span>
+          {
+            NAV.map((entry) => (
+              <a class="py-0.5 hover:text-brand-700" href={entry.href}>
+                {entry.label}
+              </a>
+            ))
+          }
+        </nav>
+        <nav class="flex flex-col gap-1">
+          <span class="text-xs font-semibold tracking-widest text-ink uppercase">
+            {t('footer.legal')}
+          </span>
+          <a class="py-0.5 hover:text-brand-700" href="/vorlagen">{t('footer.templates')}</a>
+          <a class="py-0.5 hover:text-brand-700" href="/impressum">{t('footer.imprint')}</a>
+          <a class="py-0.5 hover:text-brand-700" href="/datenschutz">{t('footer.privacy')}</a>
+          <a class="py-0.5 hover:text-brand-700" href="/agb">{t('footer.terms')}</a>
+        </nav>
+      </div>
+      <div class="mx-auto max-w-5xl px-4 pb-6 text-xs">
+        © {new Date().getFullYear()}
+        {t('site.name')}
       </div>
     </footer>
   </body>

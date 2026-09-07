@@ -1,0 +1,20 @@
+---
+/**
+ * Eine Kartenform für die ganze Website. Ist `href` gesetzt, ist die ganze
+ * Karte anklickbar; sonst ist es ein reiner Container.
+ */
+interface Props {
+  href?: string;
+  class?: string;
+}
+
+const { href, class: className } = Astro.props;
+const Tag = href ? 'a' : 'div';
+const style =
+  'flex flex-col gap-3 rounded-group border border-line bg-surface p-5 transition-colors';
+const interactive = href ? 'hover:border-accent-deep' : '';
+---
+
+<Tag href={href} class:list={[style, interactive, className]}>
+  <slot />
+</Tag>
