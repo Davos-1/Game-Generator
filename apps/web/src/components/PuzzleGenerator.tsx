@@ -24,6 +24,8 @@ import {
 
 interface Props {
   kind: PuzzleKind;
+  /** Vorausgewähltes Theme der Landing-Page; die URL hat Vorrang. */
+  theme?: string;
 }
 
 type Status = 'loading' | 'ready' | 'error';
@@ -34,7 +36,7 @@ type Status = 'loading' | 'ready' | 'error';
  * Die Konfiguration steht in der URL (teilbar) und im LocalStorage
  * (Wiederkommen ohne Konto).
  */
-export default function PuzzleGenerator({ kind }: Props): React.ReactElement {
+export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElement {
   const [config, setConfig] = useState<PuzzleConfig>(() => defaultConfig(kind));
   const [status, setStatus] = useState<Status>('loading');
   const [error, setError] = useState<string>('');
@@ -51,10 +53,23 @@ export default function PuzzleGenerator({ kind }: Props): React.ReactElement {
   // Beim ersten Rendern: URL schlägt gespeicherte Konfiguration, sonst Standard.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    setConfig(
-      params.size > 0 ? configFromParams(kind, params) : (loadConfig(kind) ?? defaultConfig(kind)),
-    );
-  }, [kind]);
+    if (params.size > 0) {
+      setConfig(configFromParams(kind, params));
+      return;
+    }
+    const stored = loadConfig(kind) ?? defaultConfig(kind);
+    if (!theme || theme === stored.theme) {
+      setConfig(stored);
+      return;
+    }
+    // Landing-Page mit Thema: Design und passende Wörter vorwählen.
+    const words = themeWords(theme);
+    setConfig({
+      ...stored,
+      theme,
+      ...(stored.kind === 'wordsearch' && words.length > 0 ? { words: words.join(', ') } : {}),
+    });
+  }, [kind, theme]);
 
   const update = useCallback((patch: Partial<PuzzleConfig>): void => {
     setConfig((current) => {

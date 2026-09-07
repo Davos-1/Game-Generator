@@ -40,7 +40,7 @@ const items = (): Record<'wordsearch' | 'maze' | 'sudoku', PuzzleItem> => ({
 
 describe('Theme-Definitionen', () => {
   it('sind vollständig und gültig', () => {
-    expect(THEMES).toHaveLength(4);
+    expect(THEMES).toHaveLength(5);
     for (const theme of THEMES) {
       expect(validateTheme(theme), `${theme.id}`).toEqual([]);
     }
@@ -55,6 +55,7 @@ describe('Theme-Definitionen', () => {
       'Einhörner',
       'Dschungel',
       'Hochzeit',
+      'Weihnachten',
     ]);
   });
 

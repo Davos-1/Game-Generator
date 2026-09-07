@@ -8,6 +8,8 @@ import hochzeit from './data/hochzeit.json';
 import hochzeitWords from './data/hochzeit.words.json';
 import piraten from './data/piraten.json';
 import piratenWords from './data/piraten.words.json';
+import weihnachten from './data/weihnachten.json';
+import weihnachtenWords from './data/weihnachten.words.json';
 import type { Theme, ThemeInput } from './types';
 
 export type { Theme, ThemeInput } from './types';
@@ -34,6 +36,7 @@ const REGISTRY: readonly [ThemeInput, readonly string[]][] = [
   [einhorn as ThemeInput, einhornWords],
   [dschungel as ThemeInput, dschungelWords],
   [hochzeit as ThemeInput, hochzeitWords],
+  [weihnachten as ThemeInput, weihnachtenWords],
 ];
 
 export const THEMES: Theme[] = REGISTRY.map(([theme, words]) => ({ ...theme, words: [...words] }));

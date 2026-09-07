@@ -1,0 +1,56 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Prose from '@/components/Prose.astro';
+import { OPERATOR } from '@/content/site';
+import { t } from '@/i18n';
+---
+
+<BaseLayout title={t('footer.imprint')} description="Impressum und Kontaktangaben.">
+  <Prose title={t('footer.imprint')}>
+    <h2>Verantwortlich für diese Website</h2>
+    <p>
+      {OPERATOR.name}<br />
+      {OPERATOR.street}<br />
+      {OPERATOR.postalCode}
+      {OPERATOR.city}<br />
+      {OPERATOR.country}
+    </p>
+    <p>
+      E-Mail: <a href={`mailto:${OPERATOR.email}`}>{OPERATOR.email}</a>
+    </p>
+
+    <h2>Rechtsform</h2>
+    <p>
+      Einzelunternehmen ohne Eintrag im Handelsregister. Es besteht keine Mehrwertsteuerpflicht,
+      solange der Jahresumsatz unter CHF 100 000 liegt.
+    </p>
+
+    <h2>Haftung für Inhalte</h2>
+    <p>
+      Die Inhalte dieser Website werden mit Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit
+      und Aktualität wird keine Gewähr übernommen. Die hier erzeugten Rätsel und PDFs werden ohne
+      Zusicherung einer bestimmten Eignung bereitgestellt.
+    </p>
+
+    <h2>Haftung für Links</h2>
+    <p>
+      Für Inhalte externer Websites, auf die verlinkt wird, sind ausschliesslich deren Betreiber
+      verantwortlich.
+    </p>
+
+    <h2>Urheberrecht</h2>
+    <p>
+      Gestaltung, Texte und die auf dieser Website erzeugten Rätsel sind urheberrechtlich geschützt.
+      Die erzeugten PDFs dürfen für private Zwecke sowie im Rahmen von Anlässen wie
+      Kindergeburtstagen, Hochzeiten oder Firmenfeiern frei ausgedruckt und verteilt werden. Der
+      Weiterverkauf der erzeugten Rätsel oder ihre Verwendung in kommerziellen Publikationen ist
+      ohne schriftliche Zustimmung nicht gestattet.
+    </p>
+
+    <h2>Bildnachweis und Schriften</h2>
+    <p>
+      Die verwendeten Illustrationen sind eigene Grafiken. Die Schriften Nunito und Inter stehen
+      unter der SIL Open Font License 1.1.
+    </p>
+  </Prose>
+</BaseLayout>

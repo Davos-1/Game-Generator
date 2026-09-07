@@ -1,0 +1,38 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { allLandingPages, copy, KIND_SLUG, PUZZLE_KINDS } from '@/content/landing';
+import { t } from '@/i18n';
+
+const pages = allLandingPages();
+---
+
+<BaseLayout title={t('landing.allPages')} description={t('landing.allPagesIntro')}>
+  <h1 class="text-3xl font-bold tracking-tight">{t('landing.allPages')}</h1>
+  <p class="mt-4 max-w-2xl text-slate-600">{t('landing.allPagesIntro')}</p>
+
+  {
+    PUZZLE_KINDS.map((kind) => (
+      <section class="mt-10">
+        <h2 class="text-xl font-semibold">
+          <a class="text-brand-700 hover:underline" href={`/${KIND_SLUG[kind]}`}>
+            {copy.puzzleTypes[kind].name}
+          </a>
+        </h2>
+        <ul class="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {pages
+            .filter((page) => page.kind === kind)
+            .map((page) => (
+              <li>
+                <a
+                  class="block rounded-lg border border-slate-200 px-3 py-2 text-sm hover:border-brand-500 hover:text-brand-700"
+                  href={`/${KIND_SLUG[kind]}/${page.slug}`}
+                >
+                  {page.heading}
+                </a>
+              </li>
+            ))}
+        </ul>
+      </section>
+    ))
+  }
+</BaseLayout>

@@ -5,10 +5,22 @@ import { t, DEFAULT_LOCALE } from '@/i18n';
 interface Props {
   title: string;
   description?: string;
+  /** Theme der Seite; bestimmt das Vorschaubild beim Teilen. */
+  ogTheme?: string;
 }
 
-const { title, description = t('site.description') } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+const { title, description = t('site.description'), ogTheme } = Astro.props;
+const OG_THEMES = ['piraten', 'einhorn', 'dschungel', 'hochzeit', 'weihnachten'];
+const ogImage = new URL(
+  `/og/${ogTheme && OG_THEMES.includes(ogTheme) ? ogTheme : 'default'}.png`,
+  Astro.site,
+);
+const analyticsToken = import.meta.env.PUBLIC_ANALYTICS_TOKEN ?? '';
+// build.format = «file» hängt .html an; die öffentlichen Adressen sind ohne.
+// Ohne diese Bereinigung zeigte die kanonische Adresse auf eine andere URL als
+// alle internen Links und die Sitemap.
+const cleanPath = Astro.url.pathname.replace(/index\.html$/, '').replace(/\.html$/, '');
+const canonical = new URL(cleanPath, Astro.site);
 ---
 
 <!doctype html>
@@ -23,7 +35,27 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="de_CH" />
+    <meta property="og:site_name" content={t('site.name')} />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <slot name="head" />
+    {
+      /* Cloudflare Web Analytics: ohne Cookies, daher kein Banner nötig.
+         Das Kennzeichen wird beim Bauen gesetzt; ohne Kennzeichen kein Skript. */
+    }
+    {
+      analyticsToken && (
+        <script
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon={`{"token": "${analyticsToken}"}`}
+        />
+      )
+    }
   </head>
   <body class="flex min-h-screen flex-col">
     <header class="border-b border-slate-200">
@@ -45,9 +77,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <footer class="border-t border-slate-200 text-sm text-slate-500">
       <div class="mx-auto flex max-w-5xl flex-wrap gap-4 px-4 py-6">
         <span>© {new Date().getFullYear()} {t('site.name')}</span>
-        <span class="opacity-50">{t('footer.imprint')}</span>
-        <span class="opacity-50">{t('footer.privacy')}</span>
-        <span class="opacity-50">{t('footer.terms')}</span>
+        <a class="hover:text-brand-700" href="/vorlagen">{t('footer.templates')}</a>
+        <a class="hover:text-brand-700" href="/impressum">{t('footer.imprint')}</a>
+        <a class="hover:text-brand-700" href="/datenschutz">{t('footer.privacy')}</a>
+        <a class="hover:text-brand-700" href="/agb">{t('footer.terms')}</a>
       </div>
     </footer>
   </body>

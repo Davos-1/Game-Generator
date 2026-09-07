@@ -1,0 +1,167 @@
+{
+  "puzzleTypes": {
+    "wordsearch": {
+      "name": "Wortsuchrätsel",
+      "plural": "Wortsuchrätsel",
+      "short": "Ein Buchstabengitter, in dem du vorgegebene Wörter waagrecht, senkrecht oder diagonal aufspürst.",
+      "intro": "Bei einem Wortsuchrätsel liegt ein Gitter aus Buchstaben vor dir, und irgendwo darin verstecken sich Wörter waagrecht, senkrecht, diagonal, manchmal auch rückwärts. Die Augen wandern Zeile für Zeile, bis ein Muster auffällt und ein Wort sichtbar wird. Diese Suche schult die visuelle Aufmerksamkeit, das genaue Hinschauen und die Geduld, ein Feld systematisch abzusuchen, ohne den Überblick zu verlieren. Kinder ab etwa sechs Jahren kommen mit kurzen Wörtern gut zurecht, ältere Kinder und Erwachsene freuen sich an grösseren Gittern mit mehr Begriffen. Auf Papier lässt sich jedes gefundene Wort mit einem Stift einkreisen, ohne dass ein Bildschirm ablenkt oder eine App zwischen Blick und Gitter steht.",
+      "howTo": [
+        "Du wählst Gittergrösse, Sprache und die Wörter, die im Rätsel versteckt werden sollen.",
+        "In der Vorschau siehst du sofort, wie das Buchstabengitter mit deinen Wörtern aussieht.",
+        "Mit einem Klick lädst du das fertige Wortsuchrätsel als PDF zum Ausdrucken herunter."
+      ],
+      "tips": [
+        "Laminiere das Blatt, damit du die gefundenen Wörter mit abwischbarem Folienstift markieren und das Rätsel mehrfach nutzen kannst.",
+        "Für kleinere Kinder eignet sich ein Leuchtstift besser als ein Kugelschreiber, weil das Wort darunter noch lesbar bleibt.",
+        "Bei einer Gruppe teilt ihr die Wortliste unter den Mitspielenden auf, wer zuerst sein Wort findet, ruft es laut."
+      ]
+    },
+    "maze": {
+      "name": "Labyrinth",
+      "plural": "Labyrinthe",
+      "short": "Ein Liniengewirr aus Gängen, durch das du vom Start bis zum Ziel einen Weg suchst.",
+      "intro": "Ein Labyrinth verlangt, mit dem Blick oder dem Stift einen Weg vom Eingang zum Ausgang zu finden, während Sackgassen und Abzweigungen zum Umkehren zwingen. Diese Suche trainiert räumliches Denken, Planung mehrerer Schritte im Voraus und die Fähigkeit, aus einer Sackgasse ruhig wieder herauszufinden, statt aufzugeben. Schon kleine Kinder ab etwa vier Jahren folgen einfachen Gängen mit dem Finger, während komplexere Muster mit vielen Kreuzungen ältere Kinder und Erwachsene fordern. Auf Papier zeichnet man den Weg direkt mit einem Stift ein, korrigiert eine falsche Abzweigung mit einem Strich und sieht am Ende die ganze zurückgelegte Strecke auf einen Blick, was auf einem Bildschirm mit Wischen und Zoomen kaum so greifbar wäre.",
+      "howTo": [
+        "Du legst Grösse, Schwierigkeit und die Form des Labyrinths fest.",
+        "Die Vorschau zeigt dir den Gang-Verlauf, bevor du dich für ein Layout entscheidest.",
+        "Über den Download-Knopf erhältst du das Labyrinth als druckfertiges PDF."
+      ],
+      "tips": [
+        "Verwende einen Bleistift statt eines Stifts, damit sich eine falsch eingeschlagene Abzweigung wieder wegradieren lässt.",
+        "Lege für unterwegs eine Klarsichtfolie über das Blatt, dann zeichnest du den Weg mit Folienstift und kannst neu starten.",
+        "Bei mehreren Kindern gleichzeitig druckst du dasselbe Labyrinth zweimal aus und macht daraus ein kleines Wettrennen."
+      ]
+    },
+    "sudoku": {
+      "name": "Sudoku",
+      "plural": "Sudokus",
+      "short": "Ein Zahlenraster, das du nach den Regeln von Logik statt Zufall lückenlos ausfüllst.",
+      "intro": "Sudoku füllt ein Gitter aus neun mal neun Feldern so, dass jede Zeile, jede Spalte und jeder der neun Blöcke die Zahlen eins bis neun genau einmal enthält. Gelöst wird durch logisches Ausschliessen, nicht durch Raten, weshalb jede fertige Lösung eindeutig ist. Das Rätsel schult systematisches Denken, Konzentration über längere Zeit und die Geduld, mehrere Möglichkeiten im Kopf durchzuspielen, bevor eine Zahl eingetragen wird. Jugendliche und Erwachsene finden darin eine ruhige Beschäftigung für die Zugfahrt oder den Feierabend. Auf Papier lassen sich Zahlen mit Bleistift probeweise notieren und bei Bedarf wieder ausradieren, was beim Tüfteln mit mehreren Kandidaten pro Feld deutlich praktischer ist als ein Eingabefeld am Bildschirm.",
+      "howTo": [
+        "Du bestimmst den Schwierigkeitsgrad und wie viele Zahlen bereits vorgegeben sind.",
+        "Die Live-Vorschau zeigt das Rätselgitter, sodass du die Verteilung der Vorgaben prüfen kannst.",
+        "Zum Schluss speicherst du das Sudoku als PDF, inklusive Lösungsseite, auf deinem Gerät."
+      ],
+      "tips": [
+        "Trage unsichere Zahlen zunächst klein in die Ecke des Feldes ein, bevor du dich endgültig festlegst.",
+        "Ein Bleistift mit Radiergummi ist bei Sudoku fast Pflicht, weil sich Kandidaten laufend wieder ändern.",
+        "Drucke die Lösungsseite erst nach dem Lösen aus oder lege sie separat weg, damit die Versuchung zum Nachschauen kleiner bleibt."
+      ]
+    }
+  },
+  "themes": {
+    "piraten": {
+      "name": "Piraten",
+      "lead": "Raue Seeluft, versteckte Schätze und Freibeuter-Abenteuer prägen die Stimmung dieses Themas.",
+      "flavour": "Papageien, Schatzkarten, Säbel, Ferngläser und versunkene Truhen liefern den Wortschatz für dieses Thema, dazu Begriffe wie Kapitän, Kompass oder Insel. Die Motive sprechen vor allem Kinder im Kindergarten- und Primarschulalter an, die von Seeräubern und Inselabenteuern träumen. Ein Piratenhut auf dem Deckblatt oder ein aufgemaltes Fernrohr am Rand passt gut dazu und macht aus dem Rätsel gleich ein kleines Stück Verkleidungsparty."
+    },
+    "einhorn": {
+      "name": "Einhörner",
+      "lead": "Glitzer, Regenbogenfarben und sanfte Fabelwesen bestimmen den verspielten Ton dieses Themas.",
+      "flavour": "Regenbogen, Sternenstaub, Wolken, Blumenwiesen und funkelnde Hufeisen bilden das Wortfeld rund um Einhörner. Begriffe wie Mähne, Zauberwald oder Glitzerstaub sprechen besonders Kinder im Vorschul- und Primarschulalter an, die zarte, verträumte Motive mögen. Das Thema passt gut zu einem Mädchengeburtstag mit rosa und violetter Deko, funktioniert aber ebenso als ruhige Beschäftigung an einem gewöhnlichen Nachmittag zu Hause."
+    },
+    "dschungel": {
+      "name": "Dschungel",
+      "lead": "Dichtes Blätterdach, wilde Tiere und Entdeckerstimmung prägen dieses abenteuerliche Thema.",
+      "flavour": "Affen, Papageien, Lianen, Tiger und ein rauschender Wasserfall liefern die Motive für den Dschungel, ergänzt durch Begriffe wie Expedition, Dickicht oder Urwaldpfad. Die Auswahl passt zu abenteuerlustigen Kindern im Primarschulalter, die gerne von Forschungsreisen und wilden Tieren lesen. Auch für eine Zoo- oder Safari-Geburtstagsparty lässt sich das Thema passend einsetzen, ohne dass ein bestimmtes Geschlecht angesprochen wird."
+    },
+    "hochzeit": {
+      "name": "Hochzeit",
+      "lead": "Festliche Eleganz, Ringe und Blumenschmuck bestimmen den gehobenen Ton dieses Themas für Erwachsene.",
+      "flavour": "Brautpaar, Trauringe, Sträusse, Tischkarten und Hochzeitstorte liefern den Wortschatz für dieses festliche Thema, ergänzt durch Begriffe wie Trauzeuge, Flitterwochen oder Ja-Wort. Es eignet sich für Gästetische bei der Festwirtschaft, als kleine Beschäftigung während des Wartens auf den nächsten Gang oder als originelles Gastgeschenk neben den klassischen Hochzeitsfavors. Der Ton bleibt durchgehend erwachsen und festlich, ganz ohne kindliche Motive."
+    },
+    "weihnachten": {
+      "name": "Weihnachten",
+      "lead": "Kerzenschein, Schnee und Vorfreude auf die Bescherung prägen die besinnliche Stimmung dieses Themas.",
+      "flavour": "Adventskranz, Guetzli, Schneeflocken, Geschenke und ein geschmückter Baum liefern die Begriffe für dieses Thema, dazu Wörter wie Kerze, Schlitten oder Winterwald. Die Auswahl kommt bewusst ohne religiöse Bezüge aus und passt darum für Familien und Schulklassen jeder Ausrichtung gleichermassen. Kinder im Kindergarten- und Primarschulalter freuen sich an den winterlichen Motiven, während die ruhige Wortwahl auch für einen besinnlichen Adventsnachmittag mit der ganzen Familie passt."
+    }
+  },
+  "occasions": {
+    "kindergeburtstag": {
+      "name": "Kindergeburtstag",
+      "dative": "zum Kindergeburtstag",
+      "lead": "Am Kindergeburtstag überbrücken Rätsel die Wartezeit zwischen Znüni, Spielen und Geschenke-Auspacken.",
+      "context": "Zwischen dem Ankommen der Gäste und dem Start der geplanten Spiele entsteht oft eine kurze Lücke, in der die Kinder am Tisch sitzen und auf das Essen warten. Ein ausgedrucktes Rätsel neben dem Teller gibt jedem Kind sofort etwas zu tun, ohne dass eine erwachsene Person etwas erklären oder anleiten muss. Am Ende darf jedes Kind sein gelöstes Blatt sogar mit nach Hause nehmen, als kleine Erinnerung an den Anlass."
+    },
+    "hochzeit": {
+      "name": "Hochzeit",
+      "dative": "zur Hochzeit",
+      "lead": "An der Hochzeit vertreiben Rätsel auf dem Gästetisch die Zeit zwischen Apéro und Hauptgang.",
+      "context": "Während der Fotograf das Brautpaar noch für Aufnahmen begleitet oder die Küche den nächsten Gang vorbereitet, sitzen die Gäste eine Weile am gedeckten Tisch. Ein gefaltetes Rätselblatt bei der Tischkarte gibt auch Gästen, die sich untereinander noch nicht kennen, ein gemeinsames Gesprächsthema und eine entspannte Beschäftigung. Für Kinder am Familientisch ist ein solches Blatt zudem eine willkommene Ablenkung während der langen Tischreden."
+    },
+    "regentag": {
+      "name": "Regentag",
+      "dative": "für den Regentag",
+      "lead": "An einem verregneten Nachmittag drinnen sorgen Rätsel für konzentrierte Beschäftigung ohne Bildschirm.",
+      "context": "Wenn der Ausflug nach draussen ausfällt und die üblichen Spiele schon durchgespielt sind, füllt ein frisch ausgedrucktes Rätsel die Zeit sinnvoll. Es lässt sich innerhalb weniger Minuten am Küchentisch bereitlegen und braucht ausser einem Stift keine weitere Vorbereitung. Anders als am Bildschirm bleibt die Beschäftigung auf ein einzelnes Blatt begrenzt, was gerade an einem langen Nachmittag zuhause die Bildschirmzeit spürbar reduziert."
+    },
+    "weihnachten": {
+      "name": "Weihnachten",
+      "dative": "zu Weihnachten",
+      "lead": "In der Adventszeit begleiten Rätsel ruhige Stunden bei Kerzenschein und Guetzliduft.",
+      "context": "In den Wochen vor Weihnachten gibt es zwischen Guetzli backen, Adventskalender öffnen und Besuchen bei der Verwandtschaft immer wieder ruhige Momente, die gefüllt werden wollen. Ein weihnachtliches Rätsel passt gut zu einem Fensterplatz mit Kerze und Tee und lässt sich auch als kleine Einlage in einen selbst gebastelten Adventskalender einlegen. So bekommt die besinnliche Jahreszeit eine zusätzliche, papierbasierte Beschäftigung für die ganze Familie."
+    }
+  },
+  "faq": {
+    "general": [
+      {
+        "q": "Ist das Erstellen eines Rätsels wirklich kostenlos?",
+        "a": "Ja, ein einzelnes Rätsel kannst du gratis konfigurieren, in der Vorschau ansehen und als PDF ohne Wasserzeichen herunterladen. Bezahlt wird nur, wenn du mehrere Rätsel als zusammenhängendes Heft möchtest, das für CHF 5 erhältlich ist."
+      },
+      {
+        "q": "Brauche ich ein Konto, um ein Rätsel herunterzuladen?",
+        "a": "Nein, für das einzelne Rätsel legst du kein Konto an, du wählst die Einstellungen und lädst das PDF direkt herunter. Auch das Rätselheft für CHF 5 bezahlst du ohne Registrierung, ein Zahlungsvorgang genügt."
+      },
+      {
+        "q": "Welches Papier und welcher Drucker eignen sich am besten?",
+        "a": "Ein gewöhnlicher Heim- oder Bürodrucker mit A4-Papier reicht für alle Rätsel vollkommen aus, ob Tintenstrahl oder Laser spielt keine Rolle. Für Kinder, die häufig radieren, lohnt sich etwas festeres Papier ab 100 Gramm."
+      },
+      {
+        "q": "Kann ich eigene Wörter oder Namen einbauen?",
+        "a": "Beim Wortsuchrätsel trägst du deine eigene Wortliste ein, etwa Namen der Gäste oder Begriffe rund um den Anlass, und das Gitter wird direkt damit erzeugt. Bei Labyrinth und Sudoku bestimmst du stattdessen Grösse und Schwierigkeitsgrad."
+      }
+    ],
+    "wordsearch": [
+      {
+        "q": "Wie gross darf das Buchstabengitter werden?",
+        "a": "Du wählst zwischen kleineren Gittern für jüngere Kinder und grösseren Rastern mit deutlich mehr Feldern für geübte Rätsler. Je grösser das Gitter, desto mehr Platz bleibt für lange Wörter und desto anspruchsvoller wird die Suche."
+      },
+      {
+        "q": "Können die Wörter auch rückwärts oder diagonal versteckt sein?",
+        "a": "Ja, du legst fest, ob Wörter nur waagrecht und senkrecht oder zusätzlich diagonal und rückwärts im Gitter erscheinen dürfen. Mehr erlaubte Richtungen machen das Rätsel schwieriger und das Gitter dichter mit Buchstaben."
+      },
+      {
+        "q": "Gibt es eine Lösung zum Nachschauen?",
+        "a": "Zu jedem Wortsuchrätsel gehört eine separate Lösungsseite, auf der alle versteckten Wörter markiert sind. Du druckst sie nur aus, wenn du sie brauchst, oder hebst sie getrennt vom Rätselblatt auf."
+      }
+    ],
+    "maze": [
+      {
+        "q": "Wie schwierig darf das Labyrinth sein?",
+        "a": "Du stellst die Schwierigkeit über die Grösse und die Anzahl der Abzweigungen ein, von einem einzigen kurzen Weg für kleine Kinder bis zu einem verzweigten Muster mit vielen Sackgassen. So passt sich das Labyrinth dem Alter an."
+      },
+      {
+        "q": "Welche Formen sind für das Labyrinth möglich?",
+        "a": "Neben dem klassischen rechteckigen Raster stehen auch andere Umrisse zur Auswahl, etwa runde oder thematisch passende Formen. Die Form ändert nichts an der Logik der Gänge, nur am Aussehen des ausgedruckten Blatts."
+      },
+      {
+        "q": "Ab welchem Alter eignet sich ein Labyrinth?",
+        "a": "Bereits Kinder ab etwa vier Jahren folgen einfachen, kurzen Labyrinthen mit dem Finger oder einem dicken Stift. Mit zunehmendem Alter wählst du grössere Raster mit mehr Kreuzungen und längerem Lösungsweg."
+      }
+    ],
+    "sudoku": [
+      {
+        "q": "Welche Schwierigkeitsgrade stehen beim Sudoku zur Auswahl?",
+        "a": "Du wählst zwischen mehreren Stufen, die sich vor allem durch die Anzahl der bereits eingetragenen Zahlen unterscheiden. Weniger Vorgaben bedeuten mehr freie Felder und damit ein anspruchsvolleres, längeres Rätsel."
+      },
+      {
+        "q": "Für welches Alter ist Sudoku geeignet?",
+        "a": "Klassisches Sudoku mit Zahlen eins bis neun passt am besten zu Jugendlichen und Erwachsenen, die bereits sicher mit Zahlen umgehen. Für jüngere Kinder eignen sich eher die anderen Rätseltypen dieser Seite."
+      },
+      {
+        "q": "Wird die Lösung mitgeliefert?",
+        "a": "Jedes erzeugte Sudoku bringt eine eigene Lösungsseite mit, auf der das vollständig ausgefüllte Gitter zu sehen ist. So kannst du am Ende gegenprüfen, ob deine Eintragungen tatsächlich stimmen."
+      }
+    ]
+  }
+}

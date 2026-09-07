@@ -16,6 +16,7 @@
     "src/**/*",
     "astro.config.mjs",
     "vitest.config.ts",
+    "scripts/**/*.ts",
     "../../packages/render/src/fontkit.d.ts"
   ],
   "exclude": ["dist"]

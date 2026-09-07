@@ -1,0 +1,21 @@
+{
+  "id": "weihnachten",
+  "name": "Weihnachten",
+  "colors": {
+    "ink": "#1f3a2e",
+    "muted": "#5f7a6c",
+    "light": "#d8e5da",
+    "grid": "#9fbaa8",
+    "accent": "#b91c1c",
+    "solution": "#b45309",
+    "watermark": "#9fbaa8",
+    "decor": "#c99700"
+  },
+  "icons": {
+    "corner": "snowflake",
+    "cover": "tree",
+    "mazeStart": "snowflake",
+    "mazeEnd": "gift"
+  },
+  "sudokuIcons": ["tree", "gift", "snowflake", "sparkle", "heart", "cloud"]
+}

@@ -23,7 +23,10 @@ export type IconName =
   | 'ring'
   | 'heart'
   | 'flower'
-  | 'flag';
+  | 'flag'
+  | 'tree'
+  | 'gift'
+  | 'snowflake';
 
 const n = (value: number): number => round3(value);
 
@@ -277,6 +280,74 @@ const BUILDERS: Readonly<Record<IconName, IconBuilder>> = {
     });
     // Mitte als Aussparung: die Blüte bleibt auch klein als Blume erkennbar.
     return `${petals.join(' ')} ${circle(cx, cy, s * 0.34)} ${circle(cx, cy, s * 0.16, true)}`;
+  },
+  // Tannenbaum: drei Stufen und ein Stamm.
+  tree: (cx, cy, size) => {
+    const s = size / 2;
+    const tier = (top: number, halfWidth: number, bottom: number): string =>
+      polygon([
+        [cx, cy + top],
+        [cx + halfWidth, cy + bottom],
+        [cx - halfWidth, cy + bottom],
+      ]);
+    const trunk = polygon([
+      [cx - s * 0.14, cy + s * 0.72],
+      [cx + s * 0.14, cy + s * 0.72],
+      [cx + s * 0.14, cy + s],
+      [cx - s * 0.14, cy + s],
+    ]);
+    return `${tier(-s, s * 0.42, -s * 0.35)} ${tier(-s * 0.6, s * 0.62, s * 0.1)} ${tier(-s * 0.15, s * 0.82, s * 0.72)} ${trunk}`;
+  },
+  // Geschenk: Schachtel mit Band als Aussparung und Schleife.
+  gift: (cx, cy, size) => {
+    const s = size / 2;
+    const box = polygon([
+      [cx - s * 0.86, cy - s * 0.3],
+      [cx + s * 0.86, cy - s * 0.3],
+      [cx + s * 0.86, cy + s],
+      [cx - s * 0.86, cy + s],
+    ]);
+    const lid = polygon([
+      [cx - s, cy - s * 0.55],
+      [cx + s, cy - s * 0.55],
+      [cx + s, cy - s * 0.25],
+      [cx - s, cy - s * 0.25],
+    ]);
+    const ribbon = hole(cx - s * 0.12, cy - s * 0.25, cx + s * 0.12, cy + s);
+    const bow = `${circle(cx - s * 0.3, cy - s * 0.75, s * 0.24)} ${circle(cx + s * 0.3, cy - s * 0.75, s * 0.24)}`;
+    return `${bow} ${lid} ${box} ${ribbon}`;
+  },
+  // Schneeflocke: sechs Arme mit kurzen Verzweigungen.
+  snowflake: (cx, cy, size) => {
+    const s = size / 2;
+    const arms = Array.from({ length: 6 }, (_, i) => {
+      const angle = (i * Math.PI) / 3;
+      const dx = Math.cos(angle);
+      const dy = Math.sin(angle);
+      // Kräftig genug, damit die Flocke auch klein gedruckt sichtbar bleibt.
+      const w = 0.13;
+      const nx = -dy * s * w;
+      const ny = dx * s * w;
+      const main = polygon([
+        [cx + nx, cy + ny],
+        [cx + dx * s + nx * 0.4, cy + dy * s + ny * 0.4],
+        [cx + dx * s - nx * 0.4, cy + dy * s - ny * 0.4],
+        [cx - nx, cy - ny],
+      ]);
+      const branchAt = 0.58;
+      const branch = (sign: number): string => {
+        const bAngle = angle + sign * 0.9;
+        const bx = cx + dx * s * branchAt;
+        const by = cy + dy * s * branchAt;
+        return polygon([
+          [bx + nx * 0.6, by + ny * 0.6],
+          [bx + Math.cos(bAngle) * s * 0.34, by + Math.sin(bAngle) * s * 0.34],
+          [bx - nx * 0.6, by - ny * 0.6],
+        ]);
+      };
+      return `${main} ${branch(1)} ${branch(-1)}`;
+    });
+    return `${arms.join(' ')} ${circle(cx, cy, s * 0.16)}`;
   },
   flag: (cx, cy, size) => {
     const s = size / 2;

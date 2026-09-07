@@ -25,7 +25,8 @@
   "footer": {
     "imprint": "Impressum",
     "privacy": "Datenschutz",
-    "terms": "AGB"
+    "terms": "AGB",
+    "templates": "Alle Vorlagen"
   },
   "notFound": {
     "title": "Seite nicht gefunden",
@@ -148,5 +149,16 @@
     "paymentDone": "Zahlung bestätigt. Das Heft ist freigeschaltet.",
     "paymentPending": "Die Zahlung ist noch nicht bestätigt. Lade die Seite in einer Minute neu.",
     "paymentCancelled": "Die Zahlung wurde abgebrochen. Das Heft bleibt gespeichert."
+  },
+  "landing": {
+    "howTo": "So gehts",
+    "createNow": "Jetzt erstellen",
+    "tips": "Tipps für den Ausdruck",
+    "faq": "Häufige Fragen",
+    "related": "Passt auch dazu",
+    "exampleA": "Beispiel mit dem gewählten Design",
+    "exampleB": "Zweites Beispiel, neu gewürfelt",
+    "allPages": "Alle Vorlagen",
+    "allPagesIntro": "Fertige Vorlagen nach Rätseltyp, Thema und Anlass. Jede lässt sich vor dem Herunterladen anpassen."
   }
 }

@@ -1,0 +1,87 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Prose from '@/components/Prose.astro';
+import { OPERATOR, PRICE_CHF } from '@/content/site';
+import { t } from '@/i18n';
+---
+
+<BaseLayout title={t('footer.terms')} description="Bedingungen für den Kauf eines Rätselhefts.">
+  <Prose title={t('footer.terms')} updated="September 2026">
+    <h2>1. Geltungsbereich</h2>
+    <p>
+      Diese Bedingungen gelten für den Kauf digitaler Rätselhefte über diese Website. Anbieter ist {
+        OPERATOR.name
+      }, {OPERATOR.street}, {OPERATOR.postalCode}
+      {OPERATOR.city}, {OPERATOR.country}, erreichbar unter
+      <a href={`mailto:${OPERATOR.email}`}>{OPERATOR.email}</a>.
+    </p>
+
+    <h2>2. Gratis-Angebot</h2>
+    <p>
+      Einzelrätsel lassen sich ohne Kosten und ohne Konto erzeugen und herunterladen. Für dieses
+      Gratis-Angebot besteht kein Anspruch auf ständige Verfügbarkeit.
+    </p>
+
+    <h2>3. Vertragsschluss</h2>
+    <p>
+      Mit dem Absenden der Zahlung gibst du ein verbindliches Angebot ab. Der Vertrag kommt
+      zustande, sobald die Zahlung bestätigt ist und das Heft zum Download freigeschaltet wird.
+    </p>
+
+    <h2>4. Preise und Zahlung</h2>
+    <p>
+      Der Preis eines Rätselhefts beträgt CHF {PRICE_CHF}.00. Es besteht keine
+      Mehrwertsteuerpflicht, daher wird keine Mehrwertsteuer ausgewiesen. Die Zahlung erfolgt über
+      die Payrexx AG mit Karte oder TWINT. Ein Konto ist nicht nötig.
+    </p>
+
+    <h2>5. Leistung</h2>
+    <p>
+      Die Leistung besteht in der Freischaltung eines PDF ohne Wasserzeichen, das genau der von dir
+      zusammengestellten Fassung entspricht. Das PDF wird in deinem Browser erzeugt. Die
+      Freischaltung bleibt 30 Tage gültig; danach kann das Heft mit denselben Einstellungen erneut
+      gekauft werden.
+    </p>
+
+    <h2>6. Technische Voraussetzungen</h2>
+    <p>
+      Nötig sind ein aktueller Browser und ein Gerät mit genügend Arbeitsspeicher für die Erzeugung
+      des PDF. Für den Ausdruck wird ein Drucker mit A4-Format empfohlen. Vor dem Kauf lässt sich
+      das vollständige Heft als Vorschau mit Wasserzeichen prüfen.
+    </p>
+
+    <h2>7. Nutzungsrecht</h2>
+    <p>
+      Du darfst das gekaufte Heft für private Zwecke sowie für Anlässe wie Kindergeburtstage,
+      Hochzeiten oder Firmenfeiern beliebig oft ausdrucken und an die Gäste verteilen. Nicht
+      gestattet sind der Weiterverkauf des PDF, die Veröffentlichung zum Download und die Verwendung
+      in kommerziellen Publikationen.
+    </p>
+
+    <h2>8. Widerrufsrecht und Rückerstattung</h2>
+    <p>
+      Es handelt sich um digitale Inhalte, die sofort nach der Zahlung bereitgestellt werden. Mit
+      dem Kauf stimmst du der sofortigen Bereitstellung zu und erklärst dein Einverständnis, dass
+      ein allfälliges Widerrufsrecht damit erlischt. Genau deshalb steht vor dem Kauf die
+      vollständige Vorschau zur Verfügung.
+    </p>
+    <p>
+      Kommt die Freischaltung aus technischen Gründen nicht zustande, wird der Betrag
+      zurückerstattet. Melde dich in diesem Fall unter
+      <a href={`mailto:${OPERATOR.email}`}>{OPERATOR.email}</a>.
+    </p>
+
+    <h2>9. Gewährleistung und Haftung</h2>
+    <p>
+      Die Rätsel werden sorgfältig erzeugt und automatisch geprüft. Für Schäden wird nur bei Vorsatz
+      und grober Fahrlässigkeit gehaftet, soweit gesetzlich zulässig. Die Haftung für leichte
+      Fahrlässigkeit ist ausgeschlossen.
+    </p>
+
+    <h2>10. Anwendbares Recht und Gerichtsstand</h2>
+    <p>
+      Es gilt schweizerisches Recht. Gerichtsstand ist {OPERATOR.city}. Zwingende
+      Verbraucherschutzbestimmungen des Wohnsitzstaates bleiben vorbehalten.
+    </p>
+  </Prose>
+</BaseLayout>
