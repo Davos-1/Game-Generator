@@ -1,17 +1,73 @@
 @import 'tailwindcss';
 
+/*
+ * Bricolage Grotesque nur für Überschriften und Wortzeichen. Selbst
+ * ausgeliefert statt über Google Fonts: keine Anfrage an Dritte, damit auch
+ * kein Datenschutz-Hinweis nötig. Der Latin-Ausschnitt genügt für Deutsch.
+ */
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/BricolageGrotesque-Latin.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 @theme {
   /*
-   * Die Website nutzt bewusst die Systemschrift: kein zusätzlicher Download,
-   * sofort lesbar. Nunito und Inter gehören den Rätseln (Vorschau und PDF).
-   * Stünde Inter hier zuerst, würde der Seitentext umspringen, sobald die
-   * Vorschau die Schriften nachlädt.
+   * Der Fliesstext nutzt bewusst die Systemschrift: kein zusätzlicher
+   * Download, sofort lesbar. Nunito und Inter gehören den Rätseln (Vorschau
+   * und PDF). Stünde Inter hier zuerst, würde der Seitentext umspringen,
+   * sobald die Vorschau die Schriften nachlädt. Die Display-Schrift betrifft
+   * nur Überschriften; springt sie um, verschiebt sich kein Fliesstext.
    */
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-display: 'Bricolage Grotesque', var(--font-sans);
+
+  /*
+   * Farbwelt «Petrol durchgehend»: der Tintenton ist derselbe, den die
+   * Rätsel-Themes als Akzent verwenden (packages/render/src/themes/data).
+   * Website und PDF sollen wie ein Produkt aussehen.
+   */
+  --color-hero: #0d3a45;
+  --color-hero-ink: #f3f1ea;
+  --color-hero-muted: #9dc0c9;
+  --color-hero-line: #2f6875;
+
+  --color-paper: #f3f1ea;
+  --color-surface: #ffffff;
+  --color-ink: #0d3a45;
+  --color-muted: #54707a;
+  --color-line: #dbd6c8;
+  --color-line-strong: #bfb9a8;
+
+  /*
+   * Handlungsfarbe. Dunkler Text darauf, weil Gold-Orange weisse Schrift
+   * nicht kontrastfest trägt.
+   */
+  --color-accent: #e8963f;
+  --color-accent-ink: #22160a;
+  --color-accent-deep: #b96d1f;
+
+  /* Links und Fokus: der bestehende Marken-Petrolton. */
   --color-brand-50: #eef6ff;
-  --color-brand-500: #2f6df6;
-  --color-brand-700: #1f4fc2;
+  --color-brand-500: #0e7490;
+  --color-brand-700: #0b5a70;
+
+  /* Zwei Radien statt vier: 2px für Flächen, 4px für Gruppen. */
+  --radius-sheet: 2px;
+  --radius-group: 4px;
+
+  /* Fluide Schriftgrössen für die Überschriften-Skala. */
+  --text-display: clamp(2rem, 1.4rem + 2.6vw, 3.1rem);
+  --text-display--line-height: 1.05;
+  --text-headline: clamp(1.5rem, 1.25rem + 1.1vw, 2rem);
+  --text-headline--line-height: 1.15;
+  --text-section: 0.875rem;
 }
 
 html {
@@ -19,5 +75,30 @@ html {
 }
 
 body {
-  @apply bg-white text-slate-900 antialiased;
+  @apply bg-paper text-ink antialiased;
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+/* Sichtbarer Fokus in Markenfarbe; der Browser-Standard war kaum zu sehen. */
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
+  border-radius: var(--radius-sheet);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
