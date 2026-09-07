@@ -10,26 +10,40 @@ import type {
   SudokuSize,
 } from './types';
 
-/** Ziel-Anzahl Vorgaben pro Grösse und Stufe (PLAN.md 3.3: leicht 36–40, schwer 24–28 bei 9×9). */
+/**
+ * Ziel-Anzahl Vorgaben pro Grösse und Stufe (PLAN.md 3.3: leicht 36–40,
+ * schwer 24–28 bei 9×9).
+ *
+ * Die Stufe hängt an der Anzahl Vorgaben, nicht an der nötigen Technik. Wer
+ * ein Rätsel anschaut, sieht zuerst, wie leer das Gitter ist. Früher wurde
+ * ausgedünnt, bis eine schwerere Technik nötig war; dabei landeten «mittel»
+ * und «schwer» regelmässig bei derselben Anzahl Vorgaben.
+ */
 export const GIVENS_TARGET: Readonly<
   Record<SudokuSize, Readonly<Record<SudokuDifficulty, number>>>
 > = {
   4: { easy: 9, medium: 7, hard: 5 },
-  6: { easy: 20, medium: 16, hard: 12 },
-  9: { easy: 38, medium: 32, hard: 26 },
+  6: { easy: 22, medium: 16, hard: 11 },
+  9: { easy: 40, medium: 32, hard: 24 },
 };
 
-/** Unter diese Anzahl Vorgaben wird nie reduziert. */
-const GIVENS_MIN: Readonly<Record<SudokuSize, number>> = { 4: 4, 6: 10, 9: 22 };
-
-const RANK: Readonly<Record<RatingLevel, number>> = { easy: 0, medium: 1, hard: 2, expert: 3 };
+/**
+ * Unter diese Anzahl Vorgaben wird nie reduziert. Gemessen: ein eindeutiges
+ * 9×9 endet je nach Gitter bei 22 bis 27 Vorgaben, ein 6×6 bei 9 bis 11.
+ */
+const GIVENS_MIN: Readonly<Record<SudokuSize, number>> = { 4: 4, 6: 9, 9: 22 };
 
 /**
- * Entscheidet, ob ein Rätsel die gewünschte Stufe erfüllt.
- * - 4×4 und 6×6 (Kinder): nur die Anzahl Vorgaben zählt, Raten ist ausgeschlossen.
- * - 9×9 leicht: nur Singles nötig. Mittel: Paar- oder Box-Line-Techniken nötig.
- *   Schwer: schwere Techniken (Hidden Pair, Naked Triple, X-Wing) oder
- *   Paar-Techniken bei höchstens 26 Vorgaben.
+ * So viele Vorgaben über oder unter dem Ziel werden noch akzeptiert. Beim
+ * 4×4 liegen die Stufen nur zwei Vorgaben auseinander, dort wäre eine grössere
+ * Toleranz sinnlos: «mittel» würde sonst als «leicht» durchgehen.
+ */
+const GIVENS_TOLERANCE: Readonly<Record<SudokuSize, number>> = { 4: 1, 6: 2, 9: 2 };
+
+/**
+ * Entscheidet, ob ein Rätsel die gewünschte Stufe erfüllt. Massgebend ist die
+ * Anzahl Vorgaben; Raten ist in keiner Stufe zulässig, und «leicht» kommt
+ * zusätzlich mit blossen Singles aus.
  */
 export function meetsDifficulty(
   size: SudokuSize,
@@ -37,10 +51,14 @@ export function meetsDifficulty(
   level: RatingLevel,
   givens: number,
 ): boolean {
-  if (level === 'expert' || givens > GIVENS_TARGET[size][difficulty]) return false;
-  if (size !== 9) return true;
-  if (difficulty === 'hard') return level === 'hard' || level === 'medium';
-  return level === difficulty;
+  if (level === 'expert') return false;
+  const target = GIVENS_TARGET[size][difficulty];
+  const tolerance = GIVENS_TOLERANCE[size];
+  if (givens > target + tolerance) return false;
+  if (difficulty === 'easy') return level === 'easy' && givens >= target - tolerance;
+  // «Mittel» darf nicht versehentlich so leer werden wie «schwer».
+  if (difficulty === 'medium') return givens >= target - tolerance;
+  return true;
 }
 
 /**
@@ -56,7 +74,7 @@ export function generateSudoku(options: SudokuOptions): SudokuPuzzle {
   const maxAttempts = options.maxAttempts ?? 40;
   if (!(size in GIVENS_TARGET)) throw new RangeError(`Ungültige Sudoku-Grösse: ${String(size)}`);
   const geo = geometryFor(size);
-  const wanted = RANK[difficulty];
+  const target = GIVENS_TARGET[size][difficulty];
 
   let best: SudokuPuzzle | undefined;
 
@@ -67,11 +85,10 @@ export function generateSudoku(options: SudokuOptions): SudokuPuzzle {
     const result = toPuzzle(puzzle, solution, geo, difficulty, options.seed);
 
     if (meetsDifficulty(size, difficulty, result.rating.level, result.givenCount)) return result;
-    // Bestes Nebenresultat merken: nie «expert», sonst möglichst nah an der gewünschten Stufe.
+    // Bestes Nebenresultat merken: nie «expert», sonst möglichst nah am Ziel.
     if (
       result.rating.level !== 'expert' &&
-      (!best ||
-        Math.abs(RANK[result.rating.level] - wanted) < Math.abs(RANK[best.rating.level] - wanted))
+      (!best || Math.abs(result.givenCount - target) < Math.abs(best.givenCount - target))
     ) {
       best = result;
     }
@@ -112,10 +129,9 @@ export function fillGrid(geo: Geometry, rng: Rng): number[] {
 }
 
 /**
- * Entfernt Zellen in zufälliger Reihenfolge. Eine Zelle bleibt nur entfernt, wenn
- * die Lösung eindeutig bleibt und kein Raten nötig wird. Aufgehört wird, sobald
- * die Zielanzahl Vorgaben erreicht ist und das Rating mindestens der gewünschten
- * Stufe erfüllt (siehe meetsDifficulty), spätestens beim Minimum. Nie «expert».
+ * Entfernt Zellen in zufälliger Reihenfolge, bis die Zielanzahl Vorgaben
+ * erreicht ist. Eine Zelle bleibt nur entfernt, wenn die Lösung eindeutig
+ * bleibt und kein Raten nötig wird.
  */
 function carve(
   solution: readonly number[],
@@ -124,14 +140,12 @@ function carve(
   rng: Rng,
 ): number[] {
   const { size } = geo;
-  const min = GIVENS_MIN[size];
+  const target = Math.max(GIVENS_TARGET[size][difficulty], GIVENS_MIN[size]);
   const grid = [...solution];
   let givens = grid.length;
-  let level: RatingLevel = 'easy';
 
   for (const index of rng.shuffle(Array.from({ length: grid.length }, (_, i) => i))) {
-    if (givens <= min) break;
-    if (meetsDifficulty(size, difficulty, level, givens)) break;
+    if (givens <= target) break;
 
     const value = grid[index] as number;
     grid[index] = 0;
@@ -139,12 +153,11 @@ function carve(
       grid[index] = value;
       continue;
     }
-    const next = solveWithTechniques(grid, size).rating.level;
-    if (next === 'expert') {
+    // Der Technik-Solver ist teuer und wird erst nötig, wenn das Gitter dünn wird.
+    if (givens - 1 <= target + 6 && solveWithTechniques(grid, size).rating.level === 'expert') {
       grid[index] = value;
       continue;
     }
-    level = next;
     givens--;
   }
   return grid;

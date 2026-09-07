@@ -38,6 +38,11 @@ export interface SudokuConfig extends BaseConfig {
   kind: 'sudoku';
   size: SudokuSize;
   difficulty: SudokuDifficulty;
+  /**
+   * Symbole statt Zahlen. Nur bei 4×4 und 6×6 sinnvoll; neun Formen wären für
+   * Kinder zu viel. Standard: Symbole bei den Kindergrössen, Zahlen bei 9×9.
+   */
+  symbols: boolean;
 }
 
 export type PuzzleConfig = WordSearchConfig | MazeConfig | SudokuConfig;
@@ -54,6 +59,9 @@ export const THEME_CHOICES: readonly { id: string; name: string; color: string }
 ];
 
 const randomSeed = (): string => Math.random().toString(36).slice(2, 8);
+
+/** Kindergrössen zeigen standardmässig Symbole, das 9×9 immer Zahlen. */
+export const defaultSymbols = (size: SudokuSize): boolean => size <= 6;
 
 export function defaultConfig(kind: PuzzleKind): PuzzleConfig {
   const seed = randomSeed();
@@ -88,6 +96,7 @@ export function defaultConfig(kind: PuzzleKind): PuzzleConfig {
         seed,
         size: 9,
         difficulty: 'easy',
+        symbols: defaultSymbols(9),
       };
   }
 }
@@ -137,6 +146,8 @@ export function configToParams(config: PuzzleConfig): URLSearchParams {
       const b = base as SudokuConfig;
       set('g', String(config.size), String(b.size));
       set('d', config.difficulty, b.difficulty);
+      // Der Standard hängt an der Grösse; nur die Abweichung landet im Link.
+      set('sy', config.symbols ? '1' : '0', defaultSymbols(config.size) ? '1' : '0');
       break;
     }
   }
@@ -177,12 +188,15 @@ export function configFromParams(kind: PuzzleKind, params: URLSearchParams): Puz
       };
     case 'sudoku': {
       const b = base as SudokuConfig;
-      const size = clampInt(params.get('g'), 4, 9, b.size);
+      const raw = clampInt(params.get('g'), 4, 9, b.size);
+      const size: SudokuSize = raw === 4 || raw === 6 ? raw : 9;
+      const symbols = params.get('sy');
       return {
         kind,
         ...common,
-        size: size === 4 || size === 6 ? size : 9,
+        size,
         difficulty: oneOf(params.get('d'), ['easy', 'medium', 'hard'] as const, b.difficulty),
+        symbols: symbols === null ? defaultSymbols(size) : symbols === '1',
       };
     }
   }

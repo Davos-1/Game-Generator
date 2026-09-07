@@ -1,5 +1,5 @@
 import { NEUTRAL_THEME, themeById } from '@raetselheft/render/themes';
-import { newSeed, parseWords, themeWords, type PuzzleKind } from './puzzleConfig';
+import { defaultSymbols, newSeed, parseWords, themeWords, type PuzzleKind } from './puzzleConfig';
 
 export const MIN_ENTRIES = 4;
 export const MAX_ENTRIES = 16;
@@ -19,6 +19,8 @@ export interface BookletEntry {
   size: number;
   /** Sudoku: 4, 6 oder 9. */
   sudokuSize: 4 | 6 | 9;
+  /** Sudoku: Symbole statt Zahlen (nur bei 4×4 und 6×6). */
+  sudokuSymbols: boolean;
 }
 
 export interface BookletConfig {
@@ -45,6 +47,7 @@ export function newEntry(kind: PuzzleKind, themeId: string): BookletEntry {
     // Für alle Typen gleich vorbelegt, damit der Wert einen Speicher-Rundlauf
     // unverändert übersteht; wirksam ist er nur beim Sudoku.
     sudokuSize: 6,
+    sudokuSymbols: true,
   };
 }
 
@@ -75,6 +78,7 @@ interface CompactEntry {
   w?: string;
   g?: number;
   z?: number;
+  y?: 0 | 1;
 }
 
 interface CompactBooklet {
@@ -99,7 +103,12 @@ export function toCompact(config: BookletConfig): CompactBooklet {
         item.w = parseWords(entry.words).join(',');
         if (entry.size !== 12) item.g = entry.size;
       }
-      if (entry.kind === 'sudoku' && entry.sudokuSize !== 6) item.z = entry.sudokuSize;
+      if (entry.kind === 'sudoku') {
+        if (entry.sudokuSize !== 6) item.z = entry.sudokuSize;
+        if (entry.sudokuSymbols !== defaultSymbols(entry.sudokuSize)) {
+          item.y = entry.sudokuSymbols ? 1 : 0;
+        }
+      }
       return item;
     }),
   };
@@ -134,6 +143,8 @@ export function fromCompact(input: unknown): BookletConfig {
         ? entries.map((item) => {
             const kind = asKind(item?.k);
             const fallback = newEntry(kind, theme);
+            const sudokuSize: BookletEntry['sudokuSize'] =
+              item?.z === 4 || item?.z === 9 ? item.z : 6;
             return {
               ...fallback,
               kind,
@@ -142,7 +153,8 @@ export function fromCompact(input: unknown): BookletConfig {
               difficulty: asDifficulty(item?.d),
               words: typeof item?.w === 'string' ? parseWords(item.w).join(', ') : fallback.words,
               size: typeof item?.g === 'number' && item.g >= 8 && item.g <= 20 ? item.g : 12,
-              sudokuSize: item?.z === 4 || item?.z === 9 ? item.z : 6,
+              sudokuSize,
+              sudokuSymbols: item?.y === undefined ? defaultSymbols(sudokuSize) : item.y === 1,
             };
           })
         : base.entries,

@@ -163,9 +163,14 @@ describe('Seitenrahmen', () => {
       (el): el is TextElement => el.type === 'text' && el.text === 'VORSCHAU',
     );
     expect(marks.length).toBeGreaterThan(5);
+    // Zwei gegenläufige Lagen: eine einzelne Schräge liesse sich beim Lösen
+    // gedanklich ausblenden, ein Kreuzmuster nicht.
+    expect(new Set(marks.map((mark) => mark.rotate))).toEqual(new Set([-30, 30]));
     for (const mark of marks) {
-      expect(mark.rotate).toBe(-30);
-      expect(mark.opacity).toBeLessThan(0.5);
+      // Kräftig genug, dass die Vorschau kein brauchbares Rätsel ist,
+      // aber durchsichtig genug, um das Design zu beurteilen.
+      expect(mark.opacity).toBeGreaterThanOrEqual(0.3);
+      expect(mark.opacity).toBeLessThanOrEqual(0.6);
     }
     // Zuoberst heisst: die letzten Elemente der Seite sind die Wasserzeichen.
     expect(page.elements.slice(-marks.length)).toEqual(marks);

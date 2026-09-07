@@ -126,11 +126,14 @@ export async function buildPages(config: PuzzleConfig, item: PuzzleItem): Promis
     getMeasurer(),
   ]);
   const options = pageOptions(config);
-  const puzzle = puzzlePage(item, measurer, options);
+  // Nur beim Sudoku steuerbar; sonst entscheidet die Layout-Schicht.
+  const symbols = config.kind === 'sudoku' ? { symbols: config.symbols } : {};
+  const puzzle = puzzlePage(item, measurer, { ...options, ...symbols });
   const [solution] = solutionPages([{ item, caption: options.title }], measurer, {
     title: t('generator.common.solutionTitle'),
     footerLeft: t('site.domain'),
     theme: options.theme,
+    ...symbols,
   });
   return { puzzle, solution: solution ?? puzzle };
 }
@@ -178,9 +181,13 @@ export function buildBookletItems(config: BookletConfig): {
         words: entry.words,
         size: entry.kind === 'sudoku' ? entry.sudokuSize : entry.size,
         difficulty: entry.difficulty,
+        symbols: entry.sudokuSymbols,
         umlauts: 'keep',
       } as PuzzleConfig);
-      entries.push({ item, caption });
+      entries.push({
+        item: item.kind === 'sudoku' ? { ...item, symbols: entry.sudokuSymbols } : item,
+        caption,
+      });
       for (const note of entryNotes) notes.push(`${index + 1}. ${caption}: ${note}`);
     } catch (cause) {
       notes.push(`${index + 1}. ${caption}: ${cause instanceof Error ? cause.message : ''}`);

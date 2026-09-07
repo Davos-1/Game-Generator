@@ -92,10 +92,13 @@
     "sudoku": {
       "defaultTitle": "Sudoku",
       "size": "Grösse",
-      "size4": "4 × 4 mit Symbolen",
-      "size6": "6 × 6 mit Symbolen",
+      "size4": "4 × 4",
+      "size6": "6 × 6",
       "size9": "9 × 9 mit Zahlen",
-      "kidsHint": "Kindervariante: statt Zahlen stehen Symbole im Gitter."
+      "kidsHint": "Symbole eignen sich für Kinder, die noch keine Zahlen schreiben.",
+      "display": "Darstellung",
+      "displaySymbols": "Symbole",
+      "displayNumbers": "Zahlen"
     },
     "themes": {
       "piraten": "Piraten",

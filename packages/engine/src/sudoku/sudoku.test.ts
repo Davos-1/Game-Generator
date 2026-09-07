@@ -134,23 +134,49 @@ describe('generateSudoku', () => {
         expectValidPuzzle(p);
         const info = `${difficulty} #${i}: ${p.rating.hardestTechnique}, ${p.givenCount} Vorgaben`;
         expect(meetsDifficulty(9, difficulty, p.rating.level, p.givenCount), info).toBe(true);
-        expect(p.givenCount).toBeLessThanOrEqual(GIVENS_TARGET[9][difficulty]);
+        // Toleranz von zwei Vorgaben, falls sich ein Gitter nicht weiter ausdünnen lässt.
+        expect(p.givenCount, info).toBeLessThanOrEqual(GIVENS_TARGET[9][difficulty] + 2);
         expect(solveWithTechniques(flatten(p.givens), 9).solved).toBe(true);
       }
     }
   });
 
-  it('meetsDifficulty: leicht nur mit Singles, schwer auch mit Paaren bei wenigen Vorgaben', () => {
-    expect(meetsDifficulty(9, 'easy', 'easy', 38)).toBe(true);
-    expect(meetsDifficulty(9, 'easy', 'medium', 38)).toBe(false);
-    expect(meetsDifficulty(9, 'medium', 'medium', 32)).toBe(true);
-    expect(meetsDifficulty(9, 'medium', 'medium', 33)).toBe(false);
-    expect(meetsDifficulty(9, 'hard', 'medium', 26)).toBe(true);
+  it('trennt die Stufen klar über die Anzahl Vorgaben', () => {
+    // «leicht» braucht nur Singles und darf nicht zu leer sein.
+    expect(meetsDifficulty(9, 'easy', 'easy', 40)).toBe(true);
+    expect(meetsDifficulty(9, 'easy', 'medium', 40)).toBe(false);
+    expect(meetsDifficulty(9, 'easy', 'easy', 30)).toBe(false);
+    // «mittel» soll nicht so leer werden wie «schwer».
+    expect(meetsDifficulty(9, 'medium', 'easy', 32)).toBe(true);
+    expect(meetsDifficulty(9, 'medium', 'easy', 25)).toBe(false);
+    expect(meetsDifficulty(9, 'medium', 'easy', 35)).toBe(false);
+    // «schwer» ist dünner als «mittel».
+    expect(meetsDifficulty(9, 'hard', 'easy', 24)).toBe(true);
     expect(meetsDifficulty(9, 'hard', 'hard', 26)).toBe(true);
-    expect(meetsDifficulty(9, 'hard', 'easy', 24)).toBe(false);
+    expect(meetsDifficulty(9, 'hard', 'easy', 30)).toBe(false);
+    // Raten ist nirgends erlaubt.
     expect(meetsDifficulty(9, 'hard', 'expert', 24)).toBe(false);
-    expect(meetsDifficulty(6, 'hard', 'easy', 12)).toBe(true);
-    expect(meetsDifficulty(4, 'medium', 'easy', 8)).toBe(false);
+    // Kindergrössen zählen nur die Vorgaben, mit enger Toleranz beim 4×4.
+    expect(meetsDifficulty(6, 'hard', 'easy', 11)).toBe(true);
+    expect(meetsDifficulty(4, 'medium', 'easy', 7)).toBe(true);
+    expect(meetsDifficulty(4, 'medium', 'easy', 9)).toBe(false);
+    expect(meetsDifficulty(4, 'easy', 'easy', 5)).toBe(false);
+  });
+
+  it('hält zwischen mittel und schwer einen deutlichen Abstand', () => {
+    // Der Abstand war früher so klein, dass sich die Stufen kaum unterschieden.
+    const mittel = Array.from(
+      { length: 6 },
+      (_, i) =>
+        generateSudoku({ seed: `abstand-m-${i}`, size: 9, difficulty: 'medium' }).givenCount,
+    );
+    const schwer = Array.from(
+      { length: 6 },
+      (_, i) => generateSudoku({ seed: `abstand-s-${i}`, size: 9, difficulty: 'hard' }).givenCount,
+    );
+    expect(Math.min(...mittel)).toBeGreaterThan(Math.max(...schwer));
+    const abstand = Math.min(...mittel) - Math.max(...schwer);
+    expect(abstand, `Abstand ${abstand}`).toBeGreaterThanOrEqual(5);
   });
 
   it('hält die Vorgaben-Bereiche aus PLAN.md ein (9×9: leicht 36–40, schwer 24–28)', () => {
@@ -168,7 +194,7 @@ describe('generateSudoku', () => {
         const p = generateSudoku({ seed: `kids-${size}-${difficulty}`, size, difficulty });
         expectValidPuzzle(p);
         expect(p.size).toBe(size);
-        expect(p.givenCount).toBeLessThanOrEqual(GIVENS_TARGET[size][difficulty]);
+        expect(p.givenCount).toBeLessThanOrEqual(GIVENS_TARGET[size][difficulty] + 2);
         expect(p.rating.level).not.toBe('expert');
       }
     }

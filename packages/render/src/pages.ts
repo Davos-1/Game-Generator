@@ -19,7 +19,8 @@ import { NEUTRAL_THEME, type Theme } from './themes';
 export type PuzzleItem =
   | { kind: 'wordsearch'; puzzle: WordSearchPuzzle }
   | { kind: 'maze'; puzzle: Maze }
-  | { kind: 'sudoku'; puzzle: SudokuPuzzle };
+  /** `symbols` überschreibt für dieses eine Rätsel die Darstellung. */
+  | { kind: 'sudoku'; puzzle: SudokuPuzzle; symbols?: boolean };
 
 export interface PuzzlePageOptions extends PageFrameOptions {
   /** Symbole statt Ziffern beim Sudoku erzwingen oder unterdrücken. */
@@ -63,7 +64,7 @@ export function coverPage(measurer: TextMeasurer, options: CoverPageOptions): Pa
   const box = COVER_BOX(MARGIN);
   const elements = coverElements(options, box, measurer, theme);
   if (options.watermark) {
-    elements.push(...watermarkElements(measurer, options.watermark, box, theme.colors.watermark));
+    elements.push(...watermarkElements(measurer, options.watermark, box, theme.colors.muted));
   }
   return { width: A4.width, height: A4.height, elements, label: options.title };
 }
@@ -220,7 +221,7 @@ function drawItem(
           : { icons: { start: theme.icons.mazeStart, end: theme.icons.mazeEnd } }),
       });
     case 'sudoku': {
-      const useSymbols = options.symbols ?? item.puzzle.size <= 6;
+      const useSymbols = item.symbols ?? options.symbols ?? item.puzzle.size <= 6;
       const icons = theme.sudokuIcons.length > 0 ? theme.sudokuIcons : undefined;
       const legendHeight = useSymbols && !compact ? 12 : 0;
       const gridArea: ContentBox = { ...box, height: box.height - legendHeight };

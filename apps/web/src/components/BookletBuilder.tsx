@@ -24,7 +24,13 @@ import {
   unlock,
   type PaymentInfo,
 } from '../lib/payment';
-import { newSeed, THEME_CHOICES, themeWords, type PuzzleKind } from '../lib/puzzleConfig';
+import {
+  defaultSymbols,
+  newSeed,
+  THEME_CHOICES,
+  themeWords,
+  type PuzzleKind,
+} from '../lib/puzzleConfig';
 import {
   buildBookletItems,
   buildBookletPages,
@@ -358,21 +364,53 @@ export default function BookletBuilder(): React.ReactElement {
                     </Field>
                   )}
                   {entry.kind === 'sudoku' && (
-                    <Field label={t('generator.sudoku.size')}>
-                      <select
-                        className={inputClass}
-                        value={entry.sudokuSize}
-                        onChange={(event) =>
-                          updateEntry(entry.id, {
-                            sudokuSize: Number(event.target.value) as BookletEntry['sudokuSize'],
-                          })
-                        }
-                      >
-                        <option value={4}>{t('generator.sudoku.size4')}</option>
-                        <option value={6}>{t('generator.sudoku.size6')}</option>
-                        <option value={9}>{t('generator.sudoku.size9')}</option>
-                      </select>
-                    </Field>
+                    <>
+                      <Field label={t('generator.sudoku.size')}>
+                        <select
+                          className={inputClass}
+                          value={entry.sudokuSize}
+                          onChange={(event) => {
+                            const sudokuSize = Number(
+                              event.target.value,
+                            ) as BookletEntry['sudokuSize'];
+                            updateEntry(entry.id, {
+                              sudokuSize,
+                              sudokuSymbols: defaultSymbols(sudokuSize),
+                            });
+                          }}
+                        >
+                          <option value={4}>{t('generator.sudoku.size4')}</option>
+                          <option value={6}>{t('generator.sudoku.size6')}</option>
+                          <option value={9}>{t('generator.sudoku.size9')}</option>
+                        </select>
+                      </Field>
+                      {entry.sudokuSize < 9 && (
+                        <Field label={t('generator.sudoku.display')}>
+                          <div className="inline-flex rounded-lg border border-slate-300 p-0.5">
+                            {[
+                              { value: true, label: t('generator.sudoku.displaySymbols') },
+                              { value: false, label: t('generator.sudoku.displayNumbers') },
+                            ].map((option) => (
+                              <button
+                                key={String(option.value)}
+                                type="button"
+                                aria-pressed={entry.sudokuSymbols === option.value}
+                                className={`rounded-md px-3 py-2 text-xs ${
+                                  entry.sudokuSymbols === option.value
+                                    ? 'bg-brand-500 text-white'
+                                    : 'text-slate-600 hover:bg-slate-50'
+                                }`}
+                                onClick={() =>
+                                  updateEntry(entry.id, { sudokuSymbols: option.value })
+                                }
+                              >
+                                {option.label}
+                              </button>
+                            ))}
+                          </div>
+                        </Field>
+                      )}
+                    </>
                   )}
                   <div className="flex items-end gap-2">
                     <Field label={t('generator.common.difficulty')}>

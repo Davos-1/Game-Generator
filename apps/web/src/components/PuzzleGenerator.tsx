@@ -11,6 +11,7 @@ import {
   configFromParams,
   configToParams,
   defaultConfig,
+  defaultSymbols,
   fileName,
   loadConfig,
   newSeed,
@@ -435,20 +436,46 @@ function SudokuFields({
 }) {
   return (
     <>
-      <Field
-        label={t('generator.sudoku.size')}
-        hint={config.size < 9 ? t('generator.sudoku.kidsHint') : ''}
-      >
+      <Field label={t('generator.sudoku.size')}>
         <select
           className={inputClass}
           value={config.size}
-          onChange={(event) => update({ size: Number(event.target.value) })}
+          onChange={(event) => {
+            // Beim Wechsel die passende Darstellung vorschlagen; das 9×9 kennt
+            // ohnehin nur Zahlen.
+            const size = Number(event.target.value) as (typeof config)['size'];
+            update({ size, symbols: defaultSymbols(size) });
+          }}
         >
           <option value={4}>{t('generator.sudoku.size4')}</option>
           <option value={6}>{t('generator.sudoku.size6')}</option>
           <option value={9}>{t('generator.sudoku.size9')}</option>
         </select>
       </Field>
+      {config.size < 9 && (
+        <Field label={t('generator.sudoku.display')} hint={t('generator.sudoku.kidsHint')}>
+          <div className="inline-flex w-full rounded-lg border border-slate-300 p-0.5">
+            {[
+              { value: true, label: t('generator.sudoku.displaySymbols') },
+              { value: false, label: t('generator.sudoku.displayNumbers') },
+            ].map((option) => (
+              <button
+                key={String(option.value)}
+                type="button"
+                aria-pressed={config.symbols === option.value}
+                className={`flex-1 rounded-md px-2 py-2 text-sm ${
+                  config.symbols === option.value
+                    ? 'bg-brand-500 text-white'
+                    : 'text-slate-600 hover:bg-slate-50'
+                }`}
+                onClick={() => update({ symbols: option.value })}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </Field>
+      )}
       <Field label={t('generator.common.difficulty')}>
         <DifficultySelect
           value={config.difficulty}
