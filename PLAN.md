@@ -152,6 +152,16 @@ Arbeitsweise: pro Arbeitspaket Plan vorlegen → umsetzen → Review/Tests → e
 
 **AP10 — Launch-Härtung:** Mobile-Optimierung (Eltern kommen via Handy!), Print-Tests auf echten Druckern, Ladezeit, Analytics, 404/Fehlerseiten. Abnahme: Testlauf mit 3–5 echten Nutzern (Bekannte mit Kindern).
 
+Nach dem Launch: weitere Rätseltypen, in dieser Reihenfolge nach Zielgruppen-Priorität. Jedes Paket läuft in zwei Schritten: zuerst die Engine (unabhängig, keine Render-Abhängigkeit), danach Render-Integration + Web-Schicht (Konfigurator, i18n, Landing-Pages, Gratis-Beispiel-PDF, Worker-Rücksprungpfad).
+
+**AP11 — Engine Punkte-zu-Punkte:** kuratierte Umriss-Formen (Stern, Herz, Haus, Pfeil, Tannenbaum) als geschlossene Polygone, per Bogenlänge auf die zur Schwierigkeit passende Punktanzahl umgerechnet (14/24/40). Abnahme: Tests grün, für jede Form und Stufe ausreichend Punktabstand fürs Drucken.
+
+**AP12 — Schattenrätsel:** Icon einer passenden Silhouette unter Ablenkern zuordnen; nutzt die bestehenden Icon-Pfade aus `packages/render/src/icons.ts`, braucht zusätzlich eine gefüllte, konturlose Darstellung derselben Pfade.
+
+**AP13 — Zahlenrätsel/Kakuro:** Gitter mit Summen-Vorgaben, Eindeutigkeits-Solver analog Sudoku, Schwierigkeit über Anzahl/Grösse der Blöcke.
+
+**AP14 — Kreuzworträtsel:** Wort-/Hinweis-Datenbank pro Thema, Gitter-Füllalgorithmus mit Kreuzungsbedingung, Hinweis-Spalte im Layout. Technisch am aufwändigsten, deshalb zuletzt und erst nach Abschluss laufender Render-Layout-Arbeiten.
+
 ---
 
 ## 8. Offene Punkte / Risiken (ehrlich)
