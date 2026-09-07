@@ -6,12 +6,13 @@ Spezifikation für die Umsetzung mit Claude Code. Sprache der Website: Deutsch (
 
 ## 1. Produktvision
 
-Browser-basierter Generator für personalisierte, ausdruckbare Rätsel (PDF). Nutzer konfigurieren Rätsel live mit Vorschau, laden Einzelrätsel gratis herunter und kaufen personalisierte Rätselhefte (Themen-Design, Namen der Gäste, mehrseitig mit Deckblatt und Lösungen) als Premium-PDF.
+Browser-basierter Generator für personalisierte, ausdruckbare Rätsel (PDF). Nutzer konfigurieren Rätsel live mit Vorschau und kaufen sowohl Einzelrätsel als auch personalisierte Rätselhefte (Themen-Design, Namen der Gäste, mehrseitig mit Deckblatt und Lösungen) als wasserzeichenfreies PDF.
 
 **Geschäftsmodell:**
-- Einzelrätsel (Standarddesign): gratis, ohne Wasserzeichen → Traffic, Vertrauen, SEO
-- Premium: Rätselheft + Themen-Designs + Namens-Personalisierung → Vorschau mit Wasserzeichen, Kauf schaltet sauberes PDF frei
-- Preisrahmen Heft: CHF 4–7 (im Verlauf testen), Zahlung ohne Account via Payrexx (inkl. TWINT)
+- Jede Ausgabe ist kostenpflichtig: Einzelrätsel CHF 2, Rätselheft CHF 5
+- Konfigurieren und die Vorschau am Bildschirm bleiben gratis; jede Vorschau trägt ein Wasserzeichen, erst der Kauf schaltet das PDF ohne Wasserzeichen frei
+- Zusätzlich feste, nicht personalisierte Beispiel-PDFs pro Themen-Design als Gratis-Download → Traffic, Vertrauen, SEO
+- Zahlung ohne Account via Payrexx (inkl. TWINT)
 
 **Betriebsziel:** möglichst passiv. Statisches Frontend, ein minimaler Cloudflare Worker für Zahlung/Freischaltung. Kein Login, keine Datenbank mit Nutzerkonten.
 
@@ -114,7 +115,7 @@ Clean/modern mit verspielten Akzenten: viel Weissraum, klare Typografie, pro The
 - Astro generiert statische Landing-Pages aus Daten: pro Kombination **Rätseltyp × Theme × Anlass**
   - Beispiele: «Piraten-Wortsuchrätsel für den Kindergeburtstag», «Sudoku für Kinder zum Ausdrucken», «Hochzeits-Rätselheft als PDF»
   - Struktur: H1, 200–300 Wörter einzigartiger Text (vorbereitete Textbausteine, keine Duplikate), 2–3 Beispielbilder, direkt eingebetteter Generator mit vorausgewähltem Theme, FAQ-Block mit Schema.org-Markup
-- Zusätzlich Gratis-Beispiel-PDFs pro Seite (indexierbar, Backlink-Magnet)
+- Zusätzlich feste, nicht personalisierte Gratis-Beispiel-PDFs pro Themen-Design (indexierbar, Backlink-Magnet)
 - Technisches SEO: Sitemap, sprechende URLs (`/wortsuchraetsel/piraten-kindergeburtstag`), OG-Images pro Seite generieren, Core Web Vitals (statisch = einfach)
 - Start: ca. 30–50 Seiten (3 Rätseltypen × 4 Themes × 3–4 Anlässe), Ausbau laufend
 
@@ -137,9 +138,9 @@ Arbeitsweise: pro Arbeitspaket Plan vorlegen → umsetzen → Review/Tests → e
 
 **AP3 — Engine Labyrinth + Sudoku:** analog AP2 inkl. Eindeutigkeits-Solver (Sudoku) und Kindervarianten. Abnahme: Tests grün, Schwierigkeitsgrade nachvollziehbar.
 
-**AP4 — SVG-Layout + PDF-Export:** gemeinsame Layout-Schicht (Rätsel → SVG → PDF), A4-Raster, Fonts, ein neutrales Standarddesign. Abnahme: Gratis-Einzelrätsel als sauberes PDF druckbar.
+**AP4 — SVG-Layout + PDF-Export:** gemeinsame Layout-Schicht (Rätsel → SVG → PDF), A4-Raster, Fonts, ein neutrales Standarddesign. Abnahme: Einzelrätsel als sauberes PDF druckbar.
 
-**AP5 — Generator-UI:** Konfigurator pro Rätseltyp mit Live-Vorschau, Umlaute-Handling, LocalStorage-Persistenz. Abnahme: Gratis-Flow Ende-zu-Ende nutzbar (Kern-Launch möglich!).
+**AP5 — Generator-UI:** Konfigurator pro Rätseltyp mit Live-Vorschau, Umlaute-Handling, LocalStorage-Persistenz. Abnahme: Konfigurations- und Vorschau-Flow Ende-zu-Ende nutzbar (Kern-Launch möglich!).
 
 **AP6 — Theme-System:** Theme-JSON-Schema, 4 Themes mit Assets/Wortlisten/Fonts, Theme-Vorschau. Abnahme: Themewechsel ändert Rätsel + PDF vollständig.
 
@@ -157,7 +158,7 @@ Arbeitsweise: pro Arbeitspaket Plan vorlegen → umsetzen → Review/Tests → e
 
 - **Illustrations-Lizenzen** sind der kritischste Beschaffungspunkt — vor AP6 klären und dokumentieren
 - **SEO braucht Monate**: mit 6–12 Monaten bis zu relevantem organischem Traffic rechnen; früh flankieren mit Pinterest (starker Kanal für Ausdruck-Vorlagen!) und 2–3 Eltern-Foren/Gruppen
-- **Konversions-Hypothese ungetestet**: Preis CHF 4–7 und Gratis/Premium-Schnitt nach Launch mit echten Daten prüfen
+- **Konversions-Hypothese ungetestet**: Preise (Einzelrätsel CHF 2, Rätselheft CHF 5) und Kaufbereitschaft für kostenpflichtige Einzelrätsel nach Launch mit echten Daten prüfen
 - **Client-seitige PDF-Generierung** auf alten Mobilgeräten testen (Speicher); Fallback: Auflösung der eingebetteten Assets reduzieren
 
 ---

@@ -1,0 +1,27 @@
+---
+/**
+ * Gratis-Beispiel als PDF. Der einzige Download ohne Zahlung: festes Rätsel,
+ * nicht personalisiert, aber mit Lösung und im gewählten Themen-Design.
+ */
+import { examplePdfPath, type ExampleKind } from '@/content/examples';
+import { t } from '@/i18n';
+
+interface Props {
+  kind: ExampleKind;
+  themeId?: string;
+}
+
+const { kind, themeId } = Astro.props;
+const href = examplePdfPath(kind, themeId ?? 'neutral');
+---
+
+<div class="rounded-xl border border-slate-200 bg-slate-50 p-4 sm:flex sm:items-center sm:gap-4">
+  <a
+    class="inline-flex rounded-lg bg-white px-3 py-2 text-sm font-medium text-brand-700 shadow-sm ring-1 ring-slate-300 hover:bg-slate-50"
+    href={href}
+    download
+  >
+    {t('example.download')}
+  </a>
+  <p class="mt-2 text-sm text-slate-600 sm:mt-0">{t('example.hint')}</p>
+</div>

@@ -6,40 +6,68 @@
  */
 import type { BookletConfig } from './bookletConfig';
 import { toCompact } from './bookletConfig';
+import type { PuzzleConfig } from './puzzleConfig';
+import { configToParams } from './puzzleConfig';
 
 const API = import.meta.env.PUBLIC_PAYMENT_API ?? '';
 
+/** Verkaufte Produkte: ein einzelnes Rätsel oder ein ganzes Heft. */
+export type Product = 'single' | 'booklet';
+
 export interface PaymentInfo {
   enabled: boolean;
-  priceRappen: number;
+  /** Preis je Produkt in Rappen. */
+  prices: Record<Product, number>;
   currency: string;
 }
 
-/** Genau dieselbe Zeichenkette wie beim Kauf, sonst passt der Hash nicht. */
-export const configString = (config: BookletConfig): string => JSON.stringify(toCompact(config));
+/** Fallback-Preise, solange der Worker nicht antwortet. */
+const OFFLINE: PaymentInfo = {
+  enabled: false,
+  prices: { single: 200, booklet: 500 },
+  currency: 'CHF',
+};
+
+/**
+ * Kennzeichnung einer Konfiguration. Genau dieselbe Zeichenkette wie beim
+ * Kauf, sonst passt der Hash nicht. Das Produkt steht vorne, damit ein Heft
+ * und ein Einzelrätsel nie denselben Schlüssel bekommen.
+ */
+export const bookletString = (config: BookletConfig): string =>
+  `booklet:${JSON.stringify(toCompact(config))}`;
+
+export const puzzleString = (config: PuzzleConfig): string =>
+  `single:${config.kind}:${configToParams(config).toString()}`;
 
 export const isConfigured = (): boolean => API.length > 0;
 
 export async function fetchPaymentInfo(): Promise<PaymentInfo> {
-  if (!isConfigured()) return { enabled: false, priceRappen: 500, currency: 'CHF' };
+  if (!isConfigured()) return OFFLINE;
   try {
     const response = await fetch(`${API}/api/config`);
-    if (!response.ok) return { enabled: false, priceRappen: 500, currency: 'CHF' };
+    if (!response.ok) return OFFLINE;
     return (await response.json()) as PaymentInfo;
   } catch {
-    return { enabled: false, priceRappen: 500, currency: 'CHF' };
+    return OFFLINE;
   }
+}
+
+export interface CheckoutOptions {
+  config: string;
+  purpose: string;
+  product: Product;
+  /** Seite, auf die nach der Zahlung zurückgesprungen wird, z. B. «/sudoku». */
+  returnPath: string;
 }
 
 /** Startet den Kauf und liefert die Adresse der Bezahlseite. */
 export async function startCheckout(
-  config: BookletConfig,
-  purpose: string,
+  options: CheckoutOptions,
 ): Promise<{ paymentId: string; url: string }> {
   const response = await fetch(`${API}/api/checkout`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ config: configString(config), purpose }),
+    body: JSON.stringify(options),
   });
   if (!response.ok) throw new Error('Der Kauf konnte nicht gestartet werden.');
   return (await response.json()) as { paymentId: string; url: string };
@@ -51,14 +79,14 @@ export async function fetchStatus(paymentId: string): Promise<{ paid: boolean; t
   return (await response.json()) as { paid: boolean; token?: string };
 }
 
-/** Prüft beim Worker, ob das Token zu genau diesem Heft gehört. */
-export async function unlock(token: string, config: BookletConfig): Promise<boolean> {
+/** Prüft beim Worker, ob das Token zu genau dieser Konfiguration gehört. */
+export async function unlock(token: string, config: string): Promise<boolean> {
   if (!isConfigured()) return false;
   try {
     const response = await fetch(`${API}/api/unlock`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ token, config: configString(config) }),
+      body: JSON.stringify({ token, config }),
     });
     if (!response.ok) return false;
     return ((await response.json()) as { ok: boolean }).ok;
@@ -69,7 +97,7 @@ export async function unlock(token: string, config: BookletConfig): Promise<bool
 
 const TOKEN_KEY = 'raetselheft:tokens';
 
-/** Freigeschaltete Hefte: Konfiguration als Schlüssel, Token als Wert. */
+/** Freigeschaltete Käufe: Konfiguration als Schlüssel, Token als Wert. */
 function readTokens(): Record<string, string> {
   try {
     const raw = window.localStorage.getItem(TOKEN_KEY);
@@ -79,19 +107,18 @@ function readTokens(): Record<string, string> {
   }
 }
 
-export function rememberToken(config: BookletConfig, token: string): void {
+export function rememberToken(config: string, token: string): void {
   try {
     const tokens = readTokens();
-    tokens[configString(config)] = token;
+    tokens[config] = token;
     window.localStorage.setItem(TOKEN_KEY, JSON.stringify(tokens));
   } catch {
     // Ohne Speicher bleibt die Freischaltung auf diese Sitzung beschränkt.
   }
 }
 
-export const tokenFor = (config: BookletConfig): string | undefined =>
-  readTokens()[configString(config)];
+export const tokenFor = (config: string): string | undefined => readTokens()[config];
 
 /** Preis als Text, z. B. «CHF 5.00». */
-export const formatPrice = (info: PaymentInfo): string =>
-  `${info.currency} ${(info.priceRappen / 100).toFixed(2)}`;
+export const formatPrice = (info: PaymentInfo, product: Product): string =>
+  `${info.currency} ${(info.prices[product] / 100).toFixed(2)}`;

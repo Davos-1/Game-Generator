@@ -1,12 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { t } from '../i18n';
-import {
-  buildPages,
-  buildPdf,
-  buildPuzzle,
-  pageToSvgString,
-  type RenderedPages,
-} from '../lib/render';
+import { buildPages, buildPdf, buildPuzzle, pageToSvgString } from '../lib/render';
+import type { PuzzleItem } from '@raetselheft/render';
+import { puzzleString } from '../lib/payment';
+import { usePurchase } from '../lib/purchase';
 import {
   configFromParams,
   configToParams,
@@ -29,6 +26,24 @@ interface Props {
   theme?: string;
 }
 
+/**
+ * Seite je Rätseltyp, auf die Payrexx zurückführt. Landing-Pages sind nicht
+ * dabei: der Worker lässt nur diese drei Adressen zu, und die Einstellungen
+ * kommen ohnehin aus dem Speicher zurück.
+ */
+const RETURN_PATHS: Record<PuzzleKind, string> = {
+  wordsearch: '/wortsuchraetsel',
+  maze: '/labyrinth',
+  sudoku: '/sudoku',
+};
+
+/** Parameter der Bezahlseite; sie gehören nicht zur Rätsel-Konfiguration. */
+const PAYMENT_PARAMS = ['zahlung', 'status'];
+
+/** Vorschau und Vorschau-PDF tragen ein Wasserzeichen, das gekaufte PDF nicht. */
+const watermark = (unlocked: boolean): { watermark?: string } =>
+  unlocked ? {} : { watermark: t('payment.watermark') };
+
 type Status = 'loading' | 'ready' | 'error';
 
 /**
@@ -49,11 +64,17 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
   const [tab, setTab] = useState<'puzzle' | 'solution'>('puzzle');
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
-  const pagesRef = useRef<RenderedPages | undefined>(undefined);
+  const itemRef = useRef<PuzzleItem | undefined>(undefined);
+  const purchase = usePurchase({
+    product: 'single',
+    returnPath: RETURN_PATHS[kind],
+    config: puzzleString(config),
+  });
 
   // Beim ersten Rendern: URL schlägt gespeicherte Konfiguration, sonst Standard.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    for (const name of PAYMENT_PARAMS) params.delete(name);
     if (params.size > 0) {
       setConfig(configFromParams(kind, params));
       return;
@@ -97,20 +118,20 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
       void (async () => {
         try {
           const { item, notes: newNotes } = buildPuzzle(config);
-          const pages = await buildPages(config, item);
+          const pages = await buildPages(config, item, watermark(purchase.unlocked));
           const [puzzle, solution] = await Promise.all([
             pageToSvgString(pages.puzzle),
             pageToSvgString(pages.solution),
           ]);
           if (cancelled) return;
-          pagesRef.current = pages;
+          itemRef.current = item;
           setSvg({ puzzle, solution });
           setNotes(newNotes);
           setError('');
           setStatus('ready');
         } catch (cause) {
           if (cancelled) return;
-          pagesRef.current = undefined;
+          itemRef.current = undefined;
           setError(cause instanceof Error ? cause.message : t('generator.common.error'));
           setStatus('error');
         }
@@ -120,7 +141,7 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
       cancelled = true;
       window.clearTimeout(handle);
     };
-  }, [config]);
+  }, [config, purchase.unlocked]);
 
   // Einstellungen in URL und LocalStorage spiegeln.
   useEffect(() => {
@@ -132,10 +153,11 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
   }, [config]);
 
   const download = useCallback(async (): Promise<void> => {
-    const pages = pagesRef.current;
-    if (!pages) return;
+    const item = itemRef.current;
+    if (!item) return;
     setBusy(true);
     try {
+      const pages = await buildPages(config, item, watermark(purchase.unlocked));
       const blob = await buildPdf(config, pages);
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -150,7 +172,12 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
     } finally {
       setBusy(false);
     }
-  }, [config]);
+  }, [config, purchase.unlocked]);
+
+  const buy = useCallback(async (): Promise<void> => {
+    const title = config.title.trim() || t(`generator.${config.kind}.defaultTitle`);
+    await purchase.buy(`${t(`booklet.kinds.${config.kind}`)}: ${title}`);
+  }, [config.kind, config.title, purchase]);
 
   const share = useCallback(async (): Promise<void> => {
     try {
@@ -239,16 +266,45 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
           </button>
         </div>
 
-        <div>
-          <button
-            type="button"
-            className={primaryButton}
-            disabled={status !== 'ready' || busy}
-            onClick={() => void download()}
-          >
-            {busy ? t('generator.common.downloading') : t('generator.common.download')}
-          </button>
-          <p className="mt-2 text-sm text-slate-500">{t('generator.common.free')}</p>
+        <div className="grid gap-2">
+          {purchase.unlocked ? (
+            <>
+              <button
+                type="button"
+                className={primaryButton}
+                disabled={status !== 'ready' || busy}
+                onClick={() => void download()}
+              >
+                {busy ? t('generator.common.downloading') : t('payment.downloadClean')}
+              </button>
+              <p className="text-sm text-emerald-700">{t('payment.unlockedSingle')}</p>
+            </>
+          ) : (
+            <>
+              <button
+                type="button"
+                className={primaryButton}
+                disabled={!purchase.enabled || status !== 'ready' || purchase.busy}
+                onClick={() => void buy()}
+              >
+                {purchase.enabled
+                  ? `${t('payment.buySingle')} – ${purchase.price}`
+                  : t('payment.buySingle')}
+              </button>
+              <p className="text-sm text-slate-500">
+                {purchase.enabled ? t('payment.ready') : t('payment.notReady')}
+              </p>
+              <button
+                type="button"
+                className={secondaryButton}
+                disabled={status !== 'ready' || busy}
+                onClick={() => void download()}
+              >
+                {busy ? t('generator.common.downloading') : t('payment.downloadPreview')}
+              </button>
+            </>
+          )}
+          {purchase.note && <p className="text-sm text-brand-700">{purchase.note}</p>}
         </div>
 
         {notes.length > 0 && (

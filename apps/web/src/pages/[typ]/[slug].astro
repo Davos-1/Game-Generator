@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PuzzleGenerator from '@/components/PuzzleGenerator';
+import ExampleDownload from '@/components/ExampleDownload.astro';
 import {
   allLandingPages,
   copy,
@@ -120,6 +121,9 @@ const schema = {
 
   <section class="mt-12">
     <h2 class="text-xl font-semibold">{t('landing.createNow')}</h2>
+    <div class="mt-6 max-w-2xl">
+      <ExampleDownload kind={page.kind} {...page.themeId ? { themeId: page.themeId } : {}} />
+    </div>
     <div class="mt-6">
       <PuzzleGenerator
         kind={page.kind}

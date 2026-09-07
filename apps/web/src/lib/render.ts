@@ -119,21 +119,30 @@ export interface RenderedPages {
   solution: PageLayout;
 }
 
-/** Baut Rätsel- und Lösungsseite; beide teilen sich dieselbe Layout-Schicht. */
-export async function buildPages(config: PuzzleConfig, item: PuzzleItem): Promise<RenderedPages> {
+/**
+ * Baut Rätsel- und Lösungsseite; beide teilen sich dieselbe Layout-Schicht.
+ * Mit «watermark» entsteht die Vorschau, ohne das gekaufte PDF.
+ */
+export async function buildPages(
+  config: PuzzleConfig,
+  item: PuzzleItem,
+  options: { watermark?: string } = {},
+): Promise<RenderedPages> {
   const [{ puzzlePage, solutionPages }, measurer] = await Promise.all([
     import('@raetselheft/render/pages'),
     getMeasurer(),
   ]);
-  const options = pageOptions(config);
+  const base = pageOptions(config);
+  const mark = options.watermark ? { watermark: options.watermark } : {};
   // Nur beim Sudoku steuerbar; sonst entscheidet die Layout-Schicht.
   const symbols = config.kind === 'sudoku' ? { symbols: config.symbols } : {};
-  const puzzle = puzzlePage(item, measurer, { ...options, ...symbols });
-  const [solution] = solutionPages([{ item, caption: options.title }], measurer, {
+  const puzzle = puzzlePage(item, measurer, { ...base, ...symbols, ...mark });
+  const [solution] = solutionPages([{ item, caption: base.title }], measurer, {
     title: t('generator.common.solutionTitle'),
     footerLeft: t('site.domain'),
-    theme: options.theme,
+    theme: base.theme,
     ...symbols,
+    ...mark,
   });
   return { puzzle, solution: solution ?? puzzle };
 }

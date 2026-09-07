@@ -6,6 +6,8 @@ import {
   RequestError,
   startCheckout,
   unlock,
+  type CheckoutRequest,
+  type CheckoutResult,
   type Deps,
   type Store,
 } from './handlers';
@@ -72,7 +74,7 @@ function scenario(now = 1_800_000_000_000): Scenario {
       fetchImpl: fetchMock as unknown as typeof fetch,
     }),
     tokenSecret: SECRET,
-    priceRappen: 500,
+    prices: { single: 200, booklet: 500 },
     currency: 'CHF',
     siteOrigin: 'https://raetselheft.ch',
     now: () => now,
@@ -124,6 +126,21 @@ describe('Payrexx-Status', () => {
   });
 });
 
+/** Kauf mit den üblichen Angaben; einzelne Felder lassen sich überschreiben. */
+const checkout = (
+  deps: Deps,
+  config: string = CONFIG,
+  purpose = 'X',
+  extra: Partial<CheckoutRequest> = {},
+): Promise<CheckoutResult> =>
+  startCheckout(deps, {
+    config,
+    purpose,
+    product: 'booklet',
+    returnPath: '/raetselheft',
+    ...extra,
+  });
+
 describe('Kauf-Ablauf', () => {
   let s: Scenario;
   beforeEach(() => {
@@ -131,7 +148,7 @@ describe('Kauf-Ablauf', () => {
   });
 
   it('legt eine Bezahlseite an und merkt sich die Konfiguration', async () => {
-    const result = await startCheckout(s.deps, CONFIG, 'Piraten-Rätselheft');
+    const result = await checkout(s.deps, CONFIG, 'Piraten-Rätselheft');
     expect(result.url).toBe('https://pay.example/4711');
 
     const request = s.fetchMock.mock.calls[0] as unknown as [
@@ -151,11 +168,37 @@ describe('Kauf-Ablauf', () => {
     expect(JSON.parse(stored?.value ?? '{}')).toMatchObject({ paid: false, gatewayId: 4711 });
   });
 
-  it('weist leere und masslose Konfigurationen ab', async () => {
-    await expect(startCheckout(s.deps, '', 'X')).rejects.toBeInstanceOf(RequestError);
-    await expect(startCheckout(s.deps, 'x'.repeat(20_001), 'X')).rejects.toBeInstanceOf(
-      RequestError,
+  it('nimmt für ein Einzelrätsel den kleineren Preis', async () => {
+    const result = await checkout(s.deps, CONFIG, 'Sudoku', {
+      product: 'single',
+      returnPath: '/sudoku',
+    });
+    const request = s.fetchMock.mock.calls[0] as unknown as [string, { body: string }];
+    const body = JSON.parse(request[1].body) as Record<string, unknown>;
+    expect(body.amount).toBe(200);
+    expect(String(body.successRedirectUrl)).toBe(
+      `https://raetselheft.ch/sudoku?zahlung=${result.paymentId}&status=ok`,
     );
+  });
+
+  it('leitet nur auf bekannte Seiten zurück', async () => {
+    // Ein untergeschobener Pfad darf keine Weiterleitung erzeugen.
+    for (const returnPath of ['https://boese.example', '/raetselheft', '//boese.example', '/']) {
+      await expect(
+        checkout(s.deps, CONFIG, 'X', { product: 'single', returnPath }),
+      ).rejects.toMatchObject({ status: 400 });
+    }
+    await expect(
+      checkout(s.deps, CONFIG, 'X', {
+        product: 'unbekannt' as CheckoutRequest['product'],
+        returnPath: '/raetselheft',
+      }),
+    ).rejects.toMatchObject({ status: 400 });
+  });
+
+  it('weist leere und masslose Konfigurationen ab', async () => {
+    await expect(checkout(s.deps, '', 'X')).rejects.toBeInstanceOf(RequestError);
+    await expect(checkout(s.deps, 'x'.repeat(20_001), 'X')).rejects.toBeInstanceOf(RequestError);
   });
 
   it('meldet einen Fehler, wenn Payrexx nicht mitspielt', async () => {
@@ -163,16 +206,16 @@ describe('Kauf-Ablauf', () => {
     broken.fetchMock.mockResolvedValue(
       new Response(JSON.stringify({ message: 'nope' }), { status: 400 }),
     );
-    await expect(startCheckout(broken.deps, CONFIG, 'X')).rejects.toMatchObject({ status: 502 });
+    await expect(checkout(broken.deps, CONFIG, 'X')).rejects.toMatchObject({ status: 502 });
   });
 
   it('gibt vor der Zahlung kein Token heraus', async () => {
-    const { paymentId } = await startCheckout(s.deps, CONFIG, 'X');
+    const { paymentId } = await checkout(s.deps, CONFIG, 'X');
     expect(await checkStatus(s.deps, paymentId)).toEqual({ paid: false });
   });
 
   it('schaltet nach bestätigter Zahlung frei', async () => {
-    const { paymentId } = await startCheckout(s.deps, CONFIG, 'X');
+    const { paymentId } = await checkout(s.deps, CONFIG, 'X');
     s.gatewayStatus.value = 'confirmed';
     const status = await checkStatus(s.deps, paymentId);
     expect(status.paid).toBe(true);
@@ -181,7 +224,7 @@ describe('Kauf-Ablauf', () => {
   });
 
   it('schaltet mit einem fremden Heft nicht frei', async () => {
-    const { paymentId } = await startCheckout(s.deps, CONFIG, 'X');
+    const { paymentId } = await checkout(s.deps, CONFIG, 'X');
     s.gatewayStatus.value = 'confirmed';
     const { token } = await checkStatus(s.deps, paymentId);
     expect(await unlock(s.deps, token as string, '{"anderes":"heft"}')).toBe(false);
@@ -189,7 +232,7 @@ describe('Kauf-Ablauf', () => {
   });
 
   it('behandelt eine unerreichbare Payrexx-Schnittstelle als «noch nicht bezahlt»', async () => {
-    const { paymentId } = await startCheckout(s.deps, CONFIG, 'X');
+    const { paymentId } = await checkout(s.deps, CONFIG, 'X');
     s.fetchMock.mockRejectedValue(new Error('Netzwerk weg'));
     expect(await checkStatus(s.deps, paymentId)).toEqual({ paid: false });
   });
@@ -199,7 +242,7 @@ describe('Kauf-Ablauf', () => {
   });
 
   it('bleibt bei doppelter Abfrage stabil', async () => {
-    const { paymentId } = await startCheckout(s.deps, CONFIG, 'X');
+    const { paymentId } = await checkout(s.deps, CONFIG, 'X');
     s.gatewayStatus.value = 'confirmed';
     const first = await checkStatus(s.deps, paymentId);
     const second = await checkStatus(s.deps, paymentId);
@@ -215,7 +258,7 @@ describe('Kauf-Ablauf', () => {
 describe('Meldung von Payrexx', () => {
   it('markiert die Zahlung als bezahlt', async () => {
     const s = scenario();
-    const { paymentId } = await startCheckout(s.deps, CONFIG, 'X');
+    const { paymentId } = await checkout(s.deps, CONFIG, 'X');
     await handleWebhook(s.deps, {
       transaction: { status: 'confirmed', referenceId: await hashConfig(CONFIG) },
     });
@@ -227,7 +270,7 @@ describe('Meldung von Payrexx', () => {
 
   it('ignoriert unbezahlte und unbekannte Meldungen', async () => {
     const s = scenario();
-    const { paymentId } = await startCheckout(s.deps, CONFIG, 'X');
+    const { paymentId } = await checkout(s.deps, CONFIG, 'X');
     await handleWebhook(s.deps, {
       transaction: { status: 'cancelled', referenceId: await hashConfig(CONFIG) },
     });

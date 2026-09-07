@@ -3,7 +3,7 @@
     "name": "Rätselheft",
     "domain": "raetselheft.ch",
     "tagline": "Personalisierte Rätsel zum Ausdrucken",
-    "description": "Wortsuchrätsel, Labyrinthe und Sudokus als PDF erstellen – gratis für Einzelrätsel, personalisierte Rätselhefte für Kindergeburtstag, Hochzeit und Firmenfeier."
+    "description": "Wortsuchrätsel, Labyrinthe und Sudokus als druckfertiges PDF erstellen – Einzelrätsel für CHF 2, personalisierte Rätselhefte für Kindergeburtstag, Hochzeit und Firmenfeier für CHF 5."
   },
   "nav": {
     "home": "Start",
@@ -14,7 +14,7 @@
   },
   "home": {
     "title": "Rätsel zum Ausdrucken – in Sekunden erstellt",
-    "intro": "Wortsuchrätsel, Labyrinth und Sudoku als druckfertiges PDF. Einzelrätsel gratis und ohne Wasserzeichen. Personalisierte Rätselhefte mit Themen-Design folgen als Premium.",
+    "intro": "Wortsuchrätsel, Labyrinth und Sudoku als druckfertiges PDF. Frei zusammenstellen und in der Vorschau ansehen, danach für CHF 2 herunterladen. Personalisierte Rätselhefte mit Themen-Design und Lösungsteil kosten CHF 5.",
     "status": "Wähle einen Rätseltyp und lege los.",
     "cards": {
       "wordsearch": "Eigene Wörter oder Namen der Gäste im Buchstabengitter verstecken.",
@@ -56,7 +56,6 @@
       "loading": "Vorschau wird geladen …",
       "error": "Das Rätsel konnte nicht erzeugt werden.",
       "notes": "Hinweise",
-      "free": "Gratis, ohne Wasserzeichen",
       "theme": "Themen-Design",
       "themeHint": "Färbt Rätsel und PDF ein. Die Website selbst bleibt neutral.",
       "solutionsTitle": "Lösungen"
@@ -136,23 +135,37 @@
     "pageOf": "Seite {n} von {total}",
     "previous": "Zurück",
     "next": "Weiter",
-    "downloadPreview": "Vorschau als PDF (mit Wasserzeichen)",
     "buy": "Heft kaufen",
-    "buyHint": "Der Kauf wird als Nächstes umgesetzt. Bis dahin gibt es die Vorschau mit Wasserzeichen.",
-    "watermark": "VORSCHAU",
     "linkTooLong": "Das Heft ist für einen Teilen-Link zu umfangreich. Es bleibt aber in diesem Browser gespeichert.",
     "building": "Heft wird gebaut …",
     "kinds": {
       "wordsearch": "Wortsuchrätsel",
       "maze": "Labyrinth",
       "sudoku": "Sudoku"
-    },
-    "buyReady": "Bezahlung mit Karte oder TWINT, ohne Konto. Danach lädt das PDF ohne Wasserzeichen.",
+    }
+  },
+  "payment": {
+    "watermark": "VORSCHAU",
+    "buySingle": "Rätsel kaufen",
+    "ready": "Bezahlung mit Karte oder TWINT, ohne Konto. Danach lädt das PDF ohne Wasserzeichen.",
+    "notReady": "Der Kauf ist noch nicht aufgeschaltet. Bis dahin gibt es die Vorschau mit Wasserzeichen.",
+    "downloadPreview": "Vorschau als PDF (mit Wasserzeichen)",
     "downloadClean": "PDF herunterladen (ohne Wasserzeichen)",
-    "unlocked": "Dieses Heft ist freigeschaltet.",
-    "paymentDone": "Zahlung bestätigt. Das Heft ist freigeschaltet.",
-    "paymentPending": "Die Zahlung ist noch nicht bestätigt. Lade die Seite in einer Minute neu.",
-    "paymentCancelled": "Die Zahlung wurde abgebrochen. Das Heft bleibt gespeichert."
+    "unlockedSingle": "Dieses Rätsel ist freigeschaltet.",
+    "unlockedBooklet": "Dieses Heft ist freigeschaltet.",
+    "done": "Zahlung bestätigt. Das PDF ist freigeschaltet.",
+    "pending": "Die Zahlung ist noch nicht bestätigt. Lade die Seite in einer Minute neu.",
+    "cancelled": "Die Zahlung wurde abgebrochen. Deine Einstellungen bleiben gespeichert."
+  },
+  "example": {
+    "subtitle": "Gratis-Beispiel von raetselheft.ch",
+    "title": {
+      "wordsearch": "Wortsuchrätsel",
+      "maze": "Labyrinth",
+      "sudoku": "Sudoku"
+    },
+    "download": "Beispiel als PDF (gratis)",
+    "hint": "Fertiges Blatt mit Lösung zum Ausdrucken. Dein eigenes Rätsel mit Namen und Wunschwörtern stellst du oben zusammen."
   },
   "landing": {
     "howTo": "So gehts",

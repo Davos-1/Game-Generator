@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PuzzleGenerator from '@/components/PuzzleGenerator';
+import ExampleDownload from '@/components/ExampleDownload.astro';
 import { copy } from '@/content/landing';
 import { t } from '@/i18n';
 ---
@@ -8,6 +9,9 @@ import { t } from '@/i18n';
 <BaseLayout title={t('nav.sudoku')} description={copy.puzzleTypes.sudoku.short}>
   <h1 class="text-3xl font-bold tracking-tight">{t('nav.sudoku')}</h1>
   <p class="mt-2 max-w-2xl text-slate-600">{copy.puzzleTypes.sudoku.short}</p>
+  <div class="mt-6 max-w-2xl">
+    <ExampleDownload kind="sudoku" />
+  </div>
   <div class="mt-8">
     <PuzzleGenerator kind="sudoku" client:load />
   </div>

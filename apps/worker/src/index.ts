@@ -11,6 +11,7 @@ import {
   RequestError,
   startCheckout,
   unlock,
+  type CheckoutRequest,
   type Deps,
 } from './handlers';
 import { PayrexxClient } from './payrexx';
@@ -25,6 +26,11 @@ const json = (data: unknown, status = 200, origin = '*'): Response =>
     },
   });
 
+const prices = (env: Env): Deps['prices'] => ({
+  single: Number.parseInt(env.PRICE_SINGLE_RAPPEN, 10),
+  booklet: Number.parseInt(env.PRICE_BOOKLET_RAPPEN, 10),
+});
+
 function makeDeps(env: Env): Deps | undefined {
   if (!env.PAYREXX_INSTANCE || !env.PAYREXX_API_KEY || !env.TOKEN_SECRET) return undefined;
   return {
@@ -36,7 +42,7 @@ function makeDeps(env: Env): Deps | undefined {
       ...(env.PAYREXX_BASE_URL ? { baseUrl: env.PAYREXX_BASE_URL } : {}),
     }),
     tokenSecret: env.TOKEN_SECRET,
-    priceRappen: Number.parseInt(env.PRICE_RAPPEN, 10),
+    prices: prices(env),
     currency: env.CURRENCY,
     siteOrigin: env.SITE_ORIGIN,
   };
@@ -64,7 +70,7 @@ export default {
       return json(
         {
           enabled: makeDeps(env) !== undefined,
-          priceRappen: Number.parseInt(env.PRICE_RAPPEN, 10),
+          prices: prices(env),
           currency: env.CURRENCY,
         },
         200,
@@ -79,8 +85,13 @@ export default {
 
     try {
       if (url.pathname === '/api/checkout' && request.method === 'POST') {
-        const body: { config?: string; purpose?: string } = await request.json();
-        const result = await startCheckout(deps, body.config ?? '', body.purpose ?? 'Rätselheft');
+        const body: Partial<CheckoutRequest> = await request.json();
+        const result = await startCheckout(deps, {
+          config: body.config ?? '',
+          purpose: body.purpose ?? 'Rätselheft',
+          product: body.product ?? 'booklet',
+          returnPath: body.returnPath ?? '/raetselheft',
+        });
         return json(result, 200, origin);
       }
 

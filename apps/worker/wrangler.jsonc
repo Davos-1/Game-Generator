@@ -14,7 +14,8 @@
     },
   ],
   "vars": {
-    "PRICE_RAPPEN": "500",
+    "PRICE_BOOKLET_RAPPEN": "500",
+    "PRICE_SINGLE_RAPPEN": "200",
     "CURRENCY": "CHF",
     "SITE_ORIGIN": "https://raetselheft.ch",
     "PAYREXX_API_VERSION": "v1.15",

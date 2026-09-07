@@ -15,8 +15,7 @@ import type { Theme, ThemeInput } from './types';
 export type { Theme, ThemeInput } from './types';
 
 /**
- * Neutrales Standarddesign für die Gratis-Einzelrätsel: keine Deko, keine
- * Wortliste, nur die Grundfarben.
+ * Neutrales Standarddesign: keine Deko, keine Wortliste, nur die Grundfarben.
  */
 export const NEUTRAL_THEME: Theme = {
   id: 'neutral',

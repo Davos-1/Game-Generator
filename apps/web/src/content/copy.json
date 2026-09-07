@@ -8,7 +8,7 @@
       "howTo": [
         "Du wählst Gittergrösse, Sprache und die Wörter, die im Rätsel versteckt werden sollen.",
         "In der Vorschau siehst du sofort, wie das Buchstabengitter mit deinen Wörtern aussieht.",
-        "Mit einem Klick lädst du das fertige Wortsuchrätsel als PDF zum Ausdrucken herunter."
+        "Nach der Zahlung von CHF 2 lädst du das fertige Wortsuchrätsel als PDF zum Ausdrucken herunter, mit Lösungsseite und ohne Wasserzeichen."
       ],
       "tips": [
         "Laminiere das Blatt, damit du die gefundenen Wörter mit abwischbarem Folienstift markieren und das Rätsel mehrfach nutzen kannst.",
@@ -24,7 +24,7 @@
       "howTo": [
         "Du legst Grösse, Schwierigkeit und die Form des Labyrinths fest.",
         "Die Vorschau zeigt dir den Gang-Verlauf, bevor du dich für ein Layout entscheidest.",
-        "Über den Download-Knopf erhältst du das Labyrinth als druckfertiges PDF."
+        "Nach der Zahlung von CHF 2 erhältst du das Labyrinth als druckfertiges PDF, mit Lösungsseite und ohne Wasserzeichen."
       ],
       "tips": [
         "Verwende einen Bleistift statt eines Stifts, damit sich eine falsch eingeschlagene Abzweigung wieder wegradieren lässt.",
@@ -40,7 +40,7 @@
       "howTo": [
         "Du bestimmst den Schwierigkeitsgrad und wie viele Zahlen bereits vorgegeben sind.",
         "Die Live-Vorschau zeigt das Rätselgitter, sodass du die Verteilung der Vorgaben prüfen kannst.",
-        "Zum Schluss speicherst du das Sudoku als PDF, inklusive Lösungsseite, auf deinem Gerät."
+        "Nach der Zahlung von CHF 2 speicherst du das Sudoku als PDF auf deinem Gerät, inklusive Lösungsseite und ohne Wasserzeichen."
       ],
       "tips": [
         "Trage unsichere Zahlen zunächst klein in die Ecke des Feldes ein, bevor du dich endgültig festlegst.",
@@ -105,12 +105,12 @@
   "faq": {
     "general": [
       {
-        "q": "Ist das Erstellen eines Rätsels wirklich kostenlos?",
-        "a": "Ja, ein einzelnes Rätsel kannst du gratis konfigurieren, in der Vorschau ansehen und als PDF ohne Wasserzeichen herunterladen. Bezahlt wird nur, wenn du mehrere Rätsel als zusammenhängendes Heft möchtest, das für CHF 5 erhältlich ist."
+        "q": "Was kostet ein Rätsel?",
+        "a": "Ein einzelnes Rätsel kostet CHF 2, ein Rätselheft mit mehreren Rätseln, Deckblatt und Lösungsteil CHF 5. Konfigurieren und in der Vorschau ansehen kannst du alles frei; die Vorschau trägt ein Wasserzeichen, und nach der Zahlung lädst du das saubere PDF herunter. Fertige Beispiel-PDFs zum Anschauen gibt es gratis."
       },
       {
-        "q": "Brauche ich ein Konto, um ein Rätsel herunterzuladen?",
-        "a": "Nein, für das einzelne Rätsel legst du kein Konto an, du wählst die Einstellungen und lädst das PDF direkt herunter. Auch das Rätselheft für CHF 5 bezahlst du ohne Registrierung, ein Zahlungsvorgang genügt."
+        "q": "Brauche ich ein Konto, um ein Rätsel zu kaufen?",
+        "a": "Nein, du legst kein Konto an. Du wählst die Einstellungen, bezahlst mit Karte oder TWINT und lädst das PDF sofort herunter. Das gilt für das einzelne Rätsel wie für das Rätselheft, ein Zahlungsvorgang genügt."
       },
       {
         "q": "Welches Papier und welcher Drucker eignen sich am besten?",

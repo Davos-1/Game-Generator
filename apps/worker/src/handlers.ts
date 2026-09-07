@@ -23,14 +23,36 @@ export interface PaymentRecord {
 export const RECORD_TTL_SECONDS = 30 * 24 * 60 * 60;
 const TOKEN_TTL_SECONDS = RECORD_TTL_SECONDS;
 
+/** Verkaufte Produkte: ein einzelnes Rätsel oder ein ganzes Heft. */
+export type Product = 'single' | 'booklet';
+
+/**
+ * Seiten, auf die nach der Zahlung zurückgesprungen werden darf. Der Pfad
+ * kommt von der Website; eine feste Liste verhindert, dass jemand über eine
+ * untergeschobene Adresse weiterleitet.
+ */
+export const RETURN_PATHS: Readonly<Record<Product, readonly string[]>> = {
+  booklet: ['/raetselheft'],
+  single: ['/wortsuchraetsel', '/labyrinth', '/sudoku'],
+};
+
 export interface Deps {
   store: Store;
   client: PayrexxClient;
   tokenSecret: string;
-  priceRappen: number;
+  /** Preis je Produkt in Rappen. */
+  prices: Readonly<Record<Product, number>>;
   currency: string;
   siteOrigin: string;
   now?: () => number;
+}
+
+export interface CheckoutRequest {
+  config: string;
+  purpose: string;
+  product: Product;
+  /** Seite, auf die Payrexx zurückführt, z. B. «/sudoku». */
+  returnPath: string;
 }
 
 const key = (paymentId: string): string => `payment:${paymentId}`;
@@ -52,24 +74,28 @@ export class RequestError extends Error {
 
 /**
  * Startet eine Zahlung: legt die Bezahlseite an und merkt sich, für welche
- * Heft-Konfiguration sie gilt.
+ * Konfiguration sie gilt. Der Preis hängt am Produkt, der Rücksprung an der
+ * Seite, von der aus gekauft wurde.
  */
-export async function startCheckout(
-  deps: Deps,
-  config: string,
-  purpose: string,
-): Promise<CheckoutResult> {
+export async function startCheckout(deps: Deps, request: CheckoutRequest): Promise<CheckoutResult> {
+  const { config, purpose, product, returnPath } = request;
   if (typeof config !== 'string' || config.length === 0 || config.length > 20_000) {
-    throw new RequestError('Ungültige Heft-Konfiguration', 400);
+    throw new RequestError('Ungültige Rätsel-Konfiguration', 400);
+  }
+  if (product !== 'single' && product !== 'booklet') {
+    throw new RequestError('Unbekanntes Produkt', 400);
+  }
+  if (!RETURN_PATHS[product].includes(returnPath)) {
+    throw new RequestError('Unerlaubte Rücksprung-Adresse', 400);
   }
   const configHash = await hashConfig(config);
   const paymentId = crypto.randomUUID();
-  const returnUrl = `${deps.siteOrigin}/raetselheft?zahlung=${paymentId}`;
+  const returnUrl = `${deps.siteOrigin}${returnPath}?zahlung=${paymentId}`;
 
   let gateway;
   try {
     gateway = await deps.client.createGateway({
-      amount: deps.priceRappen,
+      amount: deps.prices[product],
       currency: deps.currency,
       purpose: purpose.slice(0, 200),
       successRedirectUrl: `${returnUrl}&status=ok`,
@@ -164,7 +190,7 @@ export async function handleWebhook(deps: Deps, body: unknown): Promise<void> {
   });
 }
 
-/** Prüft ein Freischalt-Token gegen die Heft-Konfiguration. */
+/** Prüft ein Freischalt-Token gegen die Rätsel-Konfiguration. */
 export async function unlock(deps: Deps, token: string, config: string): Promise<boolean> {
   const configHash = await hashConfig(config);
   const now = Math.floor((deps.now ?? Date.now)() / 1000);

@@ -53,8 +53,8 @@ Beobachte:
 
 - [ ] Wo zögert die Person? Wo klickt sie falsch?
 - [ ] Findet sie den Unterschied zwischen Einzelrätsel und Heft?
-- [ ] Ist klar, dass das Einzelrätsel gratis ist?
-- [ ] Versteht sie das Wasserzeichen in der Heft-Vorschau?
+- [ ] Ist klar, dass Konfigurieren und Vorschau gratis sind, aber sowohl Einzelrätsel (CHF 2) als auch Heft (CHF 5) kostenpflichtig sind?
+- [ ] Versteht sie das Wasserzeichen in der Vorschau (bei Einzelrätsel und Heft)?
 - [ ] Bemerkt sie «Neu würfeln»?
 - [ ] Kommt sie beim Heft-Builder mit der Reihenfolge zurecht?
 

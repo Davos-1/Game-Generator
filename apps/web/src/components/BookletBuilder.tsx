@@ -14,16 +14,8 @@ import {
   type BookletConfig,
   type BookletEntry,
 } from '../lib/bookletConfig';
-import {
-  fetchPaymentInfo,
-  fetchStatus,
-  formatPrice,
-  rememberToken,
-  startCheckout,
-  tokenFor,
-  unlock,
-  type PaymentInfo,
-} from '../lib/payment';
+import { bookletString } from '../lib/payment';
+import { usePurchase } from '../lib/purchase';
 import {
   defaultSymbols,
   newSeed,
@@ -55,13 +47,12 @@ export default function BookletBuilder(): React.ReactElement {
   const [linkState, setLinkState] = useState<'idle' | 'copied' | 'too-long'>('idle');
   const layoutRef = useRef<Awaited<ReturnType<typeof buildBookletPages>> | undefined>(undefined);
   const [dragId, setDragId] = useState<string | undefined>(undefined);
-  const [payment, setPayment] = useState<PaymentInfo>({
-    enabled: false,
-    priceRappen: 500,
-    currency: 'CHF',
+  const purchase = usePurchase({
+    product: 'booklet',
+    returnPath: '/raetselheft',
+    config: bookletString(config),
   });
-  const [unlocked, setUnlocked] = useState(false);
-  const [paymentNote, setPaymentNote] = useState<string>('');
+  const { unlocked } = purchase;
 
   // Beim Start: Link schlägt gespeichertes Heft, sonst Standard.
   useEffect(() => {
@@ -69,42 +60,9 @@ export default function BookletBuilder(): React.ReactElement {
     const param = params.get('h');
     void (async () => {
       const shared = param ? await decodeBooklet(param) : undefined;
-      const loaded = shared ?? loadBooklet() ?? defaultBooklet();
-      setConfig(loaded);
-      setPayment(await fetchPaymentInfo());
-
-      // Rückkehr von der Bezahlseite: Stand abfragen und freischalten.
-      const paymentId = params.get('zahlung');
-      if (!paymentId) return;
-      if (params.get('status') === 'abbruch') {
-        setPaymentNote(t('booklet.paymentCancelled'));
-        return;
-      }
-      for (let attempt = 0; attempt < 8; attempt++) {
-        const status = await fetchStatus(paymentId);
-        if (status.paid && status.token) {
-          rememberToken(loaded, status.token);
-          setPaymentNote(t('booklet.paymentDone'));
-          return;
-        }
-        await new Promise((resolve) => window.setTimeout(resolve, 1500));
-      }
-      setPaymentNote(t('booklet.paymentPending'));
+      setConfig(shared ?? loadBooklet() ?? defaultBooklet());
     })();
   }, []);
-
-  // Freischaltung gilt für genau diese Heft-Konfiguration.
-  useEffect(() => {
-    let cancelled = false;
-    void (async () => {
-      const token = tokenFor(config);
-      const ok = token ? await unlock(token, config) : false;
-      if (!cancelled) setUnlocked(ok);
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [config, paymentNote]);
 
   const update = useCallback((patch: Partial<BookletConfig>): void => {
     setConfig((current) => ({ ...current, ...patch }));
@@ -137,7 +95,7 @@ export default function BookletBuilder(): React.ReactElement {
         setLoading(true);
         const { entries, notes: buildNotes } = buildBookletItems(config);
         const layout = await buildBookletPages(config, entries, {
-          watermark: t('booklet.watermark'),
+          watermark: t('payment.watermark'),
         });
         const svg = await Promise.all(layout.map((page) => pageToSvgString(page)));
         if (cancelled) return;
@@ -194,17 +152,9 @@ export default function BookletBuilder(): React.ReactElement {
   }, [config]);
 
   const buy = useCallback(async (): Promise<void> => {
-    setBusy(true);
-    setPaymentNote('');
-    try {
-      const purpose = `${t('booklet.defaultTitle')}: ${config.title.trim() || t('booklet.defaultTitle')}`;
-      const { url } = await startCheckout(config, purpose);
-      window.location.href = url;
-    } catch (cause) {
-      setPaymentNote(cause instanceof Error ? cause.message : t('generator.common.error'));
-      setBusy(false);
-    }
-  }, [config]);
+    const title = config.title.trim() || t('booklet.defaultTitle');
+    await purchase.buy(`${t('booklet.defaultTitle')}: ${title}`);
+  }, [config.title, purchase]);
 
   const canRemove = config.entries.length > MIN_ENTRIES;
   const canAdd = config.entries.length < MAX_ENTRIES;
@@ -473,28 +423,26 @@ export default function BookletBuilder(): React.ReactElement {
                 disabled={loading || busy}
                 onClick={() => void download()}
               >
-                {busy ? t('generator.common.downloading') : t('booklet.downloadClean')}
+                {busy ? t('generator.common.downloading') : t('payment.downloadClean')}
               </button>
-              <p className="text-sm text-emerald-700">{t('booklet.unlocked')}</p>
+              <p className="text-sm text-emerald-700">{t('payment.unlockedBooklet')}</p>
             </>
           ) : (
             <>
               <button
                 type="button"
                 className={primaryButton}
-                disabled={!payment.enabled || busy}
+                disabled={!purchase.enabled || purchase.busy}
                 onClick={() => void buy()}
               >
-                {payment.enabled
-                  ? `${t('booklet.buy')} – ${formatPrice(payment)}`
-                  : t('booklet.buy')}
+                {purchase.enabled ? `${t('booklet.buy')} – ${purchase.price}` : t('booklet.buy')}
               </button>
               <p className="text-sm text-slate-500">
-                {payment.enabled ? t('booklet.buyReady') : t('booklet.buyHint')}
+                {purchase.enabled ? t('payment.ready') : t('payment.notReady')}
               </p>
             </>
           )}
-          {paymentNote && <p className="text-sm text-brand-700">{paymentNote}</p>}
+          {purchase.note && <p className="text-sm text-brand-700">{purchase.note}</p>}
           <div className="flex flex-wrap gap-2">
             {!unlocked && (
               <button
@@ -503,7 +451,7 @@ export default function BookletBuilder(): React.ReactElement {
                 disabled={loading || busy}
                 onClick={() => void download()}
               >
-                {busy ? t('generator.common.downloading') : t('booklet.downloadPreview')}
+                {busy ? t('generator.common.downloading') : t('payment.downloadPreview')}
               </button>
             )}
             <button type="button" className={secondaryButton} onClick={() => void share()}>

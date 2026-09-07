@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "pnpm beispiele && astro build",
     "preview": "astro preview",
     "typecheck": "astro check",
     "test": "vitest run --passWithNoTests",
-    "og": "vite-node scripts/generate-og.ts"
+    "og": "vite-node scripts/generate-og.ts",
+    "beispiele": "vite-node scripts/generate-examples.ts"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.5",

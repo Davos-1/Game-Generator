@@ -27,3 +27,6 @@ Thumbs.db
 # Beispielausgaben des Render-Pakets
 packages/render/samples/
 .dev.vars
+
+# Erzeugte Gratis-Beispiel-PDFs (siehe apps/web/scripts/generate-examples.ts)
+apps/web/public/beispiele/

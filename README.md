@@ -1,6 +1,6 @@
 # Rätselheft
 
-Rätsel- und Spielgenerator für Ausdrucke: Wortsuchrätsel, Labyrinth und Sudoku als druckfertiges PDF. Einzelrätsel im Standarddesign sind gratis. Personalisierte Rätselhefte mit Themen-Design (Deckblatt, Namen der Gäste, Lösungsteil) für Kindergeburtstag, Hochzeit oder Firmenfeier sind das Premium-Produkt.
+Rätsel- und Spielgenerator für Ausdrucke: Wortsuchrätsel, Labyrinth und Sudoku als druckfertiges PDF. Konfigurieren und die Vorschau am Bildschirm sind gratis, jede Vorschau trägt ein Wasserzeichen. Ein Einzelrätsel ohne Wasserzeichen kostet CHF 2, ein personalisiertes Rätselheft mit Themen-Design (Deckblatt, Namen der Gäste, Lösungsteil) für Kindergeburtstag, Hochzeit oder Firmenfeier kostet CHF 5. Feste, nicht personalisierte Beispiel-PDFs pro Themen-Design stehen zusätzlich gratis zum Download bereit.
 
 ## Voraussetzungen
 

@@ -10,4 +10,6 @@ export const OPERATOR = {
   commercialRegister: undefined as string | undefined,
 } as const;
 
-export const PRICE_CHF = 5;
+/** Preise in Franken; müssen zu den Vorgaben des Zahlungs-Workers passen. */
+export const PRICE_SINGLE_CHF = 2;
+export const PRICE_BOOKLET_CHF = 5;
