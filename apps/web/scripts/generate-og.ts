@@ -87,18 +87,18 @@ async function main(): Promise<void> {
 @font-face{font-family:'Inter';font-weight:400;src:url('${inter}') format('truetype');}
 @font-face{font-family:'Inter';font-weight:600;src:url('${interBold}') format('truetype');}
 *{margin:0;box-sizing:border-box}
-body{width:1200px;height:630px;display:flex;align-items:center;gap:56px;padding:64px;background:#fff;font-family:Inter,sans-serif}
+body{width:1200px;height:630px;display:flex;align-items:center;gap:56px;padding:64px;background:#f3f1ea;font-family:Inter,sans-serif}
 .text{flex:1}
 h1{font-family:Nunito,sans-serif;font-size:60px;line-height:1.1;color:${theme.colors.accent}}
-p{margin-top:20px;font-size:26px;color:#475569}
+p{margin-top:20px;font-size:26px;color:#54707a}
 .brand{margin-top:36px;font-weight:600;font-size:24px;color:${theme.colors.ink}}
 .puzzles{display:flex;gap:20px}
 .puzzles svg{width:220px;height:220px}
-.card{background:#fff;border:2px solid ${theme.colors.light};border-radius:20px;padding:16px}
+.card{background:#fff;border:2px solid ${theme.colors.light};border-radius:4px;padding:16px}
 </style>
 <div class="text">
   <h1>${target.title}</h1>
-  <p>Wortsuchrätsel, Labyrinth und Sudoku als druckfertiges PDF. Einzelrätsel gratis.</p>
+  <p>Wortsuchrätsel, Labyrinth und Sudoku als druckfertiges PDF. Ohne Konto, sofort zum Ausdrucken.</p>
   <div class="brand">raetselheft.ch</div>
 </div>
 <div class="puzzles">
