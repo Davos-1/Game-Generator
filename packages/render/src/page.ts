@@ -7,7 +7,6 @@ import {
   type Element,
   type Mm,
   type PageLayout,
-  type Pt,
   type TextElement,
 } from './primitives';
 import { NEUTRAL_THEME, type Theme } from './themes';
@@ -170,52 +169,17 @@ export function watermarkElements(
   box: ContentBox,
   color: string = COLORS.muted,
 ): Element[] {
-  // Zwei gegenläufige Lagen: eine einzelne Schräge lässt sich beim Lösen
-  // gedanklich ausblenden, ein Kreuzmuster nicht. Die Vorschau bleibt als
-  // Gestaltung lesbar, taugt aber nicht als fertiges Rätsel.
-  return [
-    ...layer(measurer, text, box, color, {
-      size: 32,
-      angle: -30,
-      opacity: 0.5,
-      stepY: 30,
-      gapX: 14,
-    }),
-    ...layer(measurer, text, box, color, {
-      size: 21,
-      angle: 30,
-      opacity: 0.34,
-      stepY: 22,
-      gapX: 10,
-    }),
-  ];
-}
-
-interface LayerOptions {
-  size: Pt;
-  /** Drehung in Grad im Uhrzeigersinn. */
-  angle: number;
-  opacity: number;
-  stepY: Mm;
-  gapX: Mm;
-}
-
-function layer(
-  measurer: TextMeasurer,
-  text: string,
-  box: ContentBox,
-  color: string,
-  options: LayerOptions,
-): Element[] {
   const elements: Element[] = [];
-  const width = measurer.width(text, 'display', options.size);
-  const stepX = width + options.gapX;
-  const rows = Math.ceil(box.height / options.stepY) + 3;
+  const size = 32;
+  const width = measurer.width(text, 'display', size);
+  const stepX = width + 14;
+  const stepY = 30;
+  const rows = Math.ceil(box.height / stepY) + 3;
   const cols = Math.ceil(box.width / stepX) + 3;
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       const x = box.x - stepX + c * stepX + (r % 2) * (stepX / 2);
-      const y = box.y + r * options.stepY + 8;
+      const y = box.y + r * stepY + 8;
       if (x > box.x + box.width || y > box.y + box.height + 10) continue;
       elements.push({
         type: 'text',
@@ -223,10 +187,10 @@ function layer(
         y,
         text,
         font: 'display',
-        size: options.size,
+        size,
         color,
-        opacity: options.opacity,
-        rotate: options.angle,
+        opacity: 0.5,
+        rotate: -30,
       });
     }
   }
