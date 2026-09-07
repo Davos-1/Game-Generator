@@ -31,7 +31,8 @@
   "notFound": {
     "title": "Seite nicht gefunden",
     "text": "Diese Seite gibt es leider nicht (mehr).",
-    "back": "Zur Startseite"
+    "back": "Zur Startseite",
+    "help": "Vielleicht hilft einer dieser Wege weiter."
   },
   "generator": {
     "common": {

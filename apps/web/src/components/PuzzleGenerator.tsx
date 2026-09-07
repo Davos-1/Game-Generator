@@ -188,7 +188,7 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
                 key={choice.id}
                 type="button"
                 aria-pressed={config.theme === choice.id}
-                className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm ${
+                className={`flex items-center gap-1.5 rounded-full border px-3 py-2 text-sm ${
                   config.theme === choice.id
                     ? 'border-brand-500 bg-brand-50 text-brand-700'
                     : 'border-slate-300 text-slate-600 hover:bg-slate-50'
@@ -271,7 +271,7 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
                 type="button"
                 role="tab"
                 aria-selected={tab === value}
-                className={`rounded-md px-3 py-1.5 text-sm ${
+                className={`rounded-md px-3 py-2 text-sm ${
                   tab === value ? 'bg-brand-500 text-white' : 'text-slate-600 hover:bg-slate-50'
                 }`}
                 onClick={() => setTab(value)}
@@ -350,7 +350,7 @@ function DifficultySelect({
           key={level}
           type="button"
           aria-pressed={value === level}
-          className={`flex-1 rounded-md px-2 py-1.5 text-sm ${
+          className={`flex-1 rounded-md px-2 py-2 text-sm ${
             value === level ? 'bg-brand-500 text-white' : 'text-slate-600 hover:bg-slate-50'
           }`}
           onClick={() => onChange(level)}
@@ -389,7 +389,7 @@ function WordSearchFields({
           <button
             key={choice.id}
             type="button"
-            className="rounded-full border border-slate-300 px-2.5 py-0.5 text-xs hover:bg-slate-50"
+            className="rounded-full border border-slate-300 px-3 py-1.5 text-xs hover:bg-slate-50"
             onClick={() => update({ words: themeWords(choice.id).join(', ') })}
           >
             {choice.name}

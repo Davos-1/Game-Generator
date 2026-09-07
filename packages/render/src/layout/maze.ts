@@ -24,7 +24,19 @@ export function mazeElements(
 ): Element[] {
   const compact = options.compact ?? false;
   const palette = options.palette ?? COLORS;
-  const area = fitBox(box, maze.width / maze.height);
+  // Start- und Zielmarke liegen ober- und unterhalb des Gitters. Ohne
+  // reservierten Streifen ragten sie aus dem Rahmen und überlappten in
+  // Lösungskacheln die Beschriftung.
+  const reserve = Math.min(compact ? 6 : 10, box.height * 0.08);
+  const area = fitBox(
+    {
+      x: box.x,
+      y: box.y + reserve,
+      width: box.width,
+      height: Math.max(10, box.height - 2 * reserve),
+    },
+    maze.width / maze.height,
+  );
   const cell = Math.min(area.width / maze.width, area.height / maze.height);
   const originX = area.x + (area.width - cell * maze.width) / 2;
   const originY = area.y + (area.height - cell * maze.height) / 2;
@@ -75,31 +87,33 @@ export function mazeElements(
   const sx = originX + (maze.start.col + 0.5) * cell;
   const ex = originX + (maze.end.col + 0.5) * cell;
   const bottom = originY + maze.height * cell;
-  const markSize = Math.max(cell * 1.4, compact ? 3 : 5);
+  // Die Marke sitzt mittig im reservierten Streifen und passt vollständig hinein.
+  const markSize = Math.min(Math.max(cell * 1.2, compact ? 2.5 : 4), reserve * 0.95);
   if (options.icons) {
     elements.push(
       {
         type: 'path',
-        d: iconPath(options.icons.start, sx, originY - markSize * 0.7, markSize),
+        d: iconPath(options.icons.start, sx, originY - reserve / 2, markSize),
         fill: palette.accent,
       },
       {
         type: 'path',
-        d: iconPath(options.icons.end, ex, bottom + markSize * 0.7, markSize),
+        d: iconPath(options.icons.end, ex, bottom + reserve / 2, markSize),
         fill: palette.accent,
       },
     );
   } else {
-    const arrow = cell * 0.34;
+    const arrow = Math.min(cell * 0.34, reserve * 0.4);
+    const tip = Math.min(cell * 0.8, reserve * 0.9);
     elements.push(
       {
         type: 'path',
-        d: `M ${sx - arrow} ${originY - cell * 0.8} L ${sx + arrow} ${originY - cell * 0.8} L ${sx} ${originY - cell * 0.15} Z`,
+        d: `M ${sx - arrow} ${originY - tip} L ${sx + arrow} ${originY - tip} L ${sx} ${originY - tip * 0.2} Z`,
         fill: palette.accent,
       },
       {
         type: 'path',
-        d: `M ${ex - arrow} ${bottom + cell * 0.15} L ${ex + arrow} ${bottom + cell * 0.15} L ${ex} ${bottom + cell * 0.8} Z`,
+        d: `M ${ex - arrow} ${bottom + tip * 0.2} L ${ex + arrow} ${bottom + tip * 0.2} L ${ex} ${bottom + tip} Z`,
         fill: palette.accent,
       },
     );

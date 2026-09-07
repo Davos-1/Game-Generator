@@ -217,7 +217,7 @@ export default function BookletBuilder(): React.ReactElement {
                   key={choice.id}
                   type="button"
                   aria-pressed={config.theme === choice.id}
-                  className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm ${
+                  className={`flex items-center gap-1.5 rounded-full border px-3 py-2 text-sm ${
                     config.theme === choice.id
                       ? 'border-brand-500 bg-brand-50 text-brand-700'
                       : 'border-slate-300 text-slate-600 hover:bg-slate-50'
@@ -348,7 +348,7 @@ export default function BookletBuilder(): React.ReactElement {
                       />
                       <button
                         type="button"
-                        className="mt-1 text-xs text-brand-700 underline"
+                        className="mt-1 inline-block py-1.5 text-xs text-brand-700 underline"
                         onClick={() =>
                           updateEntry(entry.id, { words: themeWords(config.theme, 12).join(', ') })
                         }
@@ -382,7 +382,7 @@ export default function BookletBuilder(): React.ReactElement {
                             key={level}
                             type="button"
                             aria-pressed={entry.difficulty === level}
-                            className={`rounded-md px-2 py-1 text-xs ${
+                            className={`rounded-md px-3 py-2 text-xs ${
                               entry.difficulty === level
                                 ? 'bg-brand-500 text-white'
                                 : 'text-slate-600 hover:bg-slate-50'
@@ -396,7 +396,7 @@ export default function BookletBuilder(): React.ReactElement {
                     </Field>
                     <button
                       type="button"
-                      className="rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs hover:bg-slate-50"
+                      className="rounded-lg border border-slate-300 px-3 py-2 text-xs hover:bg-slate-50"
                       onClick={() => updateEntry(entry.id, { seed: newSeed() })}
                     >
                       {t('booklet.shuffleEntry')}
@@ -598,7 +598,7 @@ function IconButton({
       title={label}
       aria-label={label}
       disabled={disabled ?? false}
-      className="rounded-lg border border-slate-300 px-2 py-1.5 text-sm text-slate-600 hover:bg-slate-50 disabled:opacity-40"
+      className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 disabled:opacity-40"
       onClick={onClick}
     >
       {children}

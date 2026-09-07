@@ -59,14 +59,20 @@ const canonical = new URL(cleanPath, Astro.site);
   </head>
   <body class="flex min-h-screen flex-col">
     <header class="border-b border-slate-200">
-      <div class="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
+      <div
+        class="mx-auto flex max-w-5xl flex-col gap-1 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:py-4"
+      >
         <a href="/" class="text-xl font-bold tracking-tight text-brand-700">{t('site.name')}</a>
-        <nav class="flex gap-4 text-sm text-slate-600 sm:gap-6">
-          <a class="hover:text-brand-700" href="/wortsuchraetsel">{t('nav.wordsearch')}</a>
-          <a class="hover:text-brand-700" href="/labyrinth">{t('nav.maze')}</a>
-          <a class="hover:text-brand-700" href="/sudoku">{t('nav.sudoku')}</a>
-          <a class="font-medium text-brand-700 hover:underline" href="/raetselheft"
-            >{t('nav.booklet')}</a
+        {/* Umbricht auf schmalen Bildschirmen; vier Links passen sonst nicht nebeneinander. */}
+        <nav class="-mx-2 flex flex-wrap items-center gap-x-2 gap-y-0 text-sm text-slate-600">
+          <a class="rounded px-2 py-2 hover:text-brand-700" href="/wortsuchraetsel"
+            >{t('nav.wordsearch')}</a
+          >
+          <a class="rounded px-2 py-2 hover:text-brand-700" href="/labyrinth">{t('nav.maze')}</a>
+          <a class="rounded px-2 py-2 hover:text-brand-700" href="/sudoku">{t('nav.sudoku')}</a>
+          <a
+            class="rounded px-2 py-2 font-medium text-brand-700 hover:underline"
+            href="/raetselheft">{t('nav.booklet')}</a
           >
         </nav>
       </div>
@@ -75,12 +81,12 @@ const canonical = new URL(cleanPath, Astro.site);
       <slot />
     </main>
     <footer class="border-t border-slate-200 text-sm text-slate-500">
-      <div class="mx-auto flex max-w-5xl flex-wrap gap-4 px-4 py-6">
+      <div class="mx-auto flex max-w-5xl flex-wrap items-center gap-x-4 gap-y-1 px-4 py-5">
         <span>© {new Date().getFullYear()} {t('site.name')}</span>
-        <a class="hover:text-brand-700" href="/vorlagen">{t('footer.templates')}</a>
-        <a class="hover:text-brand-700" href="/impressum">{t('footer.imprint')}</a>
-        <a class="hover:text-brand-700" href="/datenschutz">{t('footer.privacy')}</a>
-        <a class="hover:text-brand-700" href="/agb">{t('footer.terms')}</a>
+        <a class="rounded py-2 hover:text-brand-700" href="/vorlagen">{t('footer.templates')}</a>
+        <a class="rounded py-2 hover:text-brand-700" href="/impressum">{t('footer.imprint')}</a>
+        <a class="rounded py-2 hover:text-brand-700" href="/datenschutz">{t('footer.privacy')}</a>
+        <a class="rounded py-2 hover:text-brand-700" href="/agb">{t('footer.terms')}</a>
       </div>
     </footer>
   </body>
