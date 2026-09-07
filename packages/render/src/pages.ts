@@ -1,7 +1,8 @@
-import type { Maze, SudokuPuzzle, WordSearchPuzzle } from '@raetselheft/engine';
+import type { DotToDotPuzzle, Maze, SudokuPuzzle, WordSearchPuzzle } from '@raetselheft/engine';
 import type { TextMeasurer } from './measure';
 import { grid as gridBoxes, inset } from './layout/box';
 import { coverElements, COVER_BOX, type CoverInfo } from './layout/cover';
+import { dotToDotElements } from './layout/dotToDot';
 import { mazeElements } from './layout/maze';
 import { sudokuElements, sudokuLegendElements } from './layout/sudoku';
 import { wordSearchElements } from './layout/wordsearch';
@@ -20,7 +21,8 @@ export type PuzzleItem =
   | { kind: 'wordsearch'; puzzle: WordSearchPuzzle }
   | { kind: 'maze'; puzzle: Maze }
   /** `symbols` überschreibt für dieses eine Rätsel die Darstellung. */
-  | { kind: 'sudoku'; puzzle: SudokuPuzzle; symbols?: boolean };
+  | { kind: 'sudoku'; puzzle: SudokuPuzzle; symbols?: boolean }
+  | { kind: 'dot-to-dot'; puzzle: DotToDotPuzzle };
 
 export interface PuzzlePageOptions extends PageFrameOptions {
   /** Symbole statt Ziffern beim Sudoku erzwingen oder unterdrücken. */
@@ -164,6 +166,8 @@ export function solutionPages(
 
 const needsFullRow = (item: PuzzleItem): boolean =>
   item.kind === 'wordsearch' || (item.kind === 'sudoku' && item.puzzle.size === 9);
+// Punkte-zu-Punkte ist quadratisch und kompakt wie das Labyrinth: teilt sich
+// eine Zeile mit einem zweiten Rätsel, statt eine ganze Zeile zu belegen.
 
 function captionedTile(
   entry: { item: PuzzleItem; caption: string },
@@ -250,5 +254,11 @@ function drawItem(
       }
       return elements;
     }
+    case 'dot-to-dot':
+      return dotToDotElements(item.puzzle, inset(box, compact ? 3 : 8), measurer, {
+        solution: options.solution,
+        compact,
+        palette,
+      });
   }
 }

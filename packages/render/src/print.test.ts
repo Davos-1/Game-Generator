@@ -1,4 +1,9 @@
-import { generateMaze, generateSudoku, generateWordSearch } from '@raetselheft/engine';
+import {
+  generateDotToDot,
+  generateMaze,
+  generateSudoku,
+  generateWordSearch,
+} from '@raetselheft/engine';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { createMeasurer } from './fonts';
 import type { TextMeasurer } from './measure';
@@ -44,6 +49,10 @@ const items = (theme: Theme): PuzzleItem[] => [
   {
     kind: 'sudoku',
     puzzle: generateSudoku({ seed: `print9-${theme.id}`, size: 9, difficulty: 'hard' }),
+  },
+  {
+    kind: 'dot-to-dot',
+    puzzle: generateDotToDot({ seed: `print-${theme.id}`, difficulty: 'hard' }),
   },
 ];
 

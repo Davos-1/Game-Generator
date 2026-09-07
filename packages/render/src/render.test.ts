@@ -1,4 +1,9 @@
-import { generateMaze, generateSudoku, generateWordSearch } from '@raetselheft/engine';
+import {
+  generateDotToDot,
+  generateMaze,
+  generateSudoku,
+  generateWordSearch,
+} from '@raetselheft/engine';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { createMeasurer, createTableMeasurer } from './fonts';
 import type { TextMeasurer } from './measure';
@@ -42,6 +47,7 @@ const items = (): PuzzleItem[] => [
   { kind: 'maze', puzzle: generateMaze({ seed: 'render', difficulty: 'medium' }) },
   { kind: 'sudoku', puzzle: generateSudoku({ seed: 'render', size: 6, difficulty: 'easy' }) },
   { kind: 'sudoku', puzzle: generateSudoku({ seed: 'render9', size: 9, difficulty: 'easy' }) },
+  { kind: 'dot-to-dot', puzzle: generateDotToDot({ seed: 'render', difficulty: 'medium' }) },
 ];
 
 beforeAll(async () => {
@@ -211,6 +217,32 @@ describe('Rätselseiten', () => {
     });
     expect(solution).toBeDefined();
     expect(digits(solution as PageLayout)).toBe(81);
+  });
+
+  it('verbindet beim Punkte-zu-Punkte nur in der Lösung, zeigt aber immer alle Nummern', () => {
+    const dots = generateDotToDot({ seed: 'sol', difficulty: 'medium' });
+    const item: PuzzleItem = { kind: 'dot-to-dot', puzzle: dots };
+    const puzzle = puzzlePage(item, measurer, { title: 'Punkte-zu-Punkte' });
+    const labels = (page: PageLayout): string[] =>
+      page.elements
+        .filter((el): el is TextElement => el.type === 'text' && /^\d+$/.test(el.text))
+        .map((el) => el.text);
+    // Ohne Lösung: alle Nummern sichtbar, aber keine Verbindungslinie.
+    expect(labels(puzzle).sort((a, b) => Number(a) - Number(b))).toEqual(
+      dots.points.map((p) => String(p.label)),
+    );
+    expect(puzzle.elements.some((el) => el.type === 'polyline')).toBe(false);
+    expect(puzzle.elements.filter((el) => el.type === 'circle')).toHaveLength(dots.points.length);
+
+    const [solution] = solutionPages([{ item, caption: 'Punkte 1' }], measurer, {
+      title: 'Lösungen',
+    });
+    expect(solution).toBeDefined();
+    const line = (solution as PageLayout).elements.find((el) => el.type === 'polyline');
+    expect(line).toBeDefined();
+    // Geschlossene Form: ein Punkt mehr als Nummern, da zurück zum ersten.
+    expect(line?.type === 'polyline' ? line.points.length : 0).toBe(dots.points.length + 1);
+    expect(labels(solution as PageLayout)).toHaveLength(dots.points.length);
   });
 
   it('verteilt Lösungen nach Grösse: 4 kleine oder 2 grosse pro Seite', () => {
