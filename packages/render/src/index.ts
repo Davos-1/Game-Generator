@@ -22,6 +22,8 @@ export type { ContentBox, PageFrame, PageFrameOptions } from './page';
 export { fitBox, grid, inset } from './layout/box';
 export { wordSearchElements } from './layout/wordsearch';
 export type { WordSearchDrawOptions } from './layout/wordsearch';
+export { crosswordElements } from './layout/crossword';
+export type { CrosswordDrawOptions } from './layout/crossword';
 export { dotToDotElements } from './layout/dotToDot';
 export type { DotToDotDrawOptions } from './layout/dotToDot';
 export { mazeElements } from './layout/maze';

@@ -1,4 +1,5 @@
 import {
+  generateCrossword,
   generateDotToDot,
   generateMaze,
   generateShadowMatch,
@@ -43,6 +44,17 @@ let measurer: TextMeasurer;
 
 const WORDS = ['Schatz', 'Kapitän', 'Papagei', 'Schiff', 'Anker', 'Säbel', 'Insel', 'Kanone'];
 
+const CROSSWORD_ENTRIES = [
+  { word: 'Schatz', clue: 'Verborgener Reichtum' },
+  { word: 'Anker', clue: 'Hält ein Schiff fest' },
+  { word: 'Kapitän', clue: 'Führt die Mannschaft' },
+  { word: 'Papagei', clue: 'Bunter Vogel an Bord' },
+  { word: 'Insel', clue: 'Land im Meer' },
+  { word: 'Segel', clue: 'Fängt den Wind' },
+  { word: 'Truhe', clue: 'Bewahrt den Schatz auf' },
+  { word: 'Karte', clue: 'Zeigt den Weg zum Ziel' },
+];
+
 const items = (): PuzzleItem[] => [
   { kind: 'wordsearch', puzzle: generateWordSearch({ words: WORDS, seed: 'render', width: 12 }) },
   { kind: 'maze', puzzle: generateMaze({ seed: 'render', difficulty: 'medium' }) },
@@ -52,6 +64,10 @@ const items = (): PuzzleItem[] => [
   {
     kind: 'shadow-match',
     puzzle: generateShadowMatch({ seed: 'render', difficulty: 'medium' }),
+  },
+  {
+    kind: 'crossword',
+    puzzle: generateCrossword({ seed: 'render', entries: CROSSWORD_ENTRIES, difficulty: 'medium' }),
   },
 ];
 
@@ -268,6 +284,35 @@ describe('Rätselseiten', () => {
     });
     expect(solution).toBeDefined();
     expect(matchLines(solution as PageLayout)).toBe(match.count);
+  });
+
+  it('zeigt beim Kreuzworträtsel im Rätsel keine Buchstaben, in der Lösung alle', () => {
+    const crossword = generateCrossword({
+      seed: 'sol',
+      entries: CROSSWORD_ENTRIES,
+      difficulty: 'medium',
+    });
+    const item: PuzzleItem = { kind: 'crossword', puzzle: crossword };
+    const puzzle = puzzlePage(item, measurer, { title: 'Kreuzworträtsel' });
+    const letters = (page: PageLayout): TextElement[] =>
+      page.elements.filter((el): el is TextElement => el.type === 'text' && el.font === 'bodyBold');
+    // Ohne Lösung stehen nur die (fetten) Hinweis-Überschriften, keine Buchstaben.
+    expect(letters(puzzle).some((el) => /^[A-ZÄÖÜ]$/.test(el.text))).toBe(false);
+    // Aber gesperrte Felder (schwarz) und die Nummern sind schon sichtbar.
+    const totalCells = crossword.width * crossword.height;
+    const blocked = crossword.fillable.flat().filter((v) => !v).length;
+    expect(puzzle.elements.filter((el) => el.type === 'rect' && el.fill)).toHaveLength(blocked);
+    expect(blocked).toBeLessThan(totalCells);
+
+    const [solution] = solutionPages([{ item, caption: 'Kreuzworträtsel 1' }], measurer, {
+      title: 'Lösungen',
+    });
+    expect(solution).toBeDefined();
+    const solutionLetters = letters(solution as PageLayout).filter((el) =>
+      /^[A-ZÄÖÜ]$/.test(el.text),
+    );
+    const fillableCount = crossword.fillable.flat().filter(Boolean).length;
+    expect(solutionLetters).toHaveLength(fillableCount);
   });
 
   it('verteilt Lösungen nach Grösse: 4 kleine oder 2 grosse pro Seite', () => {

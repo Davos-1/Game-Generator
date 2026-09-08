@@ -1,4 +1,5 @@
 import {
+  generateCrossword,
   generateDotToDot,
   generateMaze,
   generateShadowMatch,
@@ -9,6 +10,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { createMeasurer } from './fonts';
 import type { TextMeasurer } from './measure';
 import { loadFontsFromDisk } from './node';
+import { crosswordEntriesFor } from './themes/crosswordEntries';
 import { mazeElements } from './layout/maze';
 import { bookletPages, puzzlePage, solutionPages, type PuzzleItem } from './pages';
 import { MARGIN } from './page';
@@ -58,6 +60,14 @@ const items = (theme: Theme): PuzzleItem[] => [
   {
     kind: 'shadow-match',
     puzzle: generateShadowMatch({ seed: `print-${theme.id}`, difficulty: 'hard' }),
+  },
+  {
+    kind: 'crossword',
+    puzzle: generateCrossword({
+      seed: `print-${theme.id}`,
+      entries: crosswordEntriesFor(theme.id),
+      difficulty: 'hard',
+    }),
   },
 ];
 

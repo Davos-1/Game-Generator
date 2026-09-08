@@ -1,0 +1,22 @@
+[
+  { "word": "Katze", "clue": "Haustier, das gerne schnurrt" },
+  { "word": "Hund", "clue": "Bester Freund des Menschen" },
+  { "word": "Vogel", "clue": "Tier mit Federn und Flügeln" },
+  { "word": "Fisch", "clue": "Lebt und atmet unter Wasser" },
+  { "word": "Blume", "clue": "Wächst bunt im Garten" },
+  { "word": "Baum", "clue": "Gibt im Sommer Schatten" },
+  { "word": "Sonne", "clue": "Wärmt die Erde bei Tag" },
+  { "word": "Mond", "clue": "Begleiter der Erde am Nachthimmel" },
+  { "word": "Stern", "clue": "Kleiner Lichtpunkt am Nachthimmel" },
+  { "word": "Wasser", "clue": "Ohne dieses gäbe es kein Leben" },
+  { "word": "Feuer", "clue": "Heiss, hell, gefährlich zugleich" },
+  { "word": "Regen", "clue": "Fällt als Wasser vom Himmel" },
+  { "word": "Schnee", "clue": "Weisse Flocken im Winter" },
+  { "word": "Berg", "clue": "Hohe Erhebung in der Landschaft" },
+  { "word": "Wald", "clue": "Viele Bäume an einem Ort" },
+  { "word": "Garten", "clue": "Grünfläche rund ums Haus" },
+  { "word": "Fenster", "clue": "Lässt Licht ins Zimmer" },
+  { "word": "Buch", "clue": "Zum Lesen gebunden" },
+  { "word": "Fahrrad", "clue": "Zweirädriges Fahrzeug zum Treten" },
+  { "word": "Schokolade", "clue": "Süsse Tafel aus Kakao" }
+]

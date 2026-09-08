@@ -88,3 +88,16 @@ Symbole aus fremden Icon-Sets. Die Symbole kommen aus
   `border-brand-500 bg-brand-50 text-brand-700` statt des in `657b36a`
   eingeführten `border-accent-deep bg-paper text-ink` für ausgewählte Chips
   — auf den gleichen Stand wie die Themen-Auswahl gebracht.
+- **Kreuzworträtsel (AP14): Wortlisten neu unter `packages/render/src/themes/`,
+  bewusst ausserhalb des Theme-Schemas.** Kakuro (AP13) wurde nach
+  Rücksprache mit dem Nutzer zurückgestellt (keine konstruierbaren
+  Rätsel mit eindeutiger Lösung ohne unpraktikabel viele Vorgaben), stattdessen
+  AP14 Kreuzworträtsel umgesetzt. Für die Hinweistexte pro Thema (~20 Wörter
+  mit Klartext-Hinweis) reichte kein bestehendes Datenfeld: neu
+  `packages/render/src/themes/data/*.crossword.json` (inkl. `neutral` fürs
+  Standarddesign) plus `packages/render/src/themes/crosswordEntries.ts` als
+  schlanke Zuordnungsfunktion `crosswordEntriesFor(themeId)`. Bewusst nicht
+  ins Theme-Schema (`types.ts`) integriert, um dort keine Konflikte mit den
+  geplanten neuen Feldern zu erzeugen — reine Zusatzdateien, keine Änderung an
+  bestehenden Theme-Objekten. Braucht keine neuen Theme-Symbole (Grid- und
+  Zellzeichnung kommt vollständig aus der Engine, keine Icon-Bezüge).
