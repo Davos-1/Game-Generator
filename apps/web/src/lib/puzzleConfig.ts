@@ -1,6 +1,7 @@
 import { NEUTRAL_THEME, THEMES, themeById } from '@raetselheft/render/themes';
 import { SHAPE_IDS } from '@raetselheft/engine';
 import type {
+  CrosswordDifficulty,
   Difficulty,
   DotToDotDifficulty,
   MazeDifficulty,
@@ -10,7 +11,8 @@ import type {
   UmlautMode,
 } from '@raetselheft/engine';
 
-export type PuzzleKind = 'wordsearch' | 'maze' | 'sudoku' | 'dot-to-dot' | 'shadow-match';
+export type PuzzleKind =
+  'wordsearch' | 'maze' | 'sudoku' | 'dot-to-dot' | 'shadow-match' | 'crossword';
 
 interface BaseConfig {
   /** Id des Themen-Designs; «neutral» ist das Standarddesign. */
@@ -60,8 +62,18 @@ export interface ShadowMatchConfig extends BaseConfig {
   difficulty: ShadowMatchDifficulty;
 }
 
+export interface CrosswordConfig extends BaseConfig {
+  kind: 'crossword';
+  difficulty: CrosswordDifficulty;
+}
+
 export type PuzzleConfig =
-  WordSearchConfig | MazeConfig | SudokuConfig | DotToDotConfig | ShadowMatchConfig;
+  | WordSearchConfig
+  | MazeConfig
+  | SudokuConfig
+  | DotToDotConfig
+  | ShadowMatchConfig
+  | CrosswordConfig;
 
 /** Auswahlliste der Punkte-zu-Punkte-Formen für die Oberfläche. */
 export const SHAPE_CHOICES: readonly { id: string; name: string }[] = SHAPE_IDS.map((id) => ({
@@ -139,6 +151,15 @@ export function defaultConfig(kind: PuzzleKind): PuzzleConfig {
         seed,
         difficulty: 'medium',
       };
+    case 'crossword':
+      return {
+        kind,
+        theme: NEUTRAL_THEME.id,
+        title: 'Kreuzworträtsel',
+        subtitle: '',
+        seed,
+        difficulty: 'medium',
+      };
   }
 }
 
@@ -199,6 +220,9 @@ export function configToParams(config: PuzzleConfig): URLSearchParams {
     }
     case 'shadow-match':
       set('d', config.difficulty, (base as ShadowMatchConfig).difficulty);
+      break;
+    case 'crossword':
+      set('d', config.difficulty, (base as CrosswordConfig).difficulty);
       break;
   }
   return params;
@@ -266,6 +290,16 @@ export function configFromParams(kind: PuzzleKind, params: URLSearchParams): Puz
           params.get('d'),
           ['easy', 'medium', 'hard'] as const,
           (base as ShadowMatchConfig).difficulty,
+        ),
+      };
+    case 'crossword':
+      return {
+        kind,
+        ...common,
+        difficulty: oneOf(
+          params.get('d'),
+          ['easy', 'medium', 'hard'] as const,
+          (base as CrosswordConfig).difficulty,
         ),
       };
   }

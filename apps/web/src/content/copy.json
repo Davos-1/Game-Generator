@@ -79,6 +79,22 @@
         "Bei jüngeren Kindern hilft es, zuerst laut zu beschreiben, was ein Symbol von den anderen unterscheidet.",
         "Zum Nachprüfen eignet sich ein zweiter Stift in anderer Farbe für die Kontrolle anhand der Lösungsseite."
       ]
+    },
+    "crossword": {
+      "name": "Kreuzworträtsel",
+      "plural": "Kreuzworträtsel",
+      "short": "Ein Gitter aus waagrechten und senkrechten Wörtern, die sich an gemeinsamen Buchstaben kreuzen.",
+      "intro": "Im Kreuzworträtsel steckt zu jedem nummerierten Feld ein Hinweistext, der ein Wort beschreibt, ohne es zu nennen. Das gesuchte Wort wird waagrecht oder senkrecht ins Gitter eingetragen, wobei es sich mit anderen Wörtern an gemeinsamen Buchstaben kreuzt und diese so gegenseitig bestätigt. Diese Bauweise schult den Wortschatz, das Umschreiben eines Begriffs in eigenen Worten und die Geduld, ein noch unklares Wort so lange stehen zu lassen, bis ein kreuzendes Wort den fehlenden Buchstaben liefert. Kinder im Primarschulalter kommen mit kurzen, alltagsnahen Begriffen gut zurecht, während längere Hinweise und ein dichteres Gitter Jugendliche und Erwachsene fordern. Auf Papier lässt sich jeder Buchstabe einzeln ins Kästchen schreiben und bei einem Irrtum leicht wieder ausradieren, ohne dass ein Eingabefeld am Bildschirm zwischen Hinweis und Gitter steht.",
+      "howTo": [
+        "Du wählst die Schwierigkeit, welche die Anzahl Wörter im Gitter bestimmt.",
+        "Die Vorschau zeigt dir das nummerierte Gitter und die Hinweise waagrecht und senkrecht.",
+        "Nach der Zahlung von CHF 2 lädst du das Kreuzworträtsel als PDF herunter, inklusive Lösungsseite und ohne Wasserzeichen."
+      ],
+      "tips": [
+        "Trage zuerst die Wörter ein, bei denen du dir sicher bist – ihre Buchstaben helfen beim Lösen der kreuzenden Wörter.",
+        "Ein Bleistift lohnt sich, weil sich ein zunächst falsch vermutetes Wort so wieder sauber korrigieren lässt.",
+        "Bei jüngeren Kindern hilft es, den Hinweistext laut vorzulesen und gemeinsam nach dem passenden Wort zu suchen."
+      ]
     }
   },
   "themes": {
@@ -221,6 +237,20 @@
       {
         "q": "Welche Symbole werden verwendet?",
         "a": "Beim Standarddesign sind es einfache geometrische Formen wie Kreis, Quadrat oder Stern. Bei einem Themen-Design erscheinen stattdessen dessen Symbole, etwa Anker und Schiff bei «Piraten»."
+      }
+    ],
+    "crossword": [
+      {
+        "q": "Wie viele Wörter hat ein Kreuzworträtsel?",
+        "a": "Je nach Schwierigkeitsgrad zwischen sechs und zwölf Wörtern. Mehr Wörter bedeuten ein grösseres, dichter verschachteltes Gitter."
+      },
+      {
+        "q": "Woher stammen die Wörter und Hinweise?",
+        "a": "Jedes Themen-Design bringt seine eigene Liste mit rund zwanzig Wort-Hinweis-Paaren mit, aus der ein Gitter zusammengestellt wird. Auch das Standarddesign hat eine eigene, themenunabhängige Wortliste."
+      },
+      {
+        "q": "Ist die Lösung immer eindeutig?",
+        "a": "Ja, weil jeder Hinweis das gesuchte Wort direkt benennt. Es gibt daher keine Mehrdeutigkeit wie bei Sudoku, sondern nur ein einziges Gitter, das zu den Hinweisen passt."
       }
     ]
   }

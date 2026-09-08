@@ -3,6 +3,7 @@ import interSemiBold from '@raetselheft/render/fonts/Inter-SemiBold.ttf?url';
 import nunitoBold from '@raetselheft/render/fonts/Nunito-Bold.ttf?url';
 import type { FontSet, PageLayout, PuzzleItem, TextMeasurer } from '@raetselheft/render';
 import {
+  generateCrossword,
   generateDotToDot,
   generateMaze,
   generateShadowMatch,
@@ -10,6 +11,7 @@ import {
   generateWordSearch,
 } from '@raetselheft/engine';
 import { themeById } from '@raetselheft/render/themes';
+import { crosswordEntriesFor } from '@raetselheft/render/themes/crosswordEntries';
 import type { BookletConfig } from './bookletConfig';
 import type { PuzzleConfig } from './puzzleConfig';
 import { parseWords } from './puzzleConfig';
@@ -118,6 +120,18 @@ export function buildPuzzle(config: PuzzleConfig): PuzzleResult {
         item: {
           kind: 'shadow-match',
           puzzle: generateShadowMatch({ seed: config.seed, difficulty: config.difficulty }),
+        },
+        notes: [],
+      };
+    case 'crossword':
+      return {
+        item: {
+          kind: 'crossword',
+          puzzle: generateCrossword({
+            seed: config.seed,
+            entries: crosswordEntriesFor(config.theme),
+            difficulty: config.difficulty,
+          }),
         },
         notes: [],
       };

@@ -83,6 +83,8 @@ Symbole aus fremden Icon-Sets. Die Symbole kommen aus
   verlinken: je ein Eintrag im `NAV`-Array für `/punkte-zu-punkte` und
   `/schattenraetsel` (reine Datenzeilen, keine Struktur- oder Style-Änderung).
   Bei Bedarf gerne verschieben oder anders lösen.
+  → Mit AP14 ist eine dritte, gleich geartete Datenzeile für
+  `/kreuzwortraetsel` dazugekommen.
 - **Stellen mit altem Chip-Stil in `PuzzleGenerator.tsx`/`BookletBuilder.tsx`
   nachgezogen.** Die Formen-Auswahl fürs Punkte-zu-Punkte-Rätsel hatte noch
   `border-brand-500 bg-brand-50 text-brand-700` statt des in `657b36a`

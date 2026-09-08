@@ -11,6 +11,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import {
+  generateCrossword,
   generateDotToDot,
   generateMaze,
   generateShadowMatch,
@@ -22,6 +23,7 @@ import { loadFontsFromDisk } from '@raetselheft/render/node';
 import { puzzlePage, solutionPages, type PuzzleItem } from '@raetselheft/render/pages';
 import { renderPdf } from '@raetselheft/render/pdf';
 import { NEUTRAL_THEME, THEMES, type Theme } from '@raetselheft/render/themes';
+import { crosswordEntriesFor } from '@raetselheft/render/themes/crosswordEntries';
 import { EXAMPLES, examplePdfPath, type ExampleKind } from '../src/content/examples';
 import { t } from '../src/i18n';
 
@@ -71,6 +73,15 @@ function buildItem(kind: ExampleKind, theme: Theme, seed: string): PuzzleItem {
     }
     case 'shadow-match':
       return { kind, puzzle: generateShadowMatch({ seed, difficulty: 'hard' }) };
+    case 'crossword':
+      return {
+        kind,
+        puzzle: generateCrossword({
+          seed,
+          entries: crosswordEntriesFor(theme.id),
+          difficulty: 'hard',
+        }),
+      };
   }
 }
 

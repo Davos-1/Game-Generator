@@ -38,6 +38,7 @@ const RETURN_PATHS: Record<PuzzleKind, string> = {
   sudoku: '/sudoku',
   'dot-to-dot': '/punkte-zu-punkte',
   'shadow-match': '/schattenraetsel',
+  crossword: '/kreuzwortraetsel',
 };
 
 /** Parameter der Bezahlseite; sie gehören nicht zur Rätsel-Konfiguration. */
@@ -216,6 +217,17 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
           <Field
             label={t('generator.common.difficulty')}
             hint={t('generator.shadow-match.difficultyHint')}
+          >
+            <DifficultySelect
+              value={config.difficulty}
+              onChange={(difficulty) => update({ difficulty })}
+            />
+          </Field>
+        )}
+        {config.kind === 'crossword' && (
+          <Field
+            label={t('generator.common.difficulty')}
+            hint={t('generator.crossword.difficultyHint')}
           >
             <DifficultySelect
               value={config.difficulty}

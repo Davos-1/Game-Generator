@@ -126,6 +126,24 @@ describe('Rätsel eines Hefts', () => {
     expect(counts).toEqual([6]);
   });
 
+  it('erzeugt auch Kreuzworträtsel-Einträge mit ihrer Schwierigkeit', () => {
+    const booklet = defaultBooklet();
+    const withCrossword = {
+      ...booklet,
+      entries: [
+        ...booklet.entries,
+        { ...newEntry('crossword', booklet.theme), difficulty: 'hard' as const },
+      ],
+    };
+    const { entries, notes } = buildBookletItems(withCrossword);
+    expect(notes).toEqual([]);
+    expect(entries).toHaveLength(withCrossword.entries.length);
+    const difficulties = entries.flatMap((entry) =>
+      entry.item.kind === 'crossword' ? [entry.item.puzzle.difficulty] : [],
+    );
+    expect(difficulties).toEqual(['hard']);
+  });
+
   it('meldet fehlerhafte Einträge, statt sie stumm zu verwerfen', () => {
     const booklet = defaultBooklet();
     const broken = {

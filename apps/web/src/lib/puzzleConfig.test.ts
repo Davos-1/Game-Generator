@@ -9,7 +9,14 @@ import {
   type WordSearchConfig,
 } from './puzzleConfig';
 
-const KINDS: PuzzleKind[] = ['wordsearch', 'maze', 'sudoku', 'dot-to-dot', 'shadow-match'];
+const KINDS: PuzzleKind[] = [
+  'wordsearch',
+  'maze',
+  'sudoku',
+  'dot-to-dot',
+  'shadow-match',
+  'crossword',
+];
 
 describe('parseWords', () => {
   it('trennt bei Komma, Semikolon und Zeilenumbruch', () => {

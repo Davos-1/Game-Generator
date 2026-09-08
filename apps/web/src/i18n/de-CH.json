@@ -12,7 +12,8 @@
     "sudoku": "Sudoku",
     "booklet": "Rätselheft",
     "dotToDot": "Punkte-zu-Punkte",
-    "shadowMatch": "Schattenrätsel"
+    "shadowMatch": "Schattenrätsel",
+    "crossword": "Kreuzworträtsel"
   },
   "home": {
     "title": "Rätsel zum Ausdrucken – in Sekunden erstellt",
@@ -132,6 +133,10 @@
     "shadow-match": {
       "defaultTitle": "Schattenrätsel",
       "difficultyHint": "Bestimmt die Anzahl Symbole: vier, fünf oder sechs."
+    },
+    "crossword": {
+      "defaultTitle": "Kreuzworträtsel",
+      "difficultyHint": "Bestimmt die Anzahl Wörter im Gitter."
     }
   },
   "booklet": {
@@ -171,7 +176,8 @@
       "maze": "Labyrinth",
       "sudoku": "Sudoku",
       "dot-to-dot": "Punkte-zu-Punkte",
-      "shadow-match": "Schattenrätsel"
+      "shadow-match": "Schattenrätsel",
+      "crossword": "Kreuzworträtsel"
     }
   },
   "payment": {
@@ -194,7 +200,8 @@
       "maze": "Labyrinth",
       "sudoku": "Sudoku",
       "dot-to-dot": "Punkte-zu-Punkte",
-      "shadow-match": "Schattenrätsel"
+      "shadow-match": "Schattenrätsel",
+      "crossword": "Kreuzworträtsel"
     },
     "download": "Beispiel als PDF (gratis)",
     "hint": "Fertiges Blatt mit Lösung zum Ausdrucken. Dein eigenes Rätsel mit Namen und Wunschwörtern stellst du oben zusammen."

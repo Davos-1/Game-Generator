@@ -40,6 +40,7 @@ describe('Landing-Pages', () => {
       sudoku: 'Sudoku',
       'dot-to-dot': 'Punkte-zu-Punkte',
       'shadow-match': 'Schattenrätsel',
+      crossword: 'Kreuzworträtsel',
     } as const;
     for (const page of pages) {
       expect(page.description, page.description).toContain(names[page.kind]);

@@ -10,6 +10,7 @@ export const PUZZLE_KINDS: PuzzleKind[] = [
   'sudoku',
   'dot-to-dot',
   'shadow-match',
+  'crossword',
 ];
 
 /** Adressteil je Rätseltyp; bestimmt auch den Ordner der Landing-Pages. */
@@ -19,6 +20,7 @@ export const KIND_SLUG: Readonly<Record<PuzzleKind, string>> = {
   sudoku: 'sudoku',
   'dot-to-dot': 'punkte-zu-punkte',
   'shadow-match': 'schattenraetsel',
+  crossword: 'kreuzwortraetsel',
 };
 
 export const SLUG_TO_KIND: Readonly<Record<string, PuzzleKind>> = {
@@ -27,6 +29,7 @@ export const SLUG_TO_KIND: Readonly<Record<string, PuzzleKind>> = {
   sudoku: 'sudoku',
   'punkte-zu-punkte': 'dot-to-dot',
   schattenraetsel: 'shadow-match',
+  kreuzwortraetsel: 'crossword',
 };
 
 /**

@@ -7,6 +7,7 @@
  * dafür Javascript ausführen muss.
  */
 import {
+  generateCrossword,
   generateDotToDot,
   generateMaze,
   generateShadowMatch,
@@ -15,6 +16,7 @@ import {
 } from '@raetselheft/engine';
 import { createMetricsMeasurer, type TextMeasurer } from '@raetselheft/render/measure';
 import metrics from '@raetselheft/render/metrics.json';
+import { crosswordElements } from '@raetselheft/render/layout/crossword';
 import { dotToDotElements } from '@raetselheft/render/layout/dotToDot';
 import { mazeElements } from '@raetselheft/render/layout/maze';
 import { shadowMatchElements } from '@raetselheft/render/layout/shadowMatch';
@@ -22,6 +24,7 @@ import { sudokuElements } from '@raetselheft/render/layout/sudoku';
 import { wordSearchElements } from '@raetselheft/render/layout/wordsearch';
 import { elementToSvg } from '@raetselheft/render/svg';
 import { themeById } from '@raetselheft/render/themes';
+import { crosswordEntriesFor } from '@raetselheft/render/themes/crosswordEntries';
 import type { PuzzleKind } from './puzzleConfig';
 import { FONT_URLS } from './render';
 
@@ -81,6 +84,13 @@ export function previewSvg(kind: PuzzleKind, themeId: string, seed: string): str
           palette,
           ...(theme.sudokuIcons.length > 0 ? { icons: theme.sudokuIcons } : {}),
         });
+      case 'crossword':
+        return crosswordElements(
+          generateCrossword({ seed, entries: crosswordEntriesFor(theme.id), difficulty: 'easy' }),
+          BOX,
+          measurer,
+          { palette, compact: true },
+        );
     }
   })();
 
