@@ -4,7 +4,13 @@ import copy from './copy.json';
 
 export type OccasionId = 'kindergeburtstag' | 'hochzeit' | 'regentag' | 'weihnachten';
 
-export const PUZZLE_KINDS: PuzzleKind[] = ['wordsearch', 'maze', 'sudoku', 'dot-to-dot'];
+export const PUZZLE_KINDS: PuzzleKind[] = [
+  'wordsearch',
+  'maze',
+  'sudoku',
+  'dot-to-dot',
+  'shadow-match',
+];
 
 /** Adressteil je Rätseltyp; bestimmt auch den Ordner der Landing-Pages. */
 export const KIND_SLUG: Readonly<Record<PuzzleKind, string>> = {
@@ -12,6 +18,7 @@ export const KIND_SLUG: Readonly<Record<PuzzleKind, string>> = {
   maze: 'labyrinth',
   sudoku: 'sudoku',
   'dot-to-dot': 'punkte-zu-punkte',
+  'shadow-match': 'schattenraetsel',
 };
 
 export const SLUG_TO_KIND: Readonly<Record<string, PuzzleKind>> = {
@@ -19,6 +26,7 @@ export const SLUG_TO_KIND: Readonly<Record<string, PuzzleKind>> = {
   labyrinth: 'maze',
   sudoku: 'sudoku',
   'punkte-zu-punkte': 'dot-to-dot',
+  schattenraetsel: 'shadow-match',
 };
 
 /**

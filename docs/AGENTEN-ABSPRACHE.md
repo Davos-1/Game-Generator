@@ -72,3 +72,19 @@ Symbole aus fremden Icon-Sets. Die Symbole kommen aus
 - **Reihenfolge beim Zusammenführen.** Session B merged vor jedem eigenen
   Start den Stand von `claude/new-session-du9eym` und pusht erst nach
   Rücksprache mit dem Nutzer.
+- **Punkte-zu-Punkte (AP11) und Schattenrätsel (AP12) brauchen keine neuen
+  Theme-Symbole.** Punkte-zu-Punkte nutzt eigene, themenunabhängige Formen
+  (Engine, kein Icon-Bezug). Das Schattenrätsel verwendet die bestehenden
+  `theme.sudokuIcons` weiter (dieselben sechs Symbole wie beim Kinder-Sudoku),
+  keine Erweiterung nötig.
+- **Zwei Zeilen in `apps/web/src/layouts/BaseLayout.astro` von Session A.**
+  Eigentlich euer Bereich, aber ohne weiteren Eintragspunkt für die
+  Navigation liessen sich die beiden neuen Rätseltypen sonst nicht
+  verlinken: je ein Eintrag im `NAV`-Array für `/punkte-zu-punkte` und
+  `/schattenraetsel` (reine Datenzeilen, keine Struktur- oder Style-Änderung).
+  Bei Bedarf gerne verschieben oder anders lösen.
+- **Stellen mit altem Chip-Stil in `PuzzleGenerator.tsx`/`BookletBuilder.tsx`
+  nachgezogen.** Die Formen-Auswahl fürs Punkte-zu-Punkte-Rätsel hatte noch
+  `border-brand-500 bg-brand-50 text-brand-700` statt des in `657b36a`
+  eingeführten `border-accent-deep bg-paper text-ink` für ausgewählte Chips
+  — auf den gleichen Stand wie die Themen-Auswahl gebracht.

@@ -11,7 +11,8 @@
     "maze": "Labyrinth",
     "sudoku": "Sudoku",
     "booklet": "Rätselheft",
-    "dotToDot": "Punkte-zu-Punkte"
+    "dotToDot": "Punkte-zu-Punkte",
+    "shadowMatch": "Schattenrätsel"
   },
   "home": {
     "title": "Rätsel zum Ausdrucken – in Sekunden erstellt",
@@ -127,6 +128,10 @@
       "defaultTitle": "Punkte-zu-Punkte",
       "shape": "Form",
       "difficultyHint": "Bestimmt die Anzahl Punkte: wenige für kleine Kinder, viele für ein feines Bild."
+    },
+    "shadow-match": {
+      "defaultTitle": "Schattenrätsel",
+      "difficultyHint": "Bestimmt die Anzahl Symbole: vier, fünf oder sechs."
     }
   },
   "booklet": {
@@ -165,7 +170,8 @@
       "wordsearch": "Wortsuchrätsel",
       "maze": "Labyrinth",
       "sudoku": "Sudoku",
-      "dot-to-dot": "Punkte-zu-Punkte"
+      "dot-to-dot": "Punkte-zu-Punkte",
+      "shadow-match": "Schattenrätsel"
     }
   },
   "payment": {
@@ -187,7 +193,8 @@
       "wordsearch": "Wortsuchrätsel",
       "maze": "Labyrinth",
       "sudoku": "Sudoku",
-      "dot-to-dot": "Punkte-zu-Punkte"
+      "dot-to-dot": "Punkte-zu-Punkte",
+      "shadow-match": "Schattenrätsel"
     },
     "download": "Beispiel als PDF (gratis)",
     "hint": "Fertiges Blatt mit Lösung zum Ausdrucken. Dein eigenes Rätsel mit Namen und Wunschwörtern stellst du oben zusammen."

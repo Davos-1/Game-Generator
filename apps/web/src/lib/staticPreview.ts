@@ -9,6 +9,7 @@
 import {
   generateDotToDot,
   generateMaze,
+  generateShadowMatch,
   generateSudoku,
   generateWordSearch,
 } from '@raetselheft/engine';
@@ -16,6 +17,7 @@ import { createMetricsMeasurer, type TextMeasurer } from '@raetselheft/render/me
 import metrics from '@raetselheft/render/metrics.json';
 import { dotToDotElements } from '@raetselheft/render/layout/dotToDot';
 import { mazeElements } from '@raetselheft/render/layout/maze';
+import { shadowMatchElements } from '@raetselheft/render/layout/shadowMatch';
 import { sudokuElements } from '@raetselheft/render/layout/sudoku';
 import { wordSearchElements } from '@raetselheft/render/layout/wordsearch';
 import { elementToSvg } from '@raetselheft/render/svg';
@@ -73,6 +75,11 @@ export function previewSvg(kind: PuzzleKind, themeId: string, seed: string): str
       case 'dot-to-dot':
         return dotToDotElements(generateDotToDot({ seed, difficulty: 'medium' }), BOX, measurer, {
           palette,
+        });
+      case 'shadow-match':
+        return shadowMatchElements(generateShadowMatch({ seed, difficulty: 'medium' }), BOX, {
+          palette,
+          ...(theme.sudokuIcons.length > 0 ? { icons: theme.sudokuIcons } : {}),
         });
     }
   })();

@@ -5,6 +5,7 @@ import type { FontSet, PageLayout, PuzzleItem, TextMeasurer } from '@raetselheft
 import {
   generateDotToDot,
   generateMaze,
+  generateShadowMatch,
   generateSudoku,
   generateWordSearch,
 } from '@raetselheft/engine';
@@ -109,6 +110,14 @@ export function buildPuzzle(config: PuzzleConfig): PuzzleResult {
             difficulty: config.difficulty,
             shapeId: config.shapeId,
           }),
+        },
+        notes: [],
+      };
+    case 'shadow-match':
+      return {
+        item: {
+          kind: 'shadow-match',
+          puzzle: generateShadowMatch({ seed: config.seed, difficulty: config.difficulty }),
         },
         notes: [],
       };

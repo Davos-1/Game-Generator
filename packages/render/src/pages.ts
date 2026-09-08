@@ -1,9 +1,16 @@
-import type { DotToDotPuzzle, Maze, SudokuPuzzle, WordSearchPuzzle } from '@raetselheft/engine';
+import type {
+  DotToDotPuzzle,
+  Maze,
+  ShadowMatchPuzzle,
+  SudokuPuzzle,
+  WordSearchPuzzle,
+} from '@raetselheft/engine';
 import type { TextMeasurer } from './measure';
 import { grid as gridBoxes, inset } from './layout/box';
 import { coverElements, COVER_BOX, type CoverInfo } from './layout/cover';
 import { dotToDotElements } from './layout/dotToDot';
 import { mazeElements } from './layout/maze';
+import { shadowMatchElements } from './layout/shadowMatch';
 import { sudokuElements, sudokuLegendElements } from './layout/sudoku';
 import { wordSearchElements } from './layout/wordsearch';
 import {
@@ -22,7 +29,8 @@ export type PuzzleItem =
   | { kind: 'maze'; puzzle: Maze }
   /** `symbols` überschreibt für dieses eine Rätsel die Darstellung. */
   | { kind: 'sudoku'; puzzle: SudokuPuzzle; symbols?: boolean }
-  | { kind: 'dot-to-dot'; puzzle: DotToDotPuzzle };
+  | { kind: 'dot-to-dot'; puzzle: DotToDotPuzzle }
+  | { kind: 'shadow-match'; puzzle: ShadowMatchPuzzle };
 
 export interface PuzzlePageOptions extends PageFrameOptions {
   /** Symbole statt Ziffern beim Sudoku erzwingen oder unterdrücken. */
@@ -168,6 +176,7 @@ const needsFullRow = (item: PuzzleItem): boolean =>
   item.kind === 'wordsearch' || (item.kind === 'sudoku' && item.puzzle.size === 9);
 // Punkte-zu-Punkte ist quadratisch und kompakt wie das Labyrinth: teilt sich
 // eine Zeile mit einem zweiten Rätsel, statt eine ganze Zeile zu belegen.
+// Das Schattenrätsel ist breit und flach, teilt sich ebenfalls eine Zeile.
 
 function captionedTile(
   entry: { item: PuzzleItem; caption: string },
@@ -259,6 +268,13 @@ function drawItem(
         solution: options.solution,
         compact,
         palette,
+      });
+    case 'shadow-match':
+      return shadowMatchElements(item.puzzle, inset(box, compact ? 3 : 8), {
+        solution: options.solution,
+        compact,
+        palette,
+        ...(theme.sudokuIcons.length > 0 ? { icons: theme.sudokuIcons } : {}),
       });
   }
 }

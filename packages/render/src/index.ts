@@ -26,6 +26,8 @@ export { dotToDotElements } from './layout/dotToDot';
 export type { DotToDotDrawOptions } from './layout/dotToDot';
 export { mazeElements } from './layout/maze';
 export type { MazeDrawOptions } from './layout/maze';
+export { shadowMatchElements } from './layout/shadowMatch';
+export type { ShadowMatchDrawOptions } from './layout/shadowMatch';
 export { sudokuElements, sudokuLegendElements } from './layout/sudoku';
 export type { SudokuDrawOptions } from './layout/sudoku';
 export { bookletPages, coverPage, puzzlePage, solutionPages } from './pages';

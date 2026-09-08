@@ -31,7 +31,7 @@ import {
   pageToSvgString,
 } from '../lib/render';
 
-const KINDS: PuzzleKind[] = ['wordsearch', 'maze', 'sudoku', 'dot-to-dot'];
+const KINDS: PuzzleKind[] = ['wordsearch', 'maze', 'sudoku', 'dot-to-dot', 'shadow-match'];
 
 /**
  * Heft-Builder: Deckblatt, Rätsel zusammenstellen und ordnen, Vorschau mit
@@ -373,7 +373,7 @@ export default function BookletBuilder(): React.ReactElement {
                             aria-pressed={entry.dotToDotShapeId === choice.id}
                             className={`rounded-group border px-3 py-2 text-xs ${
                               entry.dotToDotShapeId === choice.id
-                                ? 'border-brand-500 bg-brand-50 text-brand-700'
+                                ? 'border-accent-deep bg-paper text-ink'
                                 : 'border-line-strong text-muted hover:bg-paper'
                             }`}
                             onClick={() => updateEntry(entry.id, { dotToDotShapeId: choice.id })}

@@ -37,6 +37,7 @@ const RETURN_PATHS: Record<PuzzleKind, string> = {
   maze: '/labyrinth',
   sudoku: '/sudoku',
   'dot-to-dot': '/punkte-zu-punkte',
+  'shadow-match': '/schattenraetsel',
 };
 
 /** Parameter der Bezahlseite; sie gehören nicht zur Rätsel-Konfiguration. */
@@ -211,6 +212,17 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
         )}
         {config.kind === 'sudoku' && <SudokuFields config={config} update={update} />}
         {config.kind === 'dot-to-dot' && <DotToDotFields config={config} update={update} />}
+        {config.kind === 'shadow-match' && (
+          <Field
+            label={t('generator.common.difficulty')}
+            hint={t('generator.shadow-match.difficultyHint')}
+          >
+            <DifficultySelect
+              value={config.difficulty}
+              onChange={(difficulty) => update({ difficulty })}
+            />
+          </Field>
+        )}
 
         <Field label={t('generator.common.theme')} hint={t('generator.common.themeHint')}>
           <div className="flex flex-wrap gap-2">
@@ -563,7 +575,7 @@ function DotToDotFields({
               aria-pressed={config.shapeId === choice.id}
               className={`rounded-group border px-3 py-2 text-sm ${
                 config.shapeId === choice.id
-                  ? 'border-brand-500 bg-brand-50 text-brand-700'
+                  ? 'border-accent-deep bg-paper text-ink'
                   : 'border-line-strong text-muted hover:bg-paper'
               }`}
               onClick={() => update({ shapeId: choice.id })}

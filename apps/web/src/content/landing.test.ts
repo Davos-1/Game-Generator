@@ -18,11 +18,11 @@ describe('Landing-Pages', () => {
     }
   });
 
-  it('liegen in der geplanten Grössenordnung (30 bis 65 Seiten)', () => {
-    // Obergrenze mit AP11 (vierter Rätseltyp) von 50 auf 65 angehoben: mehr
+  it('liegen in der geplanten Grössenordnung (30 bis 80 Seiten)', () => {
+    // Obergrenze mit AP12 (fünfter Rätseltyp) von 65 auf 80 angehoben: mehr
     // Rätseltypen erhöhen die Seitenzahl proportional zu Themen und Anlässen.
     expect(pages.length).toBeGreaterThanOrEqual(30);
-    expect(pages.length).toBeLessThanOrEqual(65);
+    expect(pages.length).toBeLessThanOrEqual(80);
   });
 
   it('haben durchwegs eigene Titel und Beschreibungen', () => {
@@ -39,6 +39,7 @@ describe('Landing-Pages', () => {
       maze: 'Labyrinth',
       sudoku: 'Sudoku',
       'dot-to-dot': 'Punkte-zu-Punkte',
+      'shadow-match': 'Schattenrätsel',
     } as const;
     for (const page of pages) {
       expect(page.description, page.description).toContain(names[page.kind]);

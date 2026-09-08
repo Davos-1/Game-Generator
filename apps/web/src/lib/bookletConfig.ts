@@ -140,7 +140,9 @@ const asDifficulty = (value: unknown): 'easy' | 'medium' | 'hard' =>
   value === 'easy' || value === 'hard' ? value : 'medium';
 
 const asKind = (value: unknown): PuzzleKind =>
-  value === 'maze' || value === 'sudoku' || value === 'dot-to-dot' ? value : 'wordsearch';
+  value === 'maze' || value === 'sudoku' || value === 'dot-to-dot' || value === 'shadow-match'
+    ? value
+    : 'wordsearch';
 
 export function fromCompact(input: unknown): BookletConfig {
   const base = defaultBooklet();

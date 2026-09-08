@@ -33,7 +33,7 @@ export type Product = 'single' | 'booklet';
  */
 export const RETURN_PATHS: Readonly<Record<Product, readonly string[]>> = {
   booklet: ['/raetselheft'],
-  single: ['/wortsuchraetsel', '/labyrinth', '/sudoku', '/punkte-zu-punkte'],
+  single: ['/wortsuchraetsel', '/labyrinth', '/sudoku', '/punkte-zu-punkte', '/schattenraetsel'],
 };
 
 export interface Deps {

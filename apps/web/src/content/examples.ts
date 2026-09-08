@@ -14,6 +14,7 @@ export const EXAMPLES: readonly { kind: ExampleKind }[] = [
   { kind: 'maze' },
   { kind: 'sudoku' },
   { kind: 'dot-to-dot' },
+  { kind: 'shadow-match' },
 ];
 
 /** Adresse des Beispiel-PDF; «neutral» ist das Standarddesign. */

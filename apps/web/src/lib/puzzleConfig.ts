@@ -4,12 +4,13 @@ import type {
   Difficulty,
   DotToDotDifficulty,
   MazeDifficulty,
+  ShadowMatchDifficulty,
   SudokuDifficulty,
   SudokuSize,
   UmlautMode,
 } from '@raetselheft/engine';
 
-export type PuzzleKind = 'wordsearch' | 'maze' | 'sudoku' | 'dot-to-dot';
+export type PuzzleKind = 'wordsearch' | 'maze' | 'sudoku' | 'dot-to-dot' | 'shadow-match';
 
 interface BaseConfig {
   /** Id des Themen-Designs; «neutral» ist das Standarddesign. */
@@ -54,7 +55,13 @@ export interface DotToDotConfig extends BaseConfig {
   shapeId: string;
 }
 
-export type PuzzleConfig = WordSearchConfig | MazeConfig | SudokuConfig | DotToDotConfig;
+export interface ShadowMatchConfig extends BaseConfig {
+  kind: 'shadow-match';
+  difficulty: ShadowMatchDifficulty;
+}
+
+export type PuzzleConfig =
+  WordSearchConfig | MazeConfig | SudokuConfig | DotToDotConfig | ShadowMatchConfig;
 
 /** Auswahlliste der Punkte-zu-Punkte-Formen für die Oberfläche. */
 export const SHAPE_CHOICES: readonly { id: string; name: string }[] = SHAPE_IDS.map((id) => ({
@@ -123,6 +130,15 @@ export function defaultConfig(kind: PuzzleKind): PuzzleConfig {
         difficulty: 'medium',
         shapeId: SHAPE_IDS[0] as string,
       };
+    case 'shadow-match':
+      return {
+        kind,
+        theme: NEUTRAL_THEME.id,
+        title: 'Schattenrätsel',
+        subtitle: '',
+        seed,
+        difficulty: 'medium',
+      };
   }
 }
 
@@ -181,6 +197,9 @@ export function configToParams(config: PuzzleConfig): URLSearchParams {
       set('fo', config.shapeId, b.shapeId);
       break;
     }
+    case 'shadow-match':
+      set('d', config.difficulty, (base as ShadowMatchConfig).difficulty);
+      break;
   }
   return params;
 }
@@ -239,6 +258,16 @@ export function configFromParams(kind: PuzzleKind, params: URLSearchParams): Puz
         shapeId: oneOf(params.get('fo'), SHAPE_IDS, b.shapeId),
       };
     }
+    case 'shadow-match':
+      return {
+        kind,
+        ...common,
+        difficulty: oneOf(
+          params.get('d'),
+          ['easy', 'medium', 'hard'] as const,
+          (base as ShadowMatchConfig).difficulty,
+        ),
+      };
   }
 }
 
