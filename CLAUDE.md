@@ -4,6 +4,13 @@
 
 Rätsel- und Spielgenerator für Ausdrucke (Wortsuchrätsel, Labyrinth, Sudoku) als PDF. Vollständige Spezifikation und Arbeitspakete AP1–AP10 in `PLAN.md`. Arbeitsweise: pro Arbeitspaket Plan vorlegen → umsetzen → Review/Tests → erst dann weiter.
 
+## Parallele Arbeit
+
+An diesem Repository arbeiten zurzeit zwei Claude-Sessions gleichzeitig. Wer
+was anfasst und welche Dateien geteilt sind, steht in
+`docs/AGENTEN-ABSPRACHE.md`. Vor Änderungen an fremden Bereichen dort
+nachsehen und eigene Vorhaben eintragen.
+
 ## Sprache
 
 - Website-Texte, Kommentare, Commit-Messages und Docs: Deutsch (Schweizer Standarddeutsch).
