@@ -9,10 +9,11 @@ export type { Rng } from './random';
 
 export type { Cell } from './grid';
 export * from './wordsearch';
+export * from './crossword';
 export * from './dotToDot';
 export * from './maze';
 export * from './shadowMatch';
 export * from './sudoku';
 
 /** Version der Engine-API; wird in gespeicherten Heft-Konfigurationen mitgeführt. */
-export const ENGINE_VERSION = '0.5.0';
+export const ENGINE_VERSION = '0.6.0';
