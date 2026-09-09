@@ -24,6 +24,34 @@ interface Placement {
   direction: CrosswordDirection;
 }
 
+interface Bounds {
+  minRow: number;
+  minCol: number;
+  maxRow: number;
+  maxCol: number;
+}
+
+/** Bounding-Box, die auch das neue Wort noch einschliesst. */
+function extendBounds(
+  bounds: Bounds,
+  row: number,
+  col: number,
+  direction: CrosswordDirection,
+  length: number,
+): Bounds {
+  const endRow = direction === 'down' ? row + length - 1 : row;
+  const endCol = direction === 'across' ? col + length - 1 : col;
+  return {
+    minRow: Math.min(bounds.minRow, row),
+    minCol: Math.min(bounds.minCol, col),
+    maxRow: Math.max(bounds.maxRow, endRow),
+    maxCol: Math.max(bounds.maxCol, endCol),
+  };
+}
+
+const boundsArea = (bounds: Bounds): number =>
+  (bounds.maxRow - bounds.minRow + 1) * (bounds.maxCol - bounds.minCol + 1);
+
 /** Startpunkt des ersten Worts; Koordinaten dürfen beim Bauen negativ werden, am Ende wird zugeschnitten. */
 const ORIGIN = 40;
 
@@ -145,18 +173,36 @@ function buildGrid(candidates: readonly Candidate[], target: number, rng: Rng): 
   const startCol = ORIGIN;
   place(grid, first.word, startRow, startCol, 'across');
   placed.push({ ...first, row: startRow, col: startCol, direction: 'across' });
+  let bounds: Bounds = {
+    minRow: startRow,
+    minCol: startCol,
+    maxRow: startRow,
+    maxCol: startCol + first.word.length - 1,
+  };
 
   for (const candidate of ordered.slice(1)) {
     if (placed.length >= target) break;
     const options = findPlacements(grid, placed, candidate.word);
     if (options.length === 0) continue;
-    // Bei mehreren Optionen die mit den meisten Kreuzungen wählen (dichteres
-    // Gitter), unter Gleichstand zufällig für Abwechslung je Seed.
+    // Bei mehreren Optionen zuerst die mit den meisten Kreuzungen wählen
+    // (stabileres Gitter), unter diesen die, die das Gitter am wenigsten
+    // vergrössert (kompaktere Form statt spindeliger Arme). Bei Gleichstand
+    // zufällig für Abwechslung je Seed.
     const best = Math.max(...options.map((o) => o.crossings));
     const bestOptions = options.filter((o) => o.crossings === best);
-    const choice = rng.pick(bestOptions);
+    const currentArea = boundsArea(bounds);
+    const scored = bestOptions.map((o) => ({
+      ...o,
+      growth:
+        boundsArea(extendBounds(bounds, o.row, o.col, o.direction, candidate.word.length)) -
+        currentArea,
+    }));
+    const minGrowth = Math.min(...scored.map((o) => o.growth));
+    const compact = scored.filter((o) => o.growth === minGrowth);
+    const choice = rng.pick(compact);
     place(grid, candidate.word, choice.row, choice.col, choice.direction);
     placed.push({ ...candidate, row: choice.row, col: choice.col, direction: choice.direction });
+    bounds = extendBounds(bounds, choice.row, choice.col, choice.direction, candidate.word.length);
   }
   return placed;
 }

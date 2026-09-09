@@ -63,6 +63,10 @@ function buildColumn(
  * Zeichnet ein Kreuzworträtsel: das nummerierte Gitter oben, die Hinweise in
  * zwei Spalten (waagrecht/senkrecht) darunter. Gesperrte Felder werden
  * flächig gefüllt, wie im gedruckten Kreuzworträtsel üblich.
+ *
+ * Auf der Lösungsseite entfallen die Hinweise: sie stehen schon auf der
+ * Rätselseite, und das Gitter bekommt dafür die ganze Fläche statt eines
+ * schmalen Streifens darüber.
  */
 export function crosswordElements(
   puzzle: CrosswordPuzzle,
@@ -74,6 +78,7 @@ export function crosswordElements(
   const palette = options.palette ?? COLORS;
   const acrossLabel = options.acrossLabel ?? 'Waagrecht';
   const downLabel = options.downLabel ?? 'Senkrecht';
+  const showClues = !options.solution;
   const elements: Element[] = [];
 
   const clueSize = compact ? 6.5 : 9;
@@ -81,29 +86,35 @@ export function crosswordElements(
   const lineHeight = clueSize * 1.55;
   const columnGap = compact ? 4 : 10;
   const columnWidth = (box.width - columnGap) / 2;
-
-  const across = buildColumn(
-    acrossLabel,
-    puzzle.words.filter((w) => w.direction === 'across'),
-    measurer,
-    'body',
-    clueSize,
-    columnWidth,
-  );
-  const down = buildColumn(
-    downLabel,
-    puzzle.words.filter((w) => w.direction === 'down'),
-    measurer,
-    'body',
-    clueSize,
-    columnWidth,
-  );
   const headingGap = compact ? 3 : 5;
+
+  const across = showClues
+    ? buildColumn(
+        acrossLabel,
+        puzzle.words.filter((w) => w.direction === 'across'),
+        measurer,
+        'body',
+        clueSize,
+        columnWidth,
+      )
+    : undefined;
+  const down = showClues
+    ? buildColumn(
+        downLabel,
+        puzzle.words.filter((w) => w.direction === 'down'),
+        measurer,
+        'body',
+        clueSize,
+        columnWidth,
+      )
+    : undefined;
   const listHeight =
-    headingGap +
-    headingSize * 0.8 +
-    Math.max(across.lines.length, down.lines.length) * lineHeight +
-    (compact ? 4 : 8);
+    across && down
+      ? headingGap +
+        headingSize * 0.8 +
+        Math.max(across.lines.length, down.lines.length) * lineHeight +
+        (compact ? 4 : 8)
+      : 0;
 
   const gridArea: ContentBox = {
     x: box.x,
@@ -180,33 +191,35 @@ export function crosswordElements(
     }
   }
 
-  // Hinweisspalten unter dem Gitter.
-  const listTop = gridBox.y + gridBox.height + headingGap;
-  const columns = [
-    { data: across, x: box.x },
-    { data: down, x: box.x + columnWidth + columnGap },
-  ];
-  for (const { data, x } of columns) {
-    elements.push({
-      type: 'text',
-      x,
-      y: listTop + headingSize * 0.8,
-      text: data.label,
-      font: 'bodyBold',
-      size: headingSize,
-      color: palette.ink,
-    });
-    data.lines.forEach((line, index) => {
+  // Hinweisspalten unter dem Gitter; auf der Lösungsseite entfallen sie.
+  if (across && down) {
+    const listTop = gridBox.y + gridBox.height + headingGap;
+    const columns = [
+      { data: across, x: box.x },
+      { data: down, x: box.x + columnWidth + columnGap },
+    ];
+    for (const { data, x } of columns) {
       elements.push({
         type: 'text',
         x,
-        y: listTop + headingSize * 0.8 + headingGap + (index + 1) * lineHeight,
-        text: line,
-        font: 'body',
-        size: clueSize,
+        y: listTop + headingSize * 0.8,
+        text: data.label,
+        font: 'bodyBold',
+        size: headingSize,
         color: palette.ink,
       });
-    });
+      data.lines.forEach((line, index) => {
+        elements.push({
+          type: 'text',
+          x,
+          y: listTop + headingSize * 0.8 + headingGap + (index + 1) * lineHeight,
+          text: line,
+          font: 'body',
+          size: clueSize,
+          color: palette.ink,
+        });
+      });
+    }
   }
 
   return elements;
