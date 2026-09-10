@@ -76,6 +76,18 @@ export interface CrosswordConfig extends BaseConfig {
   topics: string[];
 }
 
+/**
+ * Das Kreuzworträtsel kennt eine Stufe mehr als die übrigen Rätseltypen: die
+ * Hinweise stehen im unteren Viertel, darüber ist Platz für ein grösseres
+ * Gitter.
+ */
+export const CROSSWORD_DIFFICULTIES: readonly CrosswordDifficulty[] = [
+  'easy',
+  'medium',
+  'hard',
+  'extra-hard',
+];
+
 export type PuzzleConfig =
   | WordSearchConfig
   | MazeConfig
@@ -324,7 +336,7 @@ export function configFromParams(kind: PuzzleKind, params: URLSearchParams): Puz
       return {
         kind,
         ...common,
-        difficulty: oneOf(params.get('d'), ['easy', 'medium', 'hard'] as const, b.difficulty),
+        difficulty: oneOf(params.get('d'), CROSSWORD_DIFFICULTIES, b.difficulty),
         topics: topics === null ? b.topics : sanitizeTopics(topics.split(',').filter(Boolean)),
       };
     }

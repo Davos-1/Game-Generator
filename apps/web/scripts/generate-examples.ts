@@ -104,14 +104,24 @@ async function main(): Promise<void> {
         subtitle: t('example.subtitle'),
         footerLeft: t('site.domain'),
       };
-      const pages = [
-        puzzlePage(item, measurer, options),
-        ...solutionPages([{ item, caption: title }], measurer, {
-          theme,
-          title: t('generator.common.solutionTitle'),
-          footerLeft: t('site.domain'),
-        }),
-      ];
+      // Kreuzworträtsel: volle Lösungsseite, damit das Lösungsgitter gleich
+      // gross ist wie das Rätselgitter (siehe layout/crossword.ts).
+      const solution =
+        kind === 'crossword'
+          ? [
+              puzzlePage(item, measurer, {
+                ...options,
+                title: t('generator.common.solutionTitle'),
+                subtitle: title,
+                solution: true,
+              }),
+            ]
+          : solutionPages([{ item, caption: title }], measurer, {
+              theme,
+              title: t('generator.common.solutionTitle'),
+              footerLeft: t('site.domain'),
+            });
+      const pages = [puzzlePage(item, measurer, options), ...solution];
       const bytes = await renderPdf(pages, fonts, {
         title: `${title} – ${theme.name}`,
         subject: t('example.subtitle'),

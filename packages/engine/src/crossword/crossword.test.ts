@@ -8,7 +8,7 @@ import {
   type CrosswordPuzzle,
 } from './types';
 
-const DIFFICULTIES: readonly CrosswordDifficulty[] = ['easy', 'medium', 'hard'];
+const DIFFICULTIES: readonly CrosswordDifficulty[] = ['easy', 'medium', 'hard', 'extra-hard'];
 
 const ENTRIES: CrosswordEntry[] = [
   { word: 'Schatz', clue: 'Verborgener Reichtum' },
@@ -82,6 +82,29 @@ describe('generateCrossword', () => {
       expectFillableCoveredByWords(puzzle);
     });
   }
+
+  it('platziert bei «extra-hard» tendenziell mehr Wörter als bei «hard»', () => {
+    // Braucht mehr Kandidaten, als «hard» überhaupt platzieren würde.
+    const many: CrosswordEntry[] = [
+      ...ENTRIES,
+      { word: 'Kompass', clue: 'Zeigt nach Norden' },
+      { word: 'Klippe', clue: 'Steiler Felsen am Meer' },
+      { word: 'Matrose', clue: 'Arbeitet auf dem Schiff' },
+      { word: 'Kanone', clue: 'Schiesst mit lautem Knall' },
+      { word: 'Fernrohr', clue: 'Holt Entferntes nah heran' },
+      { word: 'Steuerrad', clue: 'Damit wird gelenkt' },
+      { word: 'Goldmünze', clue: 'Glänzendes Zahlungsmittel' },
+      { word: 'Landkarte', clue: 'Zeigt Küsten und Inseln' },
+    ];
+    const avgWords = (difficulty: CrosswordDifficulty): number => {
+      const counts = Array.from(
+        { length: 8 },
+        (_, i) => generateCrossword({ seed: `xh-${i}`, entries: many, difficulty }).words.length,
+      );
+      return counts.reduce((a, b) => a + b, 0) / counts.length;
+    };
+    expect(avgWords('extra-hard')).toBeGreaterThan(avgWords('hard'));
+  });
 
   it('platziert bei «hard» tendenziell mehr Wörter als bei «easy»', () => {
     // Nicht garantiert bei jedem Seed, aber im Schnitt über mehrere Seeds.

@@ -1,7 +1,7 @@
 import type { CrosswordPuzzle, CrosswordWord } from '@raetselheft/engine';
 import type { TextMeasurer } from '../measure';
 import type { ContentBox } from '../page';
-import { COLORS, type Element, type Mm, type Palette } from '../primitives';
+import { COLORS, MM_PER_PT, type Element, type Mm, type Palette } from '../primitives';
 import { fitBox } from './box';
 
 export interface CrosswordDrawOptions {
@@ -59,14 +59,85 @@ function buildColumn(
   return { label, lines };
 }
 
+/** Anteil der Fläche, den die Hinweise höchstens beanspruchen sollen: das untere Viertel. */
+const CLUE_AREA_RATIO = 0.25;
+
+/** Schriftgrössen von gross nach klein; die erste, mit der alles ins Viertel passt, gewinnt. Nie unter 6 pt. */
+const CLUE_SIZES = [9, 8.5, 8, 7.5, 7, 6.5, 6];
+const COMPACT_CLUE_SIZES = [6.5, 6];
+
+interface ClueLayout {
+  /** Gesamthöhe des Hinweisblocks inklusive Überschrift und Abständen. */
+  height: Mm;
+  size: number;
+  headingSize: number;
+  headingCap: Mm;
+  lineHeight: Mm;
+  columnWidth: Mm;
+  columnGap: Mm;
+  headingGap: Mm;
+  across: ClueColumn;
+  down: ClueColumn;
+}
+
 /**
- * Zeichnet ein Kreuzworträtsel: das nummerierte Gitter oben, die Hinweise in
- * zwei Spalten (waagrecht/senkrecht) darunter. Gesperrte Felder werden
- * flächig gefüllt, wie im gedruckten Kreuzworträtsel üblich.
+ * Sucht die grösste Schriftgrösse, mit der die Hinweise ins untere Viertel
+ * passen. Passt selbst die kleinste nicht, wird der Block höher — lieber ein
+ * etwas kleineres Gitter als abgeschnittene Hinweise.
+ */
+function layoutClues(
+  puzzle: CrosswordPuzzle,
+  box: ContentBox,
+  measurer: TextMeasurer,
+  compact: boolean,
+  acrossLabel: string,
+  downLabel: string,
+): ClueLayout {
+  const columnGap = compact ? 4 : 10;
+  const columnWidth = (box.width - columnGap) / 2;
+  const headingGap = compact ? 2 : 4;
+  const target = box.height * CLUE_AREA_RATIO;
+  const acrossWords = puzzle.words.filter((w) => w.direction === 'across');
+  const downWords = puzzle.words.filter((w) => w.direction === 'down');
+
+  let layout: ClueLayout | undefined;
+  for (const size of compact ? COMPACT_CLUE_SIZES : CLUE_SIZES) {
+    const headingSize = size + 1;
+    // Schriftgrössen sind Punkt, Abstände Millimeter: ohne Umrechnung wird der
+    // Zeilenabstand rund dreimal zu gross und der Block frisst die halbe Seite.
+    const headingCap = measurer.capHeight('bodyBold', headingSize);
+    const lineHeight = size * MM_PER_PT * 1.35;
+    const across = buildColumn(acrossLabel, acrossWords, measurer, 'body', size, columnWidth);
+    const down = buildColumn(downLabel, downWords, measurer, 'body', size, columnWidth);
+    const lines = Math.max(across.lines.length, down.lines.length);
+    const height = headingGap + headingCap + headingGap + lines * lineHeight;
+    layout = {
+      height,
+      size,
+      headingSize,
+      headingCap,
+      lineHeight,
+      columnWidth,
+      columnGap,
+      headingGap,
+      across,
+      down,
+    };
+    if (height <= target) break;
+  }
+  return layout as ClueLayout;
+}
+
+/**
+ * Zeichnet ein Kreuzworträtsel: das nummerierte Gitter oben, die Hinweise im
+ * unteren Viertel in zwei Spalten (waagrecht/senkrecht). Gesperrte Felder
+ * werden flächig gefüllt, wie im gedruckten Kreuzworträtsel üblich.
  *
- * Auf der Lösungsseite entfallen die Hinweise: sie stehen schon auf der
- * Rätselseite, und das Gitter bekommt dafür die ganze Fläche statt eines
- * schmalen Streifens darüber.
+ * Auf einer vollen Lösungsseite bleibt die Hinweisfläche frei, statt sie zu
+ * füllen: die Hinweise stehen schon auf der Rätselseite, und so liegt das
+ * Lösungsgitter exakt gleich gross an derselben Stelle wie das Rätselgitter.
+ * Nur in der Kompaktkachel des Hefts entfällt die Reserve, dort gibt es keine
+ * zugehörige Rätselseite gleicher Grösse.
  */
 export function crosswordElements(
   puzzle: CrosswordPuzzle,
@@ -78,43 +149,14 @@ export function crosswordElements(
   const palette = options.palette ?? COLORS;
   const acrossLabel = options.acrossLabel ?? 'Waagrecht';
   const downLabel = options.downLabel ?? 'Senkrecht';
-  const showClues = !options.solution;
+  const drawClues = !options.solution;
+  const reserveClues = drawClues || !compact;
   const elements: Element[] = [];
 
-  const clueSize = compact ? 6.5 : 9;
-  const headingSize = compact ? 7.5 : 10;
-  const lineHeight = clueSize * 1.55;
-  const columnGap = compact ? 4 : 10;
-  const columnWidth = (box.width - columnGap) / 2;
-  const headingGap = compact ? 3 : 5;
-
-  const across = showClues
-    ? buildColumn(
-        acrossLabel,
-        puzzle.words.filter((w) => w.direction === 'across'),
-        measurer,
-        'body',
-        clueSize,
-        columnWidth,
-      )
+  const clues = reserveClues
+    ? layoutClues(puzzle, box, measurer, compact, acrossLabel, downLabel)
     : undefined;
-  const down = showClues
-    ? buildColumn(
-        downLabel,
-        puzzle.words.filter((w) => w.direction === 'down'),
-        measurer,
-        'body',
-        clueSize,
-        columnWidth,
-      )
-    : undefined;
-  const listHeight =
-    across && down
-      ? headingGap +
-        headingSize * 0.8 +
-        Math.max(across.lines.length, down.lines.length) * lineHeight +
-        (compact ? 4 : 8)
-      : 0;
+  const listHeight = clues?.height ?? 0;
 
   const gridArea: ContentBox = {
     x: box.x,
@@ -191,31 +233,33 @@ export function crosswordElements(
     }
   }
 
-  // Hinweisspalten unter dem Gitter; auf der Lösungsseite entfallen sie.
-  if (across && down) {
-    const listTop = gridBox.y + gridBox.height + headingGap;
+  // Hinweise stehen im unteren Viertel, unabhängig davon, wie hoch das Gitter
+  // ausfällt. Auf der Lösungsseite bleibt dieselbe Fläche frei.
+  if (clues && drawClues) {
+    const bandTop = box.y + box.height - clues.height;
+    const headingBaseline = bandTop + clues.headingGap + clues.headingCap;
     const columns = [
-      { data: across, x: box.x },
-      { data: down, x: box.x + columnWidth + columnGap },
+      { data: clues.across, x: box.x },
+      { data: clues.down, x: box.x + clues.columnWidth + clues.columnGap },
     ];
     for (const { data, x } of columns) {
       elements.push({
         type: 'text',
         x,
-        y: listTop + headingSize * 0.8,
+        y: headingBaseline,
         text: data.label,
         font: 'bodyBold',
-        size: headingSize,
+        size: clues.headingSize,
         color: palette.ink,
       });
       data.lines.forEach((line, index) => {
         elements.push({
           type: 'text',
           x,
-          y: listTop + headingSize * 0.8 + headingGap + (index + 1) * lineHeight,
+          y: headingBaseline + clues.headingGap + (index + 1) * clues.lineHeight,
           text: line,
           font: 'body',
-          size: clueSize,
+          size: clues.size,
           color: palette.ink,
         });
       });

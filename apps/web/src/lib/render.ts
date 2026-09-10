@@ -181,6 +181,21 @@ export async function buildPages(
   // Nur beim Sudoku steuerbar; sonst entscheidet die Layout-Schicht.
   const symbols = config.kind === 'sudoku' ? { symbols: config.symbols } : {};
   const puzzle = puzzlePage(item, measurer, { ...base, ...symbols, ...mark });
+
+  // Beim Kreuzworträtsel eine volle Lösungsseite mit demselben Seitenaufbau:
+  // nur so liegt das Lösungsgitter exakt gleich gross an derselben Stelle wie
+  // das Rätselgitter. Die anderen Typen bleiben bei der kompakten Kachel.
+  if (config.kind === 'crossword') {
+    const solution = puzzlePage(item, measurer, {
+      ...base,
+      title: t('generator.common.solutionTitle'),
+      subtitle: base.title,
+      solution: true,
+      ...mark,
+    });
+    return { puzzle, solution };
+  }
+
   const [solution] = solutionPages([{ item, caption: base.title }], measurer, {
     title: t('generator.common.solutionTitle'),
     footerLeft: t('site.domain'),

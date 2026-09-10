@@ -11,6 +11,7 @@ import { createMeasurer } from './fonts';
 import type { TextMeasurer } from './measure';
 import { loadFontsFromDisk } from './node';
 import { crosswordEntriesFor } from './themes/crosswordEntries';
+import { crosswordTopicEntries } from './themes/crosswordTopics';
 import { mazeElements } from './layout/maze';
 import { bookletPages, puzzlePage, solutionPages, type PuzzleItem } from './pages';
 import { MARGIN } from './page';
@@ -67,6 +68,15 @@ const items = (theme: Theme): PuzzleItem[] => [
       seed: `print-${theme.id}`,
       entries: crosswordEntriesFor(theme.id),
       difficulty: 'hard',
+    }),
+  },
+  {
+    // Dichtester Fall: die meisten Wörter und damit die meisten Hinweiszeilen.
+    kind: 'crossword',
+    puzzle: generateCrossword({
+      seed: `print-xh-${theme.id}`,
+      entries: crosswordTopicEntries(['tiere', 'weltraum', 'berufe', 'kochen']),
+      difficulty: 'extra-hard',
     }),
   },
 ];

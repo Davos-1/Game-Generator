@@ -83,7 +83,8 @@
     "difficulty": {
       "easy": "Leicht",
       "medium": "Mittel",
-      "hard": "Schwer"
+      "hard": "Schwer",
+      "extra-hard": "Extra schwer"
     },
     "wordsearch": {
       "defaultTitle": "Wortsuchrätsel",

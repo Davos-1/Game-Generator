@@ -10,7 +10,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { createMeasurer, createTableMeasurer } from './fonts';
 import type { TextMeasurer } from './measure';
 import { loadFontsFromDisk } from './node';
-import { createPage, fitText, MARGIN } from './page';
+import { createPage, fitText, FOOTER_HEIGHT, HEADER_HEIGHT, MARGIN } from './page';
 import { puzzlePage, solutionPages, type PuzzleItem } from './pages';
 import { renderPdf } from './pdf';
 import { inflateSync } from 'node:zlib';
@@ -18,6 +18,7 @@ import * as fontkit from 'fontkit';
 import { PDFDict, PDFDocument, PDFName, PDFRawStream, PDFRef } from 'pdf-lib';
 import { A4, COLORS, PT_PER_MM, type PageLayout, type TextElement } from './primitives';
 import { pageToSvg } from './svg';
+import { crosswordTopicEntries } from './themes/crosswordTopics';
 import type { FontSet } from './fonts';
 
 /** Liest die eingebetteten Schriftprogramme (FontFile2) aus einem PDF zurück. */
@@ -313,6 +314,57 @@ describe('Rätselseiten', () => {
     );
     const fillableCount = crossword.fillable.flat().filter(Boolean).length;
     expect(solutionLetters).toHaveLength(fillableCount);
+  });
+
+  it('zeichnet das Lösungsgitter genau gleich gross wie das Rätselgitter', () => {
+    const crossword = generateCrossword({
+      seed: 'gleich-gross',
+      entries: CROSSWORD_ENTRIES,
+      difficulty: 'hard',
+    });
+    const item: PuzzleItem = { kind: 'crossword', puzzle: crossword };
+    const options = { title: 'Kreuzworträtsel' };
+    const puzzle = puzzlePage(item, measurer, options);
+    const solution = puzzlePage(item, measurer, { ...options, solution: true });
+    // Die Zellen sind Rechtecke; ihre Lage und Grösse müssen deckungsgleich sein.
+    const cells = (page: PageLayout): string[] =>
+      page.elements
+        .filter((el) => el.type === 'rect')
+        .map((el) =>
+          el.type === 'rect'
+            ? `${el.x.toFixed(3)},${el.y.toFixed(3)},${el.width.toFixed(3)},${el.height.toFixed(3)}`
+            : '',
+        )
+        .sort();
+    expect(cells(solution)).toEqual(cells(puzzle));
+    expect(cells(puzzle).length).toBe(crossword.width * crossword.height);
+  });
+
+  it('hält die Kreuzworträtsel-Hinweise im unteren Viertel der Fläche', () => {
+    // Sonst bliebe fürs Gitter zu wenig Platz — genau das war vorher das Problem.
+    for (const difficulty of ['easy', 'hard', 'extra-hard'] as const) {
+      const crossword = generateCrossword({
+        seed: `viertel-${difficulty}`,
+        // Echte, grosse Wortliste: sonst käme «extra-hard» gar nicht auf die
+        // Wortzahl, bei der die Hinweise überhaupt viel Platz brauchen.
+        entries: crosswordTopicEntries(['tiere', 'weltraum', 'berufe']),
+        difficulty,
+      });
+      const page = puzzlePage({ kind: 'crossword', puzzle: crossword }, measurer, {
+        title: 'Kreuzworträtsel',
+      });
+      const clueTexts = page.elements.filter(
+        (el): el is TextElement => el.type === 'text' && /^\d+\./.test(el.text),
+      );
+      expect(clueTexts.length, difficulty).toBeGreaterThan(0);
+      // Inhaltsbereich: unter dem Kopf bis über die Fusszeile (siehe page.ts).
+      const contentTop = MARGIN + HEADER_HEIGHT;
+      const contentHeight = A4.height - MARGIN - FOOTER_HEIGHT - contentTop;
+      const quarterTop = contentTop + 0.75 * contentHeight;
+      for (const clue of clueTexts) {
+        expect(clue.y, `${difficulty}: ${clue.text}`).toBeGreaterThanOrEqual(quarterTop);
+      }
+    }
   });
 
   it('verteilt Lösungen nach Grösse: 4 kleine oder 2 grosse pro Seite', () => {

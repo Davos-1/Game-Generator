@@ -38,6 +38,12 @@ export type PuzzleItem =
 export interface PuzzlePageOptions extends PageFrameOptions {
   /** Symbole statt Ziffern beim Sudoku erzwingen oder unterdrücken. */
   symbols?: boolean;
+  /**
+   * Volle Seite mit ausgefüllter Lösung statt leerem Rätsel. Gedacht für
+   * Einzelrätsel, deren Lösung gleich gross wie das Rätsel sein soll; im Heft
+   * werden Lösungen weiterhin als Kacheln zusammengefasst.
+   */
+  solution?: boolean;
 }
 
 interface DrawOptions {
@@ -56,7 +62,7 @@ export function puzzlePage(
   const { page, content, watermark } = createPage(measurer, options);
   page.elements.push(
     ...drawItem(item, content, measurer, {
-      solution: false,
+      solution: options.solution ?? false,
       theme: options.theme ?? NEUTRAL_THEME,
       ...(options.symbols !== undefined ? { symbols: options.symbols } : {}),
     }),

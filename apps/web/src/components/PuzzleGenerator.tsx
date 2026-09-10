@@ -8,6 +8,7 @@ import CrosswordTopicPicker from './CrosswordTopicPicker';
 import {
   configFromParams,
   configToParams,
+  CROSSWORD_DIFFICULTIES,
   defaultConfig,
   defaultSymbols,
   fileName,
@@ -411,16 +412,19 @@ function Field({
   );
 }
 
-function DifficultySelect({
+/** Stufenwahl; `levels` erlaubt zusätzliche Stufen, die nur ein Rätseltyp kennt. */
+function DifficultySelect<T extends string>({
   value,
   onChange,
+  levels = ['easy', 'medium', 'hard'] as unknown as readonly T[],
 }: {
-  value: 'easy' | 'medium' | 'hard';
-  onChange: (value: 'easy' | 'medium' | 'hard') => void;
+  value: T;
+  onChange: (value: T) => void;
+  levels?: readonly T[];
 }) {
   return (
     <div className="inline-flex w-full rounded-group border border-line-strong p-0.5">
-      {(['easy', 'medium', 'hard'] as const).map((level) => (
+      {levels.map((level) => (
         <button
           key={level}
           type="button"
@@ -616,6 +620,7 @@ function CrosswordFields({
       >
         <DifficultySelect
           value={config.difficulty}
+          levels={CROSSWORD_DIFFICULTIES}
           onChange={(difficulty) => update({ difficulty })}
         />
       </Field>

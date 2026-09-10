@@ -6,13 +6,14 @@
  * zusammenhängendes Gitter ergeben.
  */
 
-export type CrosswordDifficulty = 'easy' | 'medium' | 'hard';
+export type CrosswordDifficulty = 'easy' | 'medium' | 'hard' | 'extra-hard';
 
 /** Zielanzahl platzierter Wörter pro Stufe; weniger als 4 ergibt kein Gitter. */
 export const WORD_TARGET_BY_DIFFICULTY: Readonly<Record<CrosswordDifficulty, number>> = {
   easy: 6,
   medium: 9,
   hard: 12,
+  'extra-hard': 16,
 };
 
 export const MIN_PLACED_WORDS = 4;
