@@ -1,4 +1,5 @@
 import { NEUTRAL_THEME, THEMES, themeById } from '@raetselheft/render/themes';
+import { CROSSWORD_TOPICS, MAX_CROSSWORD_TOPICS } from '@raetselheft/render/themes/crosswordTopics';
 import { SHAPE_IDS } from '@raetselheft/engine';
 import type {
   CrosswordDifficulty,
@@ -10,6 +11,8 @@ import type {
   SudokuSize,
   UmlautMode,
 } from '@raetselheft/engine';
+
+export { CROSSWORD_TOPICS, MAX_CROSSWORD_TOPICS };
 
 export type PuzzleKind =
   'wordsearch' | 'maze' | 'sudoku' | 'dot-to-dot' | 'shadow-match' | 'crossword';
@@ -65,6 +68,8 @@ export interface ShadowMatchConfig extends BaseConfig {
 export interface CrosswordConfig extends BaseConfig {
   kind: 'crossword';
   difficulty: CrosswordDifficulty;
+  /** Wort-Themen; leer bedeutet: die Wortliste des gewählten Themen-Designs. Mehrere sind kombinierbar. */
+  topics: string[];
 }
 
 export type PuzzleConfig =
@@ -159,6 +164,7 @@ export function defaultConfig(kind: PuzzleKind): PuzzleConfig {
         subtitle: '',
         seed,
         difficulty: 'medium',
+        topics: [],
       };
   }
 }
@@ -180,6 +186,19 @@ const clampInt = (value: string | null, min: number, max: number, fallback: numb
 
 const oneOf = <T extends string>(value: string | null, allowed: readonly T[], fallback: T): T =>
   allowed.includes(value as T) ? (value as T) : fallback;
+
+const TOPIC_IDS = new Set(CROSSWORD_TOPICS.map((topic) => topic.id));
+
+/** Nur bekannte, doppelfreie Ids, bis zur Höchstzahl kombinierbarer Wort-Themen. */
+export function sanitizeTopics(ids: readonly string[]): string[] {
+  const unique: string[] = [];
+  for (const id of ids) {
+    if (!TOPIC_IDS.has(id) || unique.includes(id)) continue;
+    unique.push(id);
+    if (unique.length >= MAX_CROSSWORD_TOPICS) break;
+  }
+  return unique;
+}
 
 /** Kurze Parameternamen, damit geteilte Links nicht ausufern. */
 export function configToParams(config: PuzzleConfig): URLSearchParams {
@@ -221,9 +240,12 @@ export function configToParams(config: PuzzleConfig): URLSearchParams {
     case 'shadow-match':
       set('d', config.difficulty, (base as ShadowMatchConfig).difficulty);
       break;
-    case 'crossword':
-      set('d', config.difficulty, (base as CrosswordConfig).difficulty);
+    case 'crossword': {
+      const b = base as CrosswordConfig;
+      set('d', config.difficulty, b.difficulty);
+      set('to', sanitizeTopics(config.topics).join(','), b.topics.join(','));
       break;
+    }
   }
   return params;
 }
@@ -292,16 +314,16 @@ export function configFromParams(kind: PuzzleKind, params: URLSearchParams): Puz
           (base as ShadowMatchConfig).difficulty,
         ),
       };
-    case 'crossword':
+    case 'crossword': {
+      const b = base as CrosswordConfig;
+      const topics = params.get('to');
       return {
         kind,
         ...common,
-        difficulty: oneOf(
-          params.get('d'),
-          ['easy', 'medium', 'hard'] as const,
-          (base as CrosswordConfig).difficulty,
-        ),
+        difficulty: oneOf(params.get('d'), ['easy', 'medium', 'hard'] as const, b.difficulty),
+        topics: topics === null ? b.topics : sanitizeTopics(topics.split(',').filter(Boolean)),
       };
+    }
   }
 }
 

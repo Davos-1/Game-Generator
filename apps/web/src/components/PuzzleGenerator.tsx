@@ -7,10 +7,12 @@ import { usePurchase } from '../lib/purchase';
 import {
   configFromParams,
   configToParams,
+  CROSSWORD_TOPICS,
   defaultConfig,
   defaultSymbols,
   fileName,
   loadConfig,
+  MAX_CROSSWORD_TOPICS,
   newSeed,
   parseWords,
   saveConfig,
@@ -224,17 +226,7 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
             />
           </Field>
         )}
-        {config.kind === 'crossword' && (
-          <Field
-            label={t('generator.common.difficulty')}
-            hint={t('generator.crossword.difficultyHint')}
-          >
-            <DifficultySelect
-              value={config.difficulty}
-              onChange={(difficulty) => update({ difficulty })}
-            />
-          </Field>
-        )}
+        {config.kind === 'crossword' && <CrosswordFields config={config} update={update} />}
 
         <Field label={t('generator.common.theme')} hint={t('generator.common.themeHint')}>
           <div className="flex flex-wrap gap-2">
@@ -607,5 +599,106 @@ function DotToDotFields({
         />
       </Field>
     </>
+  );
+}
+
+function CrosswordFields({
+  config,
+  update,
+}: {
+  config: Extract<PuzzleConfig, { kind: 'crossword' }>;
+  update: (patch: Partial<PuzzleConfig>) => void;
+}) {
+  return (
+    <>
+      <Field
+        label={t('generator.common.difficulty')}
+        hint={t('generator.crossword.difficultyHint')}
+      >
+        <DifficultySelect
+          value={config.difficulty}
+          onChange={(difficulty) => update({ difficulty })}
+        />
+      </Field>
+      <CrosswordTopicsField topics={config.topics} onChange={(topics) => update({ topics })} />
+    </>
+  );
+}
+
+/**
+ * Dropdown zum Hinzufügen, Chips zum Entfernen: mehrere Wort-Themen sind
+ * kombinierbar. Ohne Auswahl entscheidet weiterhin das Themen-Design.
+ */
+function CrosswordTopicsField({
+  topics,
+  onChange,
+}: {
+  topics: string[];
+  onChange: (topics: string[]) => void;
+}) {
+  const selected = topics
+    .map((id) => CROSSWORD_TOPICS.find((topic) => topic.id === id))
+    .filter((topic): topic is (typeof CROSSWORD_TOPICS)[number] => topic !== undefined);
+  const available = CROSSWORD_TOPICS.filter((topic) => !topics.includes(topic.id));
+  const canAddMore = topics.length < MAX_CROSSWORD_TOPICS;
+  const wordTopics = available.filter((topic) => topic.group === 'topic');
+  const designTopics = available.filter((topic) => topic.group === 'design');
+
+  return (
+    <Field
+      label={t('generator.crossword.topics')}
+      hint={
+        topics.length === 0
+          ? t('generator.crossword.topicsHintEmpty')
+          : t('generator.crossword.topicsHint').replace('{max}', String(MAX_CROSSWORD_TOPICS))
+      }
+    >
+      {selected.length > 0 && (
+        <div className="mb-2 flex flex-wrap gap-2">
+          {selected.map((topic) => (
+            <button
+              key={topic.id}
+              type="button"
+              className="flex items-center gap-1.5 rounded-full border border-accent-deep bg-paper px-3 py-1.5 text-sm text-ink"
+              onClick={() => onChange(topics.filter((id) => id !== topic.id))}
+            >
+              {topic.name}
+              <span aria-hidden="true">×</span>
+            </button>
+          ))}
+        </div>
+      )}
+      {canAddMore && (
+        <select
+          className={inputClass}
+          value=""
+          aria-label={t('generator.crossword.addTopic')}
+          onChange={(event) => {
+            const value = event.target.value;
+            if (value) onChange([...topics, value]);
+          }}
+        >
+          <option value="">{t('generator.crossword.addTopic')}</option>
+          {wordTopics.length > 0 && (
+            <optgroup label={t('generator.crossword.groupTopic')}>
+              {wordTopics.map((topic) => (
+                <option key={topic.id} value={topic.id}>
+                  {topic.name}
+                </option>
+              ))}
+            </optgroup>
+          )}
+          {designTopics.length > 0 && (
+            <optgroup label={t('generator.crossword.groupDesign')}>
+              {designTopics.map((topic) => (
+                <option key={topic.id} value={topic.id}>
+                  {topic.name}
+                </option>
+              ))}
+            </optgroup>
+          )}
+        </select>
+      )}
+    </Field>
   );
 }

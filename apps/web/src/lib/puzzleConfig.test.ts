@@ -2,9 +2,13 @@ import { describe, expect, it } from 'vitest';
 import {
   configFromParams,
   configToParams,
+  CROSSWORD_TOPICS,
+  type CrosswordConfig,
   defaultConfig,
   fileName,
+  MAX_CROSSWORD_TOPICS,
   parseWords,
+  sanitizeTopics,
   type PuzzleKind,
   type WordSearchConfig,
 } from './puzzleConfig';
@@ -75,6 +79,35 @@ describe('URL-Parameter', () => {
     const base = defaultConfig('dot-to-dot');
     const config = configFromParams('dot-to-dot', new URLSearchParams({ fo: 'unbekannt' }));
     expect(config).toMatchObject({ shapeId: (base as { shapeId: string }).shapeId });
+  });
+
+  it('kodiert und dekodiert mehrere Kreuzworträtsel-Wort-Themen', () => {
+    const config: CrosswordConfig = {
+      ...(defaultConfig('crossword') as CrosswordConfig),
+      topics: ['tiere', 'weltraum'],
+    };
+    const params = configToParams(config);
+    expect(params.get('to')).toBe('tiere,weltraum');
+    expect(configFromParams('crossword', params)).toEqual(config);
+  });
+
+  it('lässt eine leere Themen-Auswahl ohne Parameter im Link', () => {
+    const params = configToParams(defaultConfig('crossword'));
+    expect(params.has('to')).toBe(false);
+  });
+});
+
+describe('sanitizeTopics', () => {
+  it('entfernt unbekannte Ids und Duplikate', () => {
+    expect(sanitizeTopics(['tiere', 'gibt-es-nicht', 'tiere', 'weltraum'])).toEqual([
+      'tiere',
+      'weltraum',
+    ]);
+  });
+
+  it('begrenzt auf die Höchstzahl kombinierbarer Themen', () => {
+    const many = CROSSWORD_TOPICS.slice(0, MAX_CROSSWORD_TOPICS + 5).map((topic) => topic.id);
+    expect(sanitizeTopics(many)).toHaveLength(MAX_CROSSWORD_TOPICS);
   });
 });
 

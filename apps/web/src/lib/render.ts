@@ -11,7 +11,7 @@ import {
   generateWordSearch,
 } from '@raetselheft/engine';
 import { themeById } from '@raetselheft/render/themes';
-import { crosswordEntriesFor } from '@raetselheft/render/themes/crosswordEntries';
+import { crosswordTopicEntries } from '@raetselheft/render/themes/crosswordTopics';
 import type { BookletConfig } from './bookletConfig';
 import type { PuzzleConfig } from './puzzleConfig';
 import { parseWords } from './puzzleConfig';
@@ -123,18 +123,22 @@ export function buildPuzzle(config: PuzzleConfig): PuzzleResult {
         },
         notes: [],
       };
-    case 'crossword':
+    case 'crossword': {
+      // Ohne gewählte Wort-Themen entscheidet das Themen-Design (bisheriges
+      // Verhalten); mehrere Themen werden zu einer gemeinsamen Liste kombiniert.
+      const topicIds = config.topics.length > 0 ? config.topics : [config.theme];
       return {
         item: {
           kind: 'crossword',
           puzzle: generateCrossword({
             seed: config.seed,
-            entries: crosswordEntriesFor(config.theme),
+            entries: crosswordTopicEntries(topicIds),
             difficulty: config.difficulty,
           }),
         },
         notes: [],
       };
+    }
   }
 }
 
@@ -232,6 +236,7 @@ export function buildBookletItems(config: BookletConfig): {
         difficulty: entry.difficulty,
         symbols: entry.sudokuSymbols,
         shapeId: entry.dotToDotShapeId,
+        topics: entry.crosswordTopics,
         umlauts: 'keep',
       } as PuzzleConfig);
       entries.push({

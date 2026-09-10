@@ -3,6 +3,7 @@ import {
   defaultSymbols,
   newSeed,
   parseWords,
+  sanitizeTopics,
   SHAPE_CHOICES,
   themeWords,
   type PuzzleKind,
@@ -30,6 +31,8 @@ export interface BookletEntry {
   sudokuSymbols: boolean;
   /** Punkte-zu-Punkte: welche Form verbunden wird. */
   dotToDotShapeId: string;
+  /** Kreuzworträtsel: Wort-Themen; leer bedeutet die Wortliste des Heft-Themen-Designs. */
+  crosswordTopics: string[];
 }
 
 export interface BookletConfig {
@@ -58,6 +61,7 @@ export function newEntry(kind: PuzzleKind, themeId: string): BookletEntry {
     sudokuSize: 6,
     sudokuSymbols: true,
     dotToDotShapeId: SHAPE_CHOICES[0]?.id ?? 'stern',
+    crosswordTopics: [],
   };
 }
 
@@ -90,6 +94,7 @@ interface CompactEntry {
   z?: number;
   y?: 0 | 1;
   f?: string;
+  ct?: string;
 }
 
 interface CompactBooklet {
@@ -125,6 +130,9 @@ export function toCompact(config: BookletConfig): CompactBooklet {
         entry.dotToDotShapeId !== (SHAPE_CHOICES[0]?.id ?? 'stern')
       ) {
         item.f = entry.dotToDotShapeId;
+      }
+      if (entry.kind === 'crossword' && entry.crosswordTopics.length > 0) {
+        item.ct = sanitizeTopics(entry.crosswordTopics).join(',');
       }
       return item;
     }),
@@ -182,6 +190,10 @@ export function fromCompact(input: unknown): BookletConfig {
                 typeof item?.f === 'string' && SHAPE_CHOICES.some((choice) => choice.id === item.f)
                   ? item.f
                   : fallback.dotToDotShapeId,
+              crosswordTopics:
+                typeof item?.ct === 'string'
+                  ? sanitizeTopics(item.ct.split(',').filter(Boolean))
+                  : fallback.crosswordTopics,
             };
           })
         : base.entries,

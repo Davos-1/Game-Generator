@@ -136,7 +136,13 @@
     },
     "crossword": {
       "defaultTitle": "Kreuzworträtsel",
-      "difficultyHint": "Bestimmt die Anzahl Wörter im Gitter."
+      "difficultyHint": "Bestimmt die Anzahl Wörter im Gitter.",
+      "topics": "Wort-Themen",
+      "topicsHintEmpty": "Ohne Auswahl wird die Wortliste deines Themen-Designs verwendet.",
+      "topicsHint": "Bis zu {max} Themen kombinierbar.",
+      "addTopic": "Thema hinzufügen …",
+      "groupTopic": "Wort-Themen",
+      "groupDesign": "Themen-Wortlisten"
     }
   },
   "booklet": {

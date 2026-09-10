@@ -103,3 +103,17 @@ Symbole aus fremden Icon-Sets. Die Symbole kommen aus
   geplanten neuen Feldern zu erzeugen — reine Zusatzdateien, keine Änderung an
   bestehenden Theme-Objekten. Braucht keine neuen Theme-Symbole (Grid- und
   Zellzeichnung kommt vollständig aus der Engine, keine Icon-Bezüge).
+- **Kreuzworträtsel: Wort-Thema vom Themen-Design entkoppelt, 20 neue Themen
+  dazu.** Auf Wunsch des Nutzers lässt sich der Rätsel-Wortschatz jetzt
+  unabhängig vom visuellen Design wählen und mehrere Themen kombinieren
+  (z. B. «Piraten»-Design mit den Wort-Themen «Weltraum» + «Dinosaurier»).
+  Neu: `packages/render/src/themes/data/topics/*.json` (20 Dateien, je ~22
+  Wort-Hinweis-Paare) und `packages/render/src/themes/crosswordTopics.ts` als
+  Registry, die diese 20 plus die sechs bestehenden Design-Wortlisten
+  zusammenführt (`CROSSWORD_TOPICS`, `crosswordTopicEntries(ids)`). Auch das
+  bleibt bewusst ausserhalb des Theme-Schemas, aus denselben Gründen wie
+  oben. Ohne gewählte Wort-Themen verhält sich ein Kreuzworträtsel wie
+  bisher (Wortliste des Themen-Designs). Bewusst NICHT an die
+  SEO-Landingpage-Generierung angehängt (hätte den Seitenzahl-Test und die
+  Seitenqualität durch dutzende dünne Kombinationsseiten belastet) — nur als
+  Auswahl in Generator und Heft-Builder.

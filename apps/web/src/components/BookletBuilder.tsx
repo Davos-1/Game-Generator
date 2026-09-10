@@ -17,7 +17,9 @@ import {
 import { bookletString } from '../lib/payment';
 import { usePurchase } from '../lib/purchase';
 import {
+  CROSSWORD_TOPICS,
   defaultSymbols,
+  MAX_CROSSWORD_TOPICS,
   newSeed,
   SHAPE_CHOICES,
   THEME_CHOICES,
@@ -391,6 +393,12 @@ export default function BookletBuilder(): React.ReactElement {
                       </div>
                     </Field>
                   )}
+                  {entry.kind === 'crossword' && (
+                    <BookletCrosswordTopicsField
+                      topics={entry.crosswordTopics}
+                      onChange={(crosswordTopics) => updateEntry(entry.id, { crosswordTopics })}
+                    />
+                  )}
                   <div className="flex items-end gap-2">
                     <Field label={t('generator.common.difficulty')}>
                       <div className="inline-flex rounded-group border border-line-strong p-0.5">
@@ -592,6 +600,77 @@ function TextField({
         maxLength={maxLength ?? 100}
         onChange={(event) => onChange(event.target.value)}
       />
+    </Field>
+  );
+}
+
+/** Kompakte Variante des Wort-Themen-Feldes für einen einzelnen Heft-Eintrag. */
+function BookletCrosswordTopicsField({
+  topics,
+  onChange,
+}: {
+  topics: string[];
+  onChange: (topics: string[]) => void;
+}) {
+  const selected = topics
+    .map((id) => CROSSWORD_TOPICS.find((topic) => topic.id === id))
+    .filter((topic): topic is (typeof CROSSWORD_TOPICS)[number] => topic !== undefined);
+  const available = CROSSWORD_TOPICS.filter((topic) => !topics.includes(topic.id));
+  const canAddMore = topics.length < MAX_CROSSWORD_TOPICS;
+  const wordTopics = available.filter((topic) => topic.group === 'topic');
+  const designTopics = available.filter((topic) => topic.group === 'design');
+
+  return (
+    <Field
+      label={t('generator.crossword.topics')}
+      {...(topics.length === 0 ? { hint: t('generator.crossword.topicsHintEmpty') } : {})}
+    >
+      {selected.length > 0 && (
+        <div className="mb-2 flex flex-wrap gap-2">
+          {selected.map((topic) => (
+            <button
+              key={topic.id}
+              type="button"
+              className="flex items-center gap-1 rounded-full border border-accent-deep bg-paper px-2.5 py-1 text-xs text-ink"
+              onClick={() => onChange(topics.filter((id) => id !== topic.id))}
+            >
+              {topic.name}
+              <span aria-hidden="true">×</span>
+            </button>
+          ))}
+        </div>
+      )}
+      {canAddMore && (
+        <select
+          className={`${inputClass} text-xs`}
+          value=""
+          aria-label={t('generator.crossword.addTopic')}
+          onChange={(event) => {
+            const value = event.target.value;
+            if (value) onChange([...topics, value]);
+          }}
+        >
+          <option value="">{t('generator.crossword.addTopic')}</option>
+          {wordTopics.length > 0 && (
+            <optgroup label={t('generator.crossword.groupTopic')}>
+              {wordTopics.map((topic) => (
+                <option key={topic.id} value={topic.id}>
+                  {topic.name}
+                </option>
+              ))}
+            </optgroup>
+          )}
+          {designTopics.length > 0 && (
+            <optgroup label={t('generator.crossword.groupDesign')}>
+              {designTopics.map((topic) => (
+                <option key={topic.id} value={topic.id}>
+                  {topic.name}
+                </option>
+              ))}
+            </optgroup>
+          )}
+        </select>
+      )}
     </Field>
   );
 }

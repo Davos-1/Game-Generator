@@ -144,6 +144,24 @@ describe('Rätsel eines Hefts', () => {
     expect(difficulties).toEqual(['hard']);
   });
 
+  it('kombiniert bei Kreuzworträtsel-Einträgen mehrere gewählte Wort-Themen', () => {
+    const booklet = defaultBooklet();
+    const withTopics = {
+      ...booklet,
+      entries: [
+        {
+          ...newEntry('crossword', booklet.theme),
+          difficulty: 'hard' as const,
+          crosswordTopics: ['tiere', 'weltraum'],
+        },
+      ],
+    };
+    const { entries, notes } = buildBookletItems(withTopics);
+    expect(notes).toEqual([]);
+    const puzzle = entries[0]?.item.kind === 'crossword' ? entries[0].item.puzzle : undefined;
+    expect(puzzle?.words.length).toBeGreaterThanOrEqual(4);
+  });
+
   it('meldet fehlerhafte Einträge, statt sie stumm zu verwerfen', () => {
     const booklet = defaultBooklet();
     const broken = {
