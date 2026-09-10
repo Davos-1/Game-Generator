@@ -1,6 +1,11 @@
 import { generateCrossword } from '@raetselheft/engine';
 import { describe, expect, it } from 'vitest';
-import { CROSSWORD_TOPICS, crosswordTopicEntries, MAX_CROSSWORD_TOPICS } from './crosswordTopics';
+import {
+  CROSSWORD_TOPIC_CATEGORIES,
+  CROSSWORD_TOPICS,
+  crosswordTopicEntries,
+  MAX_CROSSWORD_TOPICS,
+} from './crosswordTopics';
 
 const WORD_TOPICS = CROSSWORD_TOPICS.filter((topic) => topic.group === 'topic');
 
@@ -10,6 +15,31 @@ describe('Kreuzworträtsel-Wortthemen', () => {
     expect(new Set(ids).size).toBe(ids.length);
     const names = CROSSWORD_TOPICS.map((topic) => topic.name);
     expect(new Set(names).size).toBe(names.length);
+  });
+
+  it('ordnen jedes Wort-Thema einem bekannten Oberthema zu', () => {
+    const categoryIds = new Set(CROSSWORD_TOPIC_CATEGORIES.map((category) => category.id));
+    for (const topic of WORD_TOPICS) {
+      expect(topic.category, `${topic.id} ohne Oberthema`).toBeDefined();
+      expect(categoryIds.has(topic.category as string), `${topic.id}: ${topic.category}`).toBe(
+        true,
+      );
+    }
+  });
+
+  it('lassen die Design-Wortlisten ohne Oberthema, sie bilden eine eigene Gruppe', () => {
+    for (const topic of CROSSWORD_TOPICS.filter((entry) => entry.group === 'design')) {
+      expect(topic.category, topic.id).toBeUndefined();
+    }
+  });
+
+  it('haben eindeutige Oberthemen, von denen keines leer bleibt', () => {
+    const ids = CROSSWORD_TOPIC_CATEGORIES.map((category) => category.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const category of CROSSWORD_TOPIC_CATEGORIES) {
+      const used = WORD_TOPICS.filter((topic) => topic.category === category.id);
+      expect(used.length, `${category.id} ohne Themen`).toBeGreaterThan(0);
+    }
   });
 
   it('bringen mindestens 20 taugliche Wörter je frei kombinierbarem Thema mit', () => {

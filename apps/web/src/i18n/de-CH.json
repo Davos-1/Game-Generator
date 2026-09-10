@@ -141,7 +141,6 @@
       "topicsHintEmpty": "Ohne Auswahl wird die Wortliste deines Themen-Designs verwendet.",
       "topicsHint": "Bis zu {max} Themen kombinierbar.",
       "addTopic": "Thema hinzufügen …",
-      "groupTopic": "Wort-Themen",
       "groupDesign": "Themen-Wortlisten"
     }
   },

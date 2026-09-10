@@ -39,10 +39,28 @@ import zirkus from './data/topics/zirkus.json';
 /** «design» = an ein Themen-Design gebunden, «topic» = frei kombinierbares Wort-Thema. */
 export type CrosswordTopicGroup = 'design' | 'topic';
 
+/**
+ * Oberthemen für die Auswahl: bei über zwanzig Wort-Themen wird eine flache
+ * Liste unübersichtlich. Die Reihenfolge hier bestimmt die Reihenfolge in der
+ * Oberfläche.
+ */
+export const CROSSWORD_TOPIC_CATEGORIES: readonly { id: string; name: string }[] = [
+  { id: 'natur', name: 'Tiere & Natur' },
+  { id: 'welt', name: 'Welt entdecken' },
+  { id: 'geschichte', name: 'Geschichte & Kulturen' },
+  { id: 'fantasie', name: 'Fantasie & Geschichten' },
+  { id: 'wissenschaft', name: 'Wissenschaft & Technik' },
+  { id: 'alltag', name: 'Alltag & Hobbys' },
+  { id: 'essen', name: 'Essen & Geniessen' },
+  { id: 'unterwegs', name: 'Sport, Fahrzeuge & Feste' },
+];
+
 export interface CrosswordTopicInfo {
   id: string;
   name: string;
   group: CrosswordTopicGroup;
+  /** Oberthema aus CROSSWORD_TOPIC_CATEGORIES; nur bei group «topic» gesetzt. */
+  category?: string;
 }
 
 interface RegistryEntry extends CrosswordTopicInfo {
@@ -56,38 +74,87 @@ const REGISTRY: readonly RegistryEntry[] = [
   { id: 'dschungel', name: 'Dschungel', group: 'design', entries: dschungel },
   { id: 'hochzeit', name: 'Hochzeit', group: 'design', entries: hochzeit },
   { id: 'weihnachten', name: 'Weihnachten', group: 'design', entries: weihnachten },
-  { id: 'tiere', name: 'Tiere', group: 'topic', entries: tiere },
-  { id: 'bauernhof', name: 'Bauernhof', group: 'topic', entries: bauernhof },
-  { id: 'meer', name: 'Meer & Unterwasserwelt', group: 'topic', entries: meer },
-  { id: 'weltraum', name: 'Weltraum', group: 'topic', entries: weltraum },
-  { id: 'dinosaurier', name: 'Dinosaurier', group: 'topic', entries: dinosaurier },
-  { id: 'fahrzeuge', name: 'Fahrzeuge', group: 'topic', entries: fahrzeuge },
+  { id: 'tiere', name: 'Tiere', group: 'topic', category: 'natur', entries: tiere },
+  { id: 'bauernhof', name: 'Bauernhof', group: 'topic', category: 'natur', entries: bauernhof },
+  {
+    id: 'meer',
+    name: 'Meer & Unterwasserwelt',
+    group: 'topic',
+    category: 'natur',
+    entries: meer,
+  },
+  { id: 'wald', name: 'Wald & Bäume', group: 'topic', category: 'natur', entries: wald },
+  { id: 'garten', name: 'Garten & Pflanzen', group: 'topic', category: 'natur', entries: garten },
+  { id: 'weltraum', name: 'Weltraum', group: 'topic', category: 'welt', entries: weltraum },
+  {
+    id: 'wetter',
+    name: 'Wetter & Jahreszeiten',
+    group: 'topic',
+    category: 'welt',
+    entries: wetter,
+  },
+  {
+    id: 'dinosaurier',
+    name: 'Dinosaurier',
+    group: 'topic',
+    category: 'geschichte',
+    entries: dinosaurier,
+  },
+  {
+    id: 'ritter-burgen',
+    name: 'Ritter & Burgen',
+    group: 'topic',
+    category: 'geschichte',
+    entries: ritterBurgen,
+  },
+  {
+    id: 'zauberer',
+    name: 'Zauberer & Magie',
+    group: 'topic',
+    category: 'fantasie',
+    entries: zauberer,
+  },
+  {
+    id: 'roboter-technik',
+    name: 'Roboter & Technik',
+    group: 'topic',
+    category: 'wissenschaft',
+    entries: roboterTechnik,
+  },
+  { id: 'schule', name: 'Schule', group: 'topic', category: 'alltag', entries: schule },
+  { id: 'berufe', name: 'Berufe', group: 'topic', category: 'alltag', entries: berufe },
+  {
+    id: 'musik',
+    name: 'Musik & Instrumente',
+    group: 'topic',
+    category: 'alltag',
+    entries: musik,
+  },
+  { id: 'kochen', name: 'Kochen & Essen', group: 'topic', category: 'essen', entries: kochen },
+  { id: 'sport', name: 'Sport', group: 'topic', category: 'unterwegs', entries: sport },
+  { id: 'fussball', name: 'Fussball', group: 'topic', category: 'unterwegs', entries: fussball },
+  {
+    id: 'fahrzeuge',
+    name: 'Fahrzeuge',
+    group: 'topic',
+    category: 'unterwegs',
+    entries: fahrzeuge,
+  },
   {
     id: 'feuerwehr-polizei',
     name: 'Feuerwehr & Polizei',
     group: 'topic',
+    category: 'unterwegs',
     entries: feuerwehrPolizei,
   },
-  { id: 'sport', name: 'Sport', group: 'topic', entries: sport },
-  { id: 'fussball', name: 'Fussball', group: 'topic', entries: fussball },
-  { id: 'schule', name: 'Schule', group: 'topic', entries: schule },
-  { id: 'berufe', name: 'Berufe', group: 'topic', entries: berufe },
-  { id: 'wetter', name: 'Wetter & Jahreszeiten', group: 'topic', entries: wetter },
-  { id: 'kochen', name: 'Kochen & Essen', group: 'topic', entries: kochen },
-  { id: 'musik', name: 'Musik & Instrumente', group: 'topic', entries: musik },
-  { id: 'ritter-burgen', name: 'Ritter & Burgen', group: 'topic', entries: ritterBurgen },
-  { id: 'zirkus', name: 'Zirkus', group: 'topic', entries: zirkus },
-  { id: 'wald', name: 'Wald & Bäume', group: 'topic', entries: wald },
-  { id: 'zauberer', name: 'Zauberer & Magie', group: 'topic', entries: zauberer },
-  { id: 'garten', name: 'Garten & Pflanzen', group: 'topic', entries: garten },
-  { id: 'roboter-technik', name: 'Roboter & Technik', group: 'topic', entries: roboterTechnik },
+  { id: 'zirkus', name: 'Zirkus', group: 'topic', category: 'unterwegs', entries: zirkus },
 ];
 
 const BY_ID = new Map<string, RegistryEntry>(REGISTRY.map((entry) => [entry.id, entry]));
 
 /** Auswahlliste für die Oberfläche, in der Reihenfolge oben (Design zuerst). */
 export const CROSSWORD_TOPICS: readonly CrosswordTopicInfo[] = REGISTRY.map(
-  ({ id, name, group }) => ({ id, name, group }),
+  ({ id, name, group, category }) => ({ id, name, group, ...(category ? { category } : {}) }),
 );
 
 /** Höchstzahl kombinierbarer Wort-Themen; mehr bringt kaum mehr Auswahl, macht aber die Liste unübersichtlich. */

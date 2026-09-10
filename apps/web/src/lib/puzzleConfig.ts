@@ -1,5 +1,9 @@
 import { NEUTRAL_THEME, THEMES, themeById } from '@raetselheft/render/themes';
-import { CROSSWORD_TOPICS, MAX_CROSSWORD_TOPICS } from '@raetselheft/render/themes/crosswordTopics';
+import {
+  CROSSWORD_TOPIC_CATEGORIES,
+  CROSSWORD_TOPICS,
+  MAX_CROSSWORD_TOPICS,
+} from '@raetselheft/render/themes/crosswordTopics';
 import { SHAPE_IDS } from '@raetselheft/engine';
 import type {
   CrosswordDifficulty,
@@ -12,7 +16,7 @@ import type {
   UmlautMode,
 } from '@raetselheft/engine';
 
-export { CROSSWORD_TOPICS, MAX_CROSSWORD_TOPICS };
+export { CROSSWORD_TOPIC_CATEGORIES, CROSSWORD_TOPICS, MAX_CROSSWORD_TOPICS };
 
 export type PuzzleKind =
   'wordsearch' | 'maze' | 'sudoku' | 'dot-to-dot' | 'shadow-match' | 'crossword';
