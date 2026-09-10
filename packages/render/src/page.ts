@@ -172,8 +172,10 @@ export function watermarkElements(
   const elements: Element[] = [];
   const size = 32;
   const width = measurer.width(text, 'display', size);
-  const stepX = width + 14;
-  const stepY = 30;
+  // Grosszügiger Abstand, damit sich die Wiederholungen nicht zu einer
+  // fast geschlossenen Fläche verdichten und der Inhalt lesbar bleibt.
+  const stepX = width + 40;
+  const stepY = 58;
   const rows = Math.ceil(box.height / stepY) + 3;
   const cols = Math.ceil(box.width / stepX) + 3;
   for (let r = 0; r < rows; r++) {

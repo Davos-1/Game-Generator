@@ -117,3 +117,10 @@ Symbole aus fremden Icon-Sets. Die Symbole kommen aus
   SEO-Landingpage-Generierung angehängt (hätte den Seitenzahl-Test und die
   Seitenqualität durch dutzende dünne Kombinationsseiten belastet) — nur als
   Auswahl in Generator und Heft-Builder.
+- **Eine Zeile in `packages/render/src/page.ts` (`watermarkElements`) von
+  Session A.** Eigentlich euer Bereich, aber der Nutzer meldete das
+  Vorschau-Wasserzeichen als zu dicht/unleserlich (Screenshot zeigte stark
+  überlappende «VORSCHAU»-Wiederholungen). Reine Abstands-Anpassung:
+  `stepY` 30 → 58, `stepX`-Zuschlag 14 → 40 mm, sonst nichts geändert
+  (Grösse, Farbe, Rotation, Deckkraft gleich). Bei Bedarf gerne anders lösen
+  oder Werte weiter feintunen.
