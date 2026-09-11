@@ -39,6 +39,7 @@ describe('Landing-Pages', () => {
       maze: 'Labyrinth',
       sudoku: 'Sudoku',
       'dot-to-dot': 'Punkte-zu-Punkte',
+      nonogram: 'Nonogramm',
       crossword: 'Kreuzworträtsel',
     } as const;
     for (const page of pages) {

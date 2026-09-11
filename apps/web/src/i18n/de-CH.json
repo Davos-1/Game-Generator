@@ -12,6 +12,7 @@
     "sudoku": "Sudoku",
     "booklet": "Rätselheft",
     "dotToDot": "Punkte-zu-Punkte",
+    "nonogram": "Nonogramm",
     "crossword": "Kreuzworträtsel"
   },
   "home": {
@@ -130,6 +131,12 @@
       "shape": "Form",
       "difficultyHint": "Bestimmt die Anzahl Punkte: wenige für kleine Kinder, viele für ein feines Bild."
     },
+    "nonogram": {
+      "defaultTitle": "Nonogramm",
+      "picture": "Bild",
+      "pictureHint": "Bestimmt, welches Motiv am Schluss erscheint.",
+      "difficultyHint": "Bestimmt die Gittergrösse: 10×10, 15×15 oder 20×20 Felder."
+    },
     "crossword": {
       "defaultTitle": "Kreuzworträtsel",
       "difficultyHint": "Bestimmt die Anzahl Wörter im Gitter.",
@@ -177,6 +184,7 @@
       "maze": "Labyrinth",
       "sudoku": "Sudoku",
       "dot-to-dot": "Punkte-zu-Punkte",
+      "nonogram": "Nonogramm",
       "crossword": "Kreuzworträtsel"
     }
   },
@@ -200,6 +208,7 @@
       "maze": "Labyrinth",
       "sudoku": "Sudoku",
       "dot-to-dot": "Punkte-zu-Punkte",
+      "nonogram": "Nonogramm",
       "crossword": "Kreuzworträtsel"
     },
     "download": "Beispiel als PDF (gratis)",

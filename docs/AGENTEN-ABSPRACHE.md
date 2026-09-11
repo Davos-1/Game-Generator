@@ -133,3 +133,17 @@ Symbole aus fremden Icon-Sets. Die Symbole kommen aus
   `theme.sudokuIcons` bleiben unberührt — sie werden weiterhin vom
   Kinder-Sudoku und vom Labyrinth gebraucht. Betrifft eure Seite nur, falls
   irgendwo noch auf den Typ verwiesen wird.
+- **Nonogramm (AP15) neu dazu, braucht keine neuen Theme-Symbole.** Der
+  Rätseltyp bringt Engine (`packages/engine/src/nonogram/`) und Layout
+  (`packages/render/src/layout/nonogram.ts`) mit und ist wie die übrigen Typen
+  in Generator, Heft-Builder, Landing-Pages und Gratis-Beispiel eingehängt;
+  neue Seite `/nonogramm`, dazu eine weitere Datenzeile im `NAV`-Array von
+  `BaseLayout.astro` (gleiche Art wie die bestehenden). Die Motive sind die
+  kuratierten Umriss-Polygone aus `packages/engine/src/dotToDot/shapes.ts`,
+  ins Gitter gerastert — kein Bezug zu `icons.ts` oder `theme.sudokuIcons`,
+  also keine Theme-Erweiterung nötig. Das Layout zeichnet ausschliesslich
+  Linien, Text und gefüllte Rechtecke aus der Palette; es kommt ohne neue
+  Primitive aus. Offen als möglicher Ausbau: bildliche Motive je Themen-Design
+  (analog zu den Kreuzwort-Wortlisten als eigene JSON-Dateien ausserhalb des
+  Theme-Schemas) — dafür bräuchte es Silhouetten als Polygone, die
+  Icon-Pfade mit Kurven lassen sich in der Engine nicht rastern.

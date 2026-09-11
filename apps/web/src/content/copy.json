@@ -64,6 +64,22 @@
         "Das fertige Bild lässt sich anschliessend ausmalen – der Umriss macht daraus gleich ein zweites Rätsel."
       ]
     },
+    "nonogram": {
+      "name": "Nonogramm",
+      "plural": "Nonogramme",
+      "short": "Die Zahlen am Rand verraten, welche Felder ausgemalt werden – am Schluss erscheint ein Bild.",
+      "intro": "Beim Nonogramm steht vor jeder Zeile und über jeder Spalte eine Reihe von Zahlen. Sie geben der Reihe nach an, wie viele Felder am Stück ausgemalt werden, wobei zwischen zwei Blöcken immer mindestens ein leeres Feld liegt. Aus dem Zusammenspiel von Zeilen- und Spaltenzahlen lässt sich Feld für Feld erschliessen, was ausgemalt gehört und was leer bleibt – geraten werden muss dabei nie, denn jedes Rätsel auf dieser Seite ist so gebaut, dass reine Logik zur Lösung führt. Wer sich vorarbeitet, sieht nach und nach ein Bild entstehen, das sich erst gegen Schluss ganz zu erkennen gibt. Das schult schrittweises Schliessen und die Geduld, eine Zeile vorerst offen zu lassen, bis eine kreuzende Spalte die Entscheidung liefert. Auf Papier hat das einen Vorteil, den kein Bildschirm nachmacht: Man malt mit dem Bleistift aus, markiert sichere Leerfelder mit einem Kreuzchen und radiert im Zweifelsfall wieder weg.",
+      "howTo": [
+        "Du wählst das Bild und die Schwierigkeit, die über die Gittergrösse entscheidet.",
+        "Die Vorschau zeigt dir das leere Gitter mit seinen Randzahlen, bevor du dich entscheidest.",
+        "Nach der Zahlung von CHF 2 lädst du das Nonogramm als PDF herunter, inklusive Lösungsseite und ohne Wasserzeichen."
+      ],
+      "tips": [
+        "Fang bei den grössten Zahlen an: Ein Block, der fast so lang ist wie die Zeile, legt die mittleren Felder in jeder möglichen Lage fest.",
+        "Markiere sichere Leerfelder mit einem kleinen Kreuz, statt sie einfach auszulassen – das verhindert die meisten Fehler.",
+        "Male zuerst nur leicht mit Bleistift aus und ziehe die Felder erst nach, wenn eine ganze Zeile oder Spalte gesichert ist."
+      ]
+    },
     "crossword": {
       "name": "Kreuzworträtsel",
       "plural": "Kreuzworträtsel",
@@ -207,6 +223,24 @@
       {
         "q": "Ab welchem Alter eignet sich dieser Rätseltyp?",
         "a": "Punkte-zu-Punkte funktioniert bereits, sobald ein Kind bis zur gewählten Punktzahl zählen kann, oft schon im Vorschulalter. Damit richtet er sich an die jüngste Zielgruppe unter den Rätseltypen dieser Seite."
+      }
+    ],
+    "nonogram": [
+      {
+        "q": "Wie gross ist ein Nonogramm-Gitter?",
+        "a": "Je nach Schwierigkeitsgrad 10×10, 15×15 oder 20×20 Felder. Ein grösseres Gitter bedeutet mehr Zwischenschritte, bis das Bild feststeht."
+      },
+      {
+        "q": "Muss man beim Lösen irgendwann raten?",
+        "a": "Nein. Jedes Rätsel wird beim Erzeugen von einem Logik-Solver geprüft und nur dann ausgeliefert, wenn es sich allein mit Zeilen- und Spaltenschlüssen vollständig auflösen lässt. Damit ist die Lösung zugleich eindeutig."
+      },
+      {
+        "q": "Was bedeuten mehrere Zahlen vor einer Zeile?",
+        "a": "Sie stehen für mehrere ausgemalte Blöcke in genau dieser Reihenfolge, getrennt durch mindestens ein leeres Feld. «3 2» heisst also: zuerst drei Felder am Stück, dann eine Lücke, dann zwei Felder."
+      },
+      {
+        "q": "Welche Bilder gibt es?",
+        "a": "Zur Auswahl stehen dieselben Umrisse wie beim Punkte-zu-Punkte: Stern, Herz, Haus, Pfeil und Tannenbaum. Im Gitter erscheinen sie als ausgemalte Silhouette."
       }
     ],
     "crossword": [

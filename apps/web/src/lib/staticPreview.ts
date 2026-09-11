@@ -10,6 +10,7 @@ import {
   generateCrossword,
   generateDotToDot,
   generateMaze,
+  generateNonogram,
   generateSudoku,
   generateWordSearch,
 } from '@raetselheft/engine';
@@ -18,6 +19,7 @@ import metrics from '@raetselheft/render/metrics.json';
 import { crosswordElements } from '@raetselheft/render/layout/crossword';
 import { dotToDotElements } from '@raetselheft/render/layout/dotToDot';
 import { mazeElements } from '@raetselheft/render/layout/maze';
+import { nonogramElements } from '@raetselheft/render/layout/nonogram';
 import { sudokuElements } from '@raetselheft/render/layout/sudoku';
 import { wordSearchElements } from '@raetselheft/render/layout/wordsearch';
 import { elementToSvg } from '@raetselheft/render/svg';
@@ -75,6 +77,11 @@ export function previewSvg(kind: PuzzleKind, themeId: string, seed: string): str
         );
       case 'dot-to-dot':
         return dotToDotElements(generateDotToDot({ seed, difficulty: 'medium' }), BOX, measurer, {
+          palette,
+        });
+      case 'nonogram':
+        // Kleines Gitter: In der Vorschaukachel bliebe ein 15×15 unleserlich.
+        return nonogramElements(generateNonogram({ seed, difficulty: 'easy' }), BOX, measurer, {
           palette,
         });
       case 'crossword':

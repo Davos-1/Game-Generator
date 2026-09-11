@@ -15,6 +15,7 @@ import {
   loadConfig,
   newSeed,
   parseWords,
+  PICTURE_CHOICES,
   saveConfig,
   SHAPE_CHOICES,
   THEME_CHOICES,
@@ -39,6 +40,7 @@ const RETURN_PATHS: Record<PuzzleKind, string> = {
   maze: '/labyrinth',
   sudoku: '/sudoku',
   'dot-to-dot': '/punkte-zu-punkte',
+  nonogram: '/nonogramm',
   crossword: '/kreuzwortraetsel',
 };
 
@@ -214,6 +216,7 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
         )}
         {config.kind === 'sudoku' && <SudokuFields config={config} update={update} />}
         {config.kind === 'dot-to-dot' && <DotToDotFields config={config} update={update} />}
+        {config.kind === 'nonogram' && <NonogramFields config={config} update={update} />}
         {config.kind === 'crossword' && <CrosswordFields config={config} update={update} />}
 
         <Field label={t('generator.common.theme')} hint={t('generator.common.themeHint')}>
@@ -584,6 +587,44 @@ function DotToDotFields({
         label={t('generator.common.difficulty')}
         hint={t('generator.dot-to-dot.difficultyHint')}
       >
+        <DifficultySelect
+          value={config.difficulty}
+          onChange={(difficulty) => update({ difficulty })}
+        />
+      </Field>
+    </>
+  );
+}
+
+function NonogramFields({
+  config,
+  update,
+}: {
+  config: Extract<PuzzleConfig, { kind: 'nonogram' }>;
+  update: (patch: Partial<PuzzleConfig>) => void;
+}) {
+  return (
+    <>
+      <Field label={t('generator.nonogram.picture')} hint={t('generator.nonogram.pictureHint')}>
+        <div className="flex flex-wrap gap-2">
+          {PICTURE_CHOICES.map((choice) => (
+            <button
+              key={choice.id}
+              type="button"
+              aria-pressed={config.pictureId === choice.id}
+              className={`rounded-group border px-3 py-2 text-sm ${
+                config.pictureId === choice.id
+                  ? 'border-accent-deep bg-paper text-ink'
+                  : 'border-line-strong text-muted hover:bg-paper'
+              }`}
+              onClick={() => update({ pictureId: choice.id })}
+            >
+              {choice.name}
+            </button>
+          ))}
+        </div>
+      </Field>
+      <Field label={t('generator.common.difficulty')} hint={t('generator.nonogram.difficultyHint')}>
         <DifficultySelect
           value={config.difficulty}
           onChange={(difficulty) => update({ difficulty })}

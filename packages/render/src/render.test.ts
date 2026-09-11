@@ -2,6 +2,7 @@ import {
   generateCrossword,
   generateDotToDot,
   generateMaze,
+  generateNonogram,
   generateSudoku,
   generateWordSearch,
 } from '@raetselheft/engine';
@@ -15,7 +16,7 @@ import { renderPdf } from './pdf';
 import { inflateSync } from 'node:zlib';
 import * as fontkit from 'fontkit';
 import { PDFDict, PDFDocument, PDFName, PDFRawStream, PDFRef } from 'pdf-lib';
-import { A4, PT_PER_MM, type PageLayout, type TextElement } from './primitives';
+import { A4, COLORS, PT_PER_MM, type PageLayout, type TextElement } from './primitives';
 import { pageToSvg } from './svg';
 import { crosswordTopicEntries } from './themes/crosswordTopics';
 import type { FontSet } from './fonts';
@@ -61,6 +62,7 @@ const items = (): PuzzleItem[] => [
   { kind: 'sudoku', puzzle: generateSudoku({ seed: 'render', size: 6, difficulty: 'easy' }) },
   { kind: 'sudoku', puzzle: generateSudoku({ seed: 'render9', size: 9, difficulty: 'easy' }) },
   { kind: 'dot-to-dot', puzzle: generateDotToDot({ seed: 'render', difficulty: 'medium' }) },
+  { kind: 'nonogram', puzzle: generateNonogram({ seed: 'render', difficulty: 'medium' }) },
   {
     kind: 'crossword',
     puzzle: generateCrossword({ seed: 'render', entries: CROSSWORD_ENTRIES, difficulty: 'medium' }),
@@ -260,6 +262,80 @@ describe('Rätselseiten', () => {
     // Geschlossene Form: ein Punkt mehr als Nummern, da zurück zum ersten.
     expect(line?.type === 'polyline' ? line.points.length : 0).toBe(dots.points.length + 1);
     expect(labels(solution as PageLayout)).toHaveLength(dots.points.length);
+  });
+
+  it('zeigt beim Nonogramm die Randzahlen immer, das Bild nur in der Lösung', () => {
+    const nonogram = generateNonogram({ seed: 'sol', difficulty: 'easy' });
+    const item: PuzzleItem = { kind: 'nonogram', puzzle: nonogram };
+    const puzzle = puzzlePage(item, measurer, { title: 'Nonogramm' });
+
+    // Jede Zeile und jede Spalte bringt mindestens eine Randzahl mit; eine
+    // leere Reihe wird als «0» angeschrieben.
+    const clueCount = (page: PageLayout): number =>
+      page.elements.filter((el) => el.type === 'text' && /^\d+$/.test(el.text)).length;
+    const expected =
+      nonogram.rowClues.reduce((sum, clue) => sum + Math.max(1, clue.length), 0) +
+      nonogram.columnClues.reduce((sum, clue) => sum + Math.max(1, clue.length), 0);
+    expect(clueCount(puzzle)).toBe(expected);
+
+    // Im Rätsel bleibt das Gitter leer, in der Lösung ist das Bild ausgemalt.
+    const filled = (page: PageLayout): number =>
+      page.elements.filter((el) => el.type === 'rect' && el.fill === COLORS.solution).length;
+    expect(filled(puzzle)).toBe(0);
+
+    const [solution] = solutionPages([{ item, caption: 'Nonogramm 1' }], measurer, {
+      title: 'Lösungen',
+    });
+    expect(solution).toBeDefined();
+    expect(filled(solution as PageLayout)).toBe(nonogram.solution.filter(Boolean).length);
+  });
+
+  // Sicherung gegen ein Vertauschen von Zeilen und Spalten: Aus den
+  // gezeichneten Feldern wird das Bild zurückgerechnet und mit der Lösung der
+  // Engine verglichen. Ein gespiegeltes oder gekipptes Gitter fiele hier auf,
+  // in reinen Anzahl-Prüfungen dagegen nicht.
+  it('zeichnet das Nonogramm-Bild lagerichtig', () => {
+    const nonogram = generateNonogram({
+      seed: 'lage',
+      difficulty: 'easy',
+      pictureId: 'tannenbaum',
+    });
+    const page = puzzlePage({ kind: 'nonogram', puzzle: nonogram }, measurer, {
+      title: 'Nonogramm',
+      solution: true,
+    });
+    const cells = page.elements.filter(
+      (el): el is Extract<typeof el, { type: 'rect' }> =>
+        el.type === 'rect' && el.fill === COLORS.solution,
+    );
+    expect(cells).toHaveLength(nonogram.solution.filter(Boolean).length);
+
+    // Die Feldgrösse ist überall gleich; daraus lässt sich die Gitterposition
+    // jedes gezeichneten Felds zurückrechnen.
+    const size = cells[0]?.width as number;
+    const left = Math.min(...cells.map((cell) => cell.x));
+    const top = Math.min(...cells.map((cell) => cell.y));
+    const drawn = new Set(
+      cells.map((cell) => {
+        const col = Math.round((cell.x - left) / size);
+        const row = Math.round((cell.y - top) / size);
+        return `${row}/${col}`;
+      }),
+    );
+
+    // Dieselbe Rechnung auf der Lösung der Engine, auf deren linkes oberes
+    // ausgemaltes Feld bezogen.
+    const filled: [number, number][] = [];
+    for (let row = 0; row < nonogram.height; row++) {
+      for (let col = 0; col < nonogram.width; col++) {
+        if (nonogram.solution[row * nonogram.width + col]) filled.push([row, col]);
+      }
+    }
+    const minRow = Math.min(...filled.map(([row]) => row));
+    const minCol = Math.min(...filled.map(([, col]) => col));
+    const expected = new Set(filled.map(([row, col]) => `${row - minRow}/${col - minCol}`));
+
+    expect(drawn).toEqual(expected);
   });
 
   it('zeigt beim Kreuzworträtsel im Rätsel keine Buchstaben, in der Lösung alle', () => {

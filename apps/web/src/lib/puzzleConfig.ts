@@ -4,12 +4,13 @@ import {
   CROSSWORD_TOPICS,
   MAX_CROSSWORD_TOPICS,
 } from '@raetselheft/render/themes/crosswordTopics';
-import { SHAPE_IDS } from '@raetselheft/engine';
+import { PICTURE_IDS, SHAPE_IDS } from '@raetselheft/engine';
 import type {
   CrosswordDifficulty,
   Difficulty,
   DotToDotDifficulty,
   MazeDifficulty,
+  NonogramDifficulty,
   SudokuDifficulty,
   SudokuSize,
   UmlautMode,
@@ -17,7 +18,7 @@ import type {
 
 export { CROSSWORD_TOPIC_CATEGORIES, CROSSWORD_TOPICS, MAX_CROSSWORD_TOPICS };
 
-export type PuzzleKind = 'wordsearch' | 'maze' | 'sudoku' | 'dot-to-dot' | 'crossword';
+export type PuzzleKind = 'wordsearch' | 'maze' | 'sudoku' | 'dot-to-dot' | 'nonogram' | 'crossword';
 
 interface BaseConfig {
   /** Id des Themen-Designs; «neutral» ist das Standarddesign. */
@@ -62,6 +63,13 @@ export interface DotToDotConfig extends BaseConfig {
   shapeId: string;
 }
 
+export interface NonogramConfig extends BaseConfig {
+  kind: 'nonogram';
+  difficulty: NonogramDifficulty;
+  /** Welches Bild am Schluss erscheint; siehe PICTURE_CHOICES. */
+  pictureId: string;
+}
+
 export interface CrosswordConfig extends BaseConfig {
   kind: 'crossword';
   difficulty: CrosswordDifficulty;
@@ -82,10 +90,16 @@ export const CROSSWORD_DIFFICULTIES: readonly CrosswordDifficulty[] = [
 ];
 
 export type PuzzleConfig =
-  WordSearchConfig | MazeConfig | SudokuConfig | DotToDotConfig | CrosswordConfig;
+  WordSearchConfig | MazeConfig | SudokuConfig | DotToDotConfig | NonogramConfig | CrosswordConfig;
 
 /** Auswahlliste der Punkte-zu-Punkte-Formen für die Oberfläche. */
 export const SHAPE_CHOICES: readonly { id: string; name: string }[] = SHAPE_IDS.map((id) => ({
+  id,
+  name: id.charAt(0).toUpperCase() + id.slice(1),
+}));
+
+/** Auswahlliste der Nonogramm-Bilder für die Oberfläche. */
+export const PICTURE_CHOICES: readonly { id: string; name: string }[] = PICTURE_IDS.map((id) => ({
   id,
   name: id.charAt(0).toUpperCase() + id.slice(1),
 }));
@@ -150,6 +164,16 @@ export function defaultConfig(kind: PuzzleKind): PuzzleConfig {
         seed,
         difficulty: 'medium',
         shapeId: SHAPE_IDS[0] as string,
+      };
+    case 'nonogram':
+      return {
+        kind,
+        theme: NEUTRAL_THEME.id,
+        title: 'Nonogramm',
+        subtitle: '',
+        seed,
+        difficulty: 'medium',
+        pictureId: PICTURE_IDS[0] as string,
       };
     case 'crossword':
       return {
@@ -232,6 +256,12 @@ export function configToParams(config: PuzzleConfig): URLSearchParams {
       set('fo', config.shapeId, b.shapeId);
       break;
     }
+    case 'nonogram': {
+      const b = base as NonogramConfig;
+      set('d', config.difficulty, b.difficulty);
+      set('bi', config.pictureId, b.pictureId);
+      break;
+    }
     case 'crossword': {
       const b = base as CrosswordConfig;
       set('d', config.difficulty, b.difficulty);
@@ -294,6 +324,15 @@ export function configFromParams(kind: PuzzleKind, params: URLSearchParams): Puz
         ...common,
         difficulty: oneOf(params.get('d'), ['easy', 'medium', 'hard'] as const, b.difficulty),
         shapeId: oneOf(params.get('fo'), SHAPE_IDS, b.shapeId),
+      };
+    }
+    case 'nonogram': {
+      const b = base as NonogramConfig;
+      return {
+        kind,
+        ...common,
+        difficulty: oneOf(params.get('d'), ['easy', 'medium', 'hard'] as const, b.difficulty),
+        pictureId: oneOf(params.get('bi'), PICTURE_IDS, b.pictureId),
       };
     }
     case 'crossword': {

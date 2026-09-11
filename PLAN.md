@@ -162,6 +162,8 @@ Nach dem Launch: weitere Rätseltypen, in dieser Reihenfolge nach Zielgruppen-Pr
 
 **AP14 — Kreuzworträtsel:** Wort-/Hinweis-Datenbank pro Thema, Gitter-Füllalgorithmus mit Kreuzungsbedingung, Hinweis-Spalte im Layout. Technisch am aufwändigsten, deshalb zuletzt und erst nach Abschluss laufender Render-Layout-Arbeiten.
 
+**AP15 — Nonogramm (Logik-Bilderrätsel):** Randzahlen je Zeile und Spalte, ausgemalt ergibt sich ein Bild. Die Motive kommen aus den vorhandenen Umriss-Polygonen von AP11, per Punkt-in-Polygon ins Gitter gerastert (reine Geometrie, keine Zeichen-Abhängigkeit in der Engine). Ein Zeilen-/Spalten-Logiksolver prüft jedes erzeugte Gitter: Ausgeliefert wird nur, was sich ohne Raten vollständig auflösen lässt — damit ist die Lösung zugleich eindeutig. Schwierigkeit über die Gittergrösse (10×10 / 15×15 / 20×20).
+
 ---
 
 ## 8. Offene Punkte / Risiken (ehrlich)

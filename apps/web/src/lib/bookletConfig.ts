@@ -4,6 +4,7 @@ import {
   newSeed,
   parseWords,
   sanitizeTopics,
+  PICTURE_CHOICES,
   SHAPE_CHOICES,
   themeWords,
   type PuzzleKind,
@@ -31,6 +32,8 @@ export interface BookletEntry {
   sudokuSymbols: boolean;
   /** Punkte-zu-Punkte: welche Form verbunden wird. */
   dotToDotShapeId: string;
+  /** Nonogramm: welches Bild am Schluss erscheint. */
+  nonogramPictureId: string;
   /** Kreuzworträtsel: Wort-Themen; leer bedeutet die Wortliste des Heft-Themen-Designs. */
   crosswordTopics: string[];
 }
@@ -61,6 +64,7 @@ export function newEntry(kind: PuzzleKind, themeId: string): BookletEntry {
     sudokuSize: 6,
     sudokuSymbols: true,
     dotToDotShapeId: SHAPE_CHOICES[0]?.id ?? 'stern',
+    nonogramPictureId: PICTURE_CHOICES[0]?.id ?? 'stern',
     crosswordTopics: [],
   };
 }
@@ -94,6 +98,7 @@ interface CompactEntry {
   z?: number;
   y?: 0 | 1;
   f?: string;
+  bi?: string;
   ct?: string;
 }
 
@@ -131,6 +136,12 @@ export function toCompact(config: BookletConfig): CompactBooklet {
       ) {
         item.f = entry.dotToDotShapeId;
       }
+      if (
+        entry.kind === 'nonogram' &&
+        entry.nonogramPictureId !== (PICTURE_CHOICES[0]?.id ?? 'stern')
+      ) {
+        item.bi = entry.nonogramPictureId;
+      }
       if (entry.kind === 'crossword' && entry.crosswordTopics.length > 0) {
         item.ct = sanitizeTopics(entry.crosswordTopics).join(',');
       }
@@ -148,7 +159,11 @@ const asDifficulty = (value: unknown): 'easy' | 'medium' | 'hard' =>
   value === 'easy' || value === 'hard' ? value : 'medium';
 
 const asKind = (value: unknown): PuzzleKind =>
-  value === 'maze' || value === 'sudoku' || value === 'dot-to-dot' || value === 'crossword'
+  value === 'maze' ||
+  value === 'sudoku' ||
+  value === 'dot-to-dot' ||
+  value === 'nonogram' ||
+  value === 'crossword'
     ? value
     : 'wordsearch';
 
@@ -186,6 +201,11 @@ export function fromCompact(input: unknown): BookletConfig {
                 typeof item?.f === 'string' && SHAPE_CHOICES.some((choice) => choice.id === item.f)
                   ? item.f
                   : fallback.dotToDotShapeId,
+              nonogramPictureId:
+                typeof item?.bi === 'string' &&
+                PICTURE_CHOICES.some((choice) => choice.id === item.bi)
+                  ? item.bi
+                  : fallback.nonogramPictureId,
               crosswordTopics:
                 typeof item?.ct === 'string'
                   ? sanitizeTopics(item.ct.split(',').filter(Boolean))

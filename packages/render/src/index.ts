@@ -28,6 +28,8 @@ export { dotToDotElements } from './layout/dotToDot';
 export type { DotToDotDrawOptions } from './layout/dotToDot';
 export { mazeElements } from './layout/maze';
 export type { MazeDrawOptions } from './layout/maze';
+export { nonogramElements } from './layout/nonogram';
+export type { NonogramDrawOptions } from './layout/nonogram';
 export { sudokuElements, sudokuLegendElements } from './layout/sudoku';
 export type { SudokuDrawOptions } from './layout/sudoku';
 export { bookletPages, coverPage, puzzlePage, solutionPages } from './pages';
