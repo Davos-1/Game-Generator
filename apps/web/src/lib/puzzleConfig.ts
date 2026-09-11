@@ -10,7 +10,6 @@ import type {
   Difficulty,
   DotToDotDifficulty,
   MazeDifficulty,
-  ShadowMatchDifficulty,
   SudokuDifficulty,
   SudokuSize,
   UmlautMode,
@@ -18,8 +17,7 @@ import type {
 
 export { CROSSWORD_TOPIC_CATEGORIES, CROSSWORD_TOPICS, MAX_CROSSWORD_TOPICS };
 
-export type PuzzleKind =
-  'wordsearch' | 'maze' | 'sudoku' | 'dot-to-dot' | 'shadow-match' | 'crossword';
+export type PuzzleKind = 'wordsearch' | 'maze' | 'sudoku' | 'dot-to-dot' | 'crossword';
 
 interface BaseConfig {
   /** Id des Themen-Designs; «neutral» ist das Standarddesign. */
@@ -64,11 +62,6 @@ export interface DotToDotConfig extends BaseConfig {
   shapeId: string;
 }
 
-export interface ShadowMatchConfig extends BaseConfig {
-  kind: 'shadow-match';
-  difficulty: ShadowMatchDifficulty;
-}
-
 export interface CrosswordConfig extends BaseConfig {
   kind: 'crossword';
   difficulty: CrosswordDifficulty;
@@ -89,12 +82,7 @@ export const CROSSWORD_DIFFICULTIES: readonly CrosswordDifficulty[] = [
 ];
 
 export type PuzzleConfig =
-  | WordSearchConfig
-  | MazeConfig
-  | SudokuConfig
-  | DotToDotConfig
-  | ShadowMatchConfig
-  | CrosswordConfig;
+  WordSearchConfig | MazeConfig | SudokuConfig | DotToDotConfig | CrosswordConfig;
 
 /** Auswahlliste der Punkte-zu-Punkte-Formen für die Oberfläche. */
 export const SHAPE_CHOICES: readonly { id: string; name: string }[] = SHAPE_IDS.map((id) => ({
@@ -162,15 +150,6 @@ export function defaultConfig(kind: PuzzleKind): PuzzleConfig {
         seed,
         difficulty: 'medium',
         shapeId: SHAPE_IDS[0] as string,
-      };
-    case 'shadow-match':
-      return {
-        kind,
-        theme: NEUTRAL_THEME.id,
-        title: 'Schattenrätsel',
-        subtitle: '',
-        seed,
-        difficulty: 'medium',
       };
     case 'crossword':
       return {
@@ -253,9 +232,6 @@ export function configToParams(config: PuzzleConfig): URLSearchParams {
       set('fo', config.shapeId, b.shapeId);
       break;
     }
-    case 'shadow-match':
-      set('d', config.difficulty, (base as ShadowMatchConfig).difficulty);
-      break;
     case 'crossword': {
       const b = base as CrosswordConfig;
       set('d', config.difficulty, b.difficulty);
@@ -320,16 +296,6 @@ export function configFromParams(kind: PuzzleKind, params: URLSearchParams): Puz
         shapeId: oneOf(params.get('fo'), SHAPE_IDS, b.shapeId),
       };
     }
-    case 'shadow-match':
-      return {
-        kind,
-        ...common,
-        difficulty: oneOf(
-          params.get('d'),
-          ['easy', 'medium', 'hard'] as const,
-          (base as ShadowMatchConfig).difficulty,
-        ),
-      };
     case 'crossword': {
       const b = base as CrosswordConfig;
       const topics = params.get('to');

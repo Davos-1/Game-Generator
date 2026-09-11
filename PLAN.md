@@ -156,7 +156,7 @@ Nach dem Launch: weitere Rätseltypen, in dieser Reihenfolge nach Zielgruppen-Pr
 
 **AP11 — Engine Punkte-zu-Punkte:** kuratierte Umriss-Formen (Stern, Herz, Haus, Pfeil, Tannenbaum) als geschlossene Polygone, per Bogenlänge auf die zur Schwierigkeit passende Punktanzahl umgerechnet (14/24/40). Abnahme: Tests grün, für jede Form und Stufe ausreichend Punktabstand fürs Drucken.
 
-**AP12 — Schattenrätsel:** Icon einer passenden Silhouette unter Ablenkern zuordnen; nutzt die bestehenden Icon-Pfade aus `packages/render/src/icons.ts`, braucht zusätzlich eine gefüllte, konturlose Darstellung derselben Pfade.
+**AP12 — Schattenrätsel: umgesetzt und auf Wunsch des Nutzers wieder vollständig entfernt.** Engine, Layout, Konfigurator, Heft-Builder, Texte, Landing-Pages und Gratis-Beispiel sind zurückgebaut; die Nummer AP12 bleibt vergeben, damit die späteren Nummern stimmen.
 
 **AP13 — Zahlenrätsel/Kakuro:** Gitter mit Summen-Vorgaben, Eindeutigkeits-Solver analog Sudoku, Schwierigkeit über Anzahl/Grösse der Blöcke.
 

@@ -39,7 +39,6 @@ const RETURN_PATHS: Record<PuzzleKind, string> = {
   maze: '/labyrinth',
   sudoku: '/sudoku',
   'dot-to-dot': '/punkte-zu-punkte',
-  'shadow-match': '/schattenraetsel',
   crossword: '/kreuzwortraetsel',
 };
 
@@ -215,17 +214,6 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
         )}
         {config.kind === 'sudoku' && <SudokuFields config={config} update={update} />}
         {config.kind === 'dot-to-dot' && <DotToDotFields config={config} update={update} />}
-        {config.kind === 'shadow-match' && (
-          <Field
-            label={t('generator.common.difficulty')}
-            hint={t('generator.shadow-match.difficultyHint')}
-          >
-            <DifficultySelect
-              value={config.difficulty}
-              onChange={(difficulty) => update({ difficulty })}
-            />
-          </Field>
-        )}
         {config.kind === 'crossword' && <CrosswordFields config={config} update={update} />}
 
         <Field label={t('generator.common.theme')} hint={t('generator.common.themeHint')}>

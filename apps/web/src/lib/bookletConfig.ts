@@ -148,11 +148,7 @@ const asDifficulty = (value: unknown): 'easy' | 'medium' | 'hard' =>
   value === 'easy' || value === 'hard' ? value : 'medium';
 
 const asKind = (value: unknown): PuzzleKind =>
-  value === 'maze' ||
-  value === 'sudoku' ||
-  value === 'dot-to-dot' ||
-  value === 'shadow-match' ||
-  value === 'crossword'
+  value === 'maze' || value === 'sudoku' || value === 'dot-to-dot' || value === 'crossword'
     ? value
     : 'wordsearch';
 

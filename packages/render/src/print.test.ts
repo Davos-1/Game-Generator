@@ -2,7 +2,6 @@ import {
   generateCrossword,
   generateDotToDot,
   generateMaze,
-  generateShadowMatch,
   generateSudoku,
   generateWordSearch,
 } from '@raetselheft/engine';
@@ -57,10 +56,6 @@ const items = (theme: Theme): PuzzleItem[] => [
   {
     kind: 'dot-to-dot',
     puzzle: generateDotToDot({ seed: `print-${theme.id}`, difficulty: 'hard' }),
-  },
-  {
-    kind: 'shadow-match',
-    puzzle: generateShadowMatch({ seed: `print-${theme.id}`, difficulty: 'hard' }),
   },
   {
     kind: 'crossword',

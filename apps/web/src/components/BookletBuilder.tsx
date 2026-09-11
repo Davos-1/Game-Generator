@@ -32,14 +32,7 @@ import {
   pageToSvgString,
 } from '../lib/render';
 
-const KINDS: PuzzleKind[] = [
-  'wordsearch',
-  'maze',
-  'sudoku',
-  'dot-to-dot',
-  'shadow-match',
-  'crossword',
-];
+const KINDS: PuzzleKind[] = ['wordsearch', 'maze', 'sudoku', 'dot-to-dot', 'crossword'];
 
 /**
  * Heft-Builder: Deckblatt, Rätsel zusammenstellen und ordnen, Vorschau mit

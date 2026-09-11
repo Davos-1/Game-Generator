@@ -2,7 +2,6 @@ import {
   generateCrossword,
   generateDotToDot,
   generateMaze,
-  generateShadowMatch,
   generateSudoku,
   generateWordSearch,
 } from '@raetselheft/engine';
@@ -16,7 +15,7 @@ import { renderPdf } from './pdf';
 import { inflateSync } from 'node:zlib';
 import * as fontkit from 'fontkit';
 import { PDFDict, PDFDocument, PDFName, PDFRawStream, PDFRef } from 'pdf-lib';
-import { A4, COLORS, PT_PER_MM, type PageLayout, type TextElement } from './primitives';
+import { A4, PT_PER_MM, type PageLayout, type TextElement } from './primitives';
 import { pageToSvg } from './svg';
 import { crosswordTopicEntries } from './themes/crosswordTopics';
 import type { FontSet } from './fonts';
@@ -62,10 +61,6 @@ const items = (): PuzzleItem[] => [
   { kind: 'sudoku', puzzle: generateSudoku({ seed: 'render', size: 6, difficulty: 'easy' }) },
   { kind: 'sudoku', puzzle: generateSudoku({ seed: 'render9', size: 9, difficulty: 'easy' }) },
   { kind: 'dot-to-dot', puzzle: generateDotToDot({ seed: 'render', difficulty: 'medium' }) },
-  {
-    kind: 'shadow-match',
-    puzzle: generateShadowMatch({ seed: 'render', difficulty: 'medium' }),
-  },
   {
     kind: 'crossword',
     puzzle: generateCrossword({ seed: 'render', entries: CROSSWORD_ENTRIES, difficulty: 'medium' }),
@@ -265,26 +260,6 @@ describe('Rätselseiten', () => {
     // Geschlossene Form: ein Punkt mehr als Nummern, da zurück zum ersten.
     expect(line?.type === 'polyline' ? line.points.length : 0).toBe(dots.points.length + 1);
     expect(labels(solution as PageLayout)).toHaveLength(dots.points.length);
-  });
-
-  it('verbindet beim Schattenrätsel nur in der Lösung, zeigt aber immer alle Formen', () => {
-    const match = generateShadowMatch({ seed: 'sol', difficulty: 'hard' });
-    const item: PuzzleItem = { kind: 'shadow-match', puzzle: match };
-    const puzzle = puzzlePage(item, measurer, { title: 'Schattenrätsel' });
-    // Je eine Form oben und unten: doppelt so viele Pfade wie Formen.
-    expect(puzzle.elements.filter((el) => el.type === 'path')).toHaveLength(match.count * 2);
-    // Die einzige Linie im Rätsel ist der Trennstrich unter dem Titel, keine
-    // Verbindung zwischen Form und Schatten.
-    const matchLines = (page: PageLayout): number =>
-      page.elements.filter((el) => el.type === 'line' && el.stroke.color === COLORS.solution)
-        .length;
-    expect(matchLines(puzzle)).toBe(0);
-
-    const [solution] = solutionPages([{ item, caption: 'Schatten 1' }], measurer, {
-      title: 'Lösungen',
-    });
-    expect(solution).toBeDefined();
-    expect(matchLines(solution as PageLayout)).toBe(match.count);
   });
 
   it('zeigt beim Kreuzworträtsel im Rätsel keine Buchstaben, in der Lösung alle', () => {

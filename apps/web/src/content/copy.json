@@ -64,22 +64,6 @@
         "Das fertige Bild lässt sich anschliessend ausmalen – der Umriss macht daraus gleich ein zweites Rätsel."
       ]
     },
-    "shadow-match": {
-      "name": "Schattenrätsel",
-      "plural": "Schattenrätsel",
-      "short": "Jedem Symbol seinen Schatten zuordnen – gleiche Form, andere Reihenfolge.",
-      "intro": "Beim Schattenrätsel stehen oben mehrere Symbole in fester Reihenfolge, darunter dieselben Formen als dunkle Schatten, aber durcheinandergewürfelt. Aufgabe ist es, jedes Symbol mit einer Linie zu seinem passenden Schatten zu verbinden, ohne sich von der Position täuschen zu lassen – keine Form liegt zufällig direkt unter sich selbst. Das schult genaues Hinschauen und den Vergleich von Umrissen, unabhängig von Farbe oder Grösse, eine Fähigkeit, die schon Kindergartenkinder spielerisch trainieren können. Weil alle Formen dabei gleich weit auseinanderliegen und die Linien nach dem Ziehen sichtbar bleiben, lässt sich am Ende auf einen Blick prüfen, ob wirklich jede Zuordnung stimmt.",
-      "howTo": [
-        "Du wählst die Schwierigkeit, welche die Anzahl Symbole bestimmt.",
-        "Die Vorschau zeigt dir die Symbole oben und ihre durcheinandergewürfelten Schatten darunter.",
-        "Nach der Zahlung von CHF 2 lädst du das Schattenrätsel als PDF herunter, inklusive Lösungsseite und ohne Wasserzeichen."
-      ],
-      "tips": [
-        "Streiche ein bereits zugeordnetes Symbolpaar oben und unten leicht durch, damit der Überblick bei vielen Formen nicht verloren geht.",
-        "Bei jüngeren Kindern hilft es, zuerst laut zu beschreiben, was ein Symbol von den anderen unterscheidet.",
-        "Zum Nachprüfen eignet sich ein zweiter Stift in anderer Farbe für die Kontrolle anhand der Lösungsseite."
-      ]
-    },
     "crossword": {
       "name": "Kreuzworträtsel",
       "plural": "Kreuzworträtsel",
@@ -223,20 +207,6 @@
       {
         "q": "Ab welchem Alter eignet sich dieser Rätseltyp?",
         "a": "Punkte-zu-Punkte funktioniert bereits, sobald ein Kind bis zur gewählten Punktzahl zählen kann, oft schon im Vorschulalter. Damit richtet er sich an die jüngste Zielgruppe unter den Rätseltypen dieser Seite."
-      }
-    ],
-    "shadow-match": [
-      {
-        "q": "Wie viele Symbole hat ein Schattenrätsel?",
-        "a": "Je nach Schwierigkeitsgrad vier, fünf oder sechs Symbole. Mehr Symbole bedeuten mehr mögliche Verwechslungen und damit ein anspruchsvolleres Rätsel."
-      },
-      {
-        "q": "Warum liegt nie ein Schatten direkt unter seinem Symbol?",
-        "a": "Das wäre eine geschenkte Zuordnung, ohne die Form wirklich vergleichen zu müssen. Jede Position wird deshalb garantiert vertauscht, bevor das Rätsel als fertig gilt."
-      },
-      {
-        "q": "Welche Symbole werden verwendet?",
-        "a": "Beim Standarddesign sind es einfache geometrische Formen wie Kreis, Quadrat oder Stern. Bei einem Themen-Design erscheinen stattdessen dessen Symbole, etwa Anker und Schiff bei «Piraten»."
       }
     ],
     "crossword": [

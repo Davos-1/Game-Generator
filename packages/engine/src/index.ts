@@ -12,7 +12,6 @@ export * from './wordsearch';
 export * from './crossword';
 export * from './dotToDot';
 export * from './maze';
-export * from './shadowMatch';
 export * from './sudoku';
 
 /** Version der Engine-API; wird in gespeicherten Heft-Konfigurationen mitgeführt. */

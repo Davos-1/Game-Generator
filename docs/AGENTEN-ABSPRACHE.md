@@ -72,19 +72,18 @@ Symbole aus fremden Icon-Sets. Die Symbole kommen aus
 - **Reihenfolge beim Zusammenführen.** Session B merged vor jedem eigenen
   Start den Stand von `claude/new-session-du9eym` und pusht erst nach
   Rücksprache mit dem Nutzer.
-- **Punkte-zu-Punkte (AP11) und Schattenrätsel (AP12) brauchen keine neuen
-  Theme-Symbole.** Punkte-zu-Punkte nutzt eigene, themenunabhängige Formen
-  (Engine, kein Icon-Bezug). Das Schattenrätsel verwendet die bestehenden
-  `theme.sudokuIcons` weiter (dieselben sechs Symbole wie beim Kinder-Sudoku),
-  keine Erweiterung nötig.
+- **Punkte-zu-Punkte (AP11) braucht keine neuen Theme-Symbole.** Es nutzt
+  eigene, themenunabhängige Formen (Engine, kein Icon-Bezug). Das
+  Schattenrätsel (AP12) verwendete die bestehenden `theme.sudokuIcons` weiter
+  — es ist inzwischen entfernt, siehe unten.
 - **Zwei Zeilen in `apps/web/src/layouts/BaseLayout.astro` von Session A.**
   Eigentlich euer Bereich, aber ohne weiteren Eintragspunkt für die
-  Navigation liessen sich die beiden neuen Rätseltypen sonst nicht
+  Navigation liessen sich die neuen Rätseltypen sonst nicht
   verlinken: je ein Eintrag im `NAV`-Array für `/punkte-zu-punkte` und
-  `/schattenraetsel` (reine Datenzeilen, keine Struktur- oder Style-Änderung).
-  Bei Bedarf gerne verschieben oder anders lösen.
-  → Mit AP14 ist eine dritte, gleich geartete Datenzeile für
-  `/kreuzwortraetsel` dazugekommen.
+  `/kreuzwortraetsel` (reine Datenzeilen, keine Struktur- oder Style-Änderung).
+  Bei Bedarf gerne verschieben oder anders lösen. Die Zeile für
+  `/schattenraetsel` ist mit der Entfernung des Rätseltyps wieder
+  verschwunden.
 - **Stellen mit altem Chip-Stil in `PuzzleGenerator.tsx`/`BookletBuilder.tsx`
   nachgezogen.** Die Formen-Auswahl fürs Punkte-zu-Punkte-Rätsel hatte noch
   `border-brand-500 bg-brand-50 text-brand-700` statt des in `657b36a`
@@ -124,3 +123,13 @@ Symbole aus fremden Icon-Sets. Die Symbole kommen aus
   `stepY` 30 → 58, `stepX`-Zuschlag 14 → 40 mm, sonst nichts geändert
   (Grösse, Farbe, Rotation, Deckkraft gleich). Bei Bedarf gerne anders lösen
   oder Werte weiter feintunen.
+- **Schattenrätsel (AP12) vollständig entfernt.** Auf Wunsch des Nutzers ist
+  der Rätseltyp restlos zurückgebaut: `packages/engine/src/shadowMatch/` und
+  `packages/render/src/layout/shadowMatch.ts` gelöscht, dazu alle Bezüge in
+  `pages.ts`, Konfigurator, Heft-Builder, `landing.ts`, `examples.ts`,
+  `copy.json`, `de-CH.json`, im Worker-Rücksprungpfad und in den Tests. Die
+  Seite `/schattenraetsel` und ihre Landing-Pages gibt es nicht mehr, ebenso
+  wenig das Gratis-Beispiel-PDF. `icons.ts`, `symbols.ts` und
+  `theme.sudokuIcons` bleiben unberührt — sie werden weiterhin vom
+  Kinder-Sudoku und vom Labyrinth gebraucht. Betrifft eure Seite nur, falls
+  irgendwo noch auf den Typ verwiesen wird.

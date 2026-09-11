@@ -9,7 +9,6 @@ export const PUZZLE_KINDS: PuzzleKind[] = [
   'maze',
   'sudoku',
   'dot-to-dot',
-  'shadow-match',
   'crossword',
 ];
 
@@ -19,7 +18,6 @@ export const KIND_SLUG: Readonly<Record<PuzzleKind, string>> = {
   maze: 'labyrinth',
   sudoku: 'sudoku',
   'dot-to-dot': 'punkte-zu-punkte',
-  'shadow-match': 'schattenraetsel',
   crossword: 'kreuzwortraetsel',
 };
 
@@ -28,7 +26,6 @@ export const SLUG_TO_KIND: Readonly<Record<string, PuzzleKind>> = {
   labyrinth: 'maze',
   sudoku: 'sudoku',
   'punkte-zu-punkte': 'dot-to-dot',
-  schattenraetsel: 'shadow-match',
   kreuzwortraetsel: 'crossword',
 };
 

@@ -14,7 +14,6 @@ import {
   generateCrossword,
   generateDotToDot,
   generateMaze,
-  generateShadowMatch,
   generateSudoku,
   generateWordSearch,
 } from '@raetselheft/engine';
@@ -71,8 +70,6 @@ function buildItem(kind: ExampleKind, theme: Theme, seed: string): PuzzleItem {
         puzzle: generateDotToDot({ seed, difficulty: 'hard', ...(shapeId ? { shapeId } : {}) }),
       };
     }
-    case 'shadow-match':
-      return { kind, puzzle: generateShadowMatch({ seed, difficulty: 'hard' }) };
     case 'crossword':
       return {
         kind,

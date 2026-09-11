@@ -12,7 +12,6 @@
     "sudoku": "Sudoku",
     "booklet": "Rätselheft",
     "dotToDot": "Punkte-zu-Punkte",
-    "shadowMatch": "Schattenrätsel",
     "crossword": "Kreuzworträtsel"
   },
   "home": {
@@ -131,10 +130,6 @@
       "shape": "Form",
       "difficultyHint": "Bestimmt die Anzahl Punkte: wenige für kleine Kinder, viele für ein feines Bild."
     },
-    "shadow-match": {
-      "defaultTitle": "Schattenrätsel",
-      "difficultyHint": "Bestimmt die Anzahl Symbole: vier, fünf oder sechs."
-    },
     "crossword": {
       "defaultTitle": "Kreuzworträtsel",
       "difficultyHint": "Bestimmt die Anzahl Wörter im Gitter.",
@@ -182,7 +177,6 @@
       "maze": "Labyrinth",
       "sudoku": "Sudoku",
       "dot-to-dot": "Punkte-zu-Punkte",
-      "shadow-match": "Schattenrätsel",
       "crossword": "Kreuzworträtsel"
     }
   },
@@ -206,7 +200,6 @@
       "maze": "Labyrinth",
       "sudoku": "Sudoku",
       "dot-to-dot": "Punkte-zu-Punkte",
-      "shadow-match": "Schattenrätsel",
       "crossword": "Kreuzworträtsel"
     },
     "download": "Beispiel als PDF (gratis)",

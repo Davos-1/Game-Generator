@@ -108,24 +108,6 @@ describe('Rätsel eines Hefts', () => {
     expect(shapeIds).toEqual(['herz']);
   });
 
-  it('erzeugt auch Schattenrätsel-Einträge mit ihrer Schwierigkeit', () => {
-    const booklet = defaultBooklet();
-    const withShadow = {
-      ...booklet,
-      entries: [
-        ...booklet.entries,
-        { ...newEntry('shadow-match', booklet.theme), difficulty: 'hard' as const },
-      ],
-    };
-    const { entries, notes } = buildBookletItems(withShadow);
-    expect(notes).toEqual([]);
-    expect(entries).toHaveLength(withShadow.entries.length);
-    const counts = entries.flatMap((entry) =>
-      entry.item.kind === 'shadow-match' ? [entry.item.puzzle.count] : [],
-    );
-    expect(counts).toEqual([6]);
-  });
-
   it('erzeugt auch Kreuzworträtsel-Einträge mit ihrer Schwierigkeit', () => {
     const booklet = defaultBooklet();
     const withCrossword = {
