@@ -2,7 +2,7 @@ import {
   generateCrossword,
   generateDotToDot,
   generateMaze,
-  generateShadowMatch,
+  generateNonogram,
   generateSudoku,
   generateWordSearch,
 } from '@raetselheft/engine';
@@ -62,10 +62,7 @@ const items = (): PuzzleItem[] => [
   { kind: 'sudoku', puzzle: generateSudoku({ seed: 'render', size: 6, difficulty: 'easy' }) },
   { kind: 'sudoku', puzzle: generateSudoku({ seed: 'render9', size: 9, difficulty: 'easy' }) },
   { kind: 'dot-to-dot', puzzle: generateDotToDot({ seed: 'render', difficulty: 'medium' }) },
-  {
-    kind: 'shadow-match',
-    puzzle: generateShadowMatch({ seed: 'render', difficulty: 'medium' }),
-  },
+  { kind: 'nonogram', puzzle: generateNonogram({ seed: 'render', difficulty: 'medium' }) },
   {
     kind: 'crossword',
     puzzle: generateCrossword({ seed: 'render', entries: CROSSWORD_ENTRIES, difficulty: 'medium' }),
@@ -267,24 +264,78 @@ describe('Rätselseiten', () => {
     expect(labels(solution as PageLayout)).toHaveLength(dots.points.length);
   });
 
-  it('verbindet beim Schattenrätsel nur in der Lösung, zeigt aber immer alle Formen', () => {
-    const match = generateShadowMatch({ seed: 'sol', difficulty: 'hard' });
-    const item: PuzzleItem = { kind: 'shadow-match', puzzle: match };
-    const puzzle = puzzlePage(item, measurer, { title: 'Schattenrätsel' });
-    // Je eine Form oben und unten: doppelt so viele Pfade wie Formen.
-    expect(puzzle.elements.filter((el) => el.type === 'path')).toHaveLength(match.count * 2);
-    // Die einzige Linie im Rätsel ist der Trennstrich unter dem Titel, keine
-    // Verbindung zwischen Form und Schatten.
-    const matchLines = (page: PageLayout): number =>
-      page.elements.filter((el) => el.type === 'line' && el.stroke.color === COLORS.solution)
-        .length;
-    expect(matchLines(puzzle)).toBe(0);
+  it('zeigt beim Nonogramm die Randzahlen immer, das Bild nur in der Lösung', () => {
+    const nonogram = generateNonogram({ seed: 'sol', difficulty: 'easy' });
+    const item: PuzzleItem = { kind: 'nonogram', puzzle: nonogram };
+    const puzzle = puzzlePage(item, measurer, { title: 'Nonogramm' });
 
-    const [solution] = solutionPages([{ item, caption: 'Schatten 1' }], measurer, {
+    // Jede Zeile und jede Spalte bringt mindestens eine Randzahl mit; eine
+    // leere Reihe wird als «0» angeschrieben.
+    const clueCount = (page: PageLayout): number =>
+      page.elements.filter((el) => el.type === 'text' && /^\d+$/.test(el.text)).length;
+    const expected =
+      nonogram.rowClues.reduce((sum, clue) => sum + Math.max(1, clue.length), 0) +
+      nonogram.columnClues.reduce((sum, clue) => sum + Math.max(1, clue.length), 0);
+    expect(clueCount(puzzle)).toBe(expected);
+
+    // Im Rätsel bleibt das Gitter leer, in der Lösung ist das Bild ausgemalt.
+    const filled = (page: PageLayout): number =>
+      page.elements.filter((el) => el.type === 'rect' && el.fill === COLORS.solution).length;
+    expect(filled(puzzle)).toBe(0);
+
+    const [solution] = solutionPages([{ item, caption: 'Nonogramm 1' }], measurer, {
       title: 'Lösungen',
     });
     expect(solution).toBeDefined();
-    expect(matchLines(solution as PageLayout)).toBe(match.count);
+    expect(filled(solution as PageLayout)).toBe(nonogram.solution.filter(Boolean).length);
+  });
+
+  // Sicherung gegen ein Vertauschen von Zeilen und Spalten: Aus den
+  // gezeichneten Feldern wird das Bild zurückgerechnet und mit der Lösung der
+  // Engine verglichen. Ein gespiegeltes oder gekipptes Gitter fiele hier auf,
+  // in reinen Anzahl-Prüfungen dagegen nicht.
+  it('zeichnet das Nonogramm-Bild lagerichtig', () => {
+    const nonogram = generateNonogram({
+      seed: 'lage',
+      difficulty: 'easy',
+      pictureId: 'tannenbaum',
+    });
+    const page = puzzlePage({ kind: 'nonogram', puzzle: nonogram }, measurer, {
+      title: 'Nonogramm',
+      solution: true,
+    });
+    const cells = page.elements.filter(
+      (el): el is Extract<typeof el, { type: 'rect' }> =>
+        el.type === 'rect' && el.fill === COLORS.solution,
+    );
+    expect(cells).toHaveLength(nonogram.solution.filter(Boolean).length);
+
+    // Die Feldgrösse ist überall gleich; daraus lässt sich die Gitterposition
+    // jedes gezeichneten Felds zurückrechnen.
+    const size = cells[0]?.width as number;
+    const left = Math.min(...cells.map((cell) => cell.x));
+    const top = Math.min(...cells.map((cell) => cell.y));
+    const drawn = new Set(
+      cells.map((cell) => {
+        const col = Math.round((cell.x - left) / size);
+        const row = Math.round((cell.y - top) / size);
+        return `${row}/${col}`;
+      }),
+    );
+
+    // Dieselbe Rechnung auf der Lösung der Engine, auf deren linkes oberes
+    // ausgemaltes Feld bezogen.
+    const filled: [number, number][] = [];
+    for (let row = 0; row < nonogram.height; row++) {
+      for (let col = 0; col < nonogram.width; col++) {
+        if (nonogram.solution[row * nonogram.width + col]) filled.push([row, col]);
+      }
+    }
+    const minRow = Math.min(...filled.map(([row]) => row));
+    const minCol = Math.min(...filled.map(([, col]) => col));
+    const expected = new Set(filled.map(([row, col]) => `${row - minRow}/${col - minCol}`));
+
+    expect(drawn).toEqual(expected);
   });
 
   it('zeigt beim Kreuzworträtsel im Rätsel keine Buchstaben, in der Lösung alle', () => {

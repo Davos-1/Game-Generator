@@ -2,7 +2,7 @@ import type {
   CrosswordPuzzle,
   DotToDotPuzzle,
   Maze,
-  ShadowMatchPuzzle,
+  NonogramPuzzle,
   SudokuPuzzle,
   WordSearchPuzzle,
 } from '@raetselheft/engine';
@@ -12,7 +12,7 @@ import { coverElements, COVER_BOX, type CoverInfo } from './layout/cover';
 import { dotToDotElements } from './layout/dotToDot';
 import { crosswordElements } from './layout/crossword';
 import { mazeElements } from './layout/maze';
-import { shadowMatchElements } from './layout/shadowMatch';
+import { nonogramElements } from './layout/nonogram';
 import { sudokuElements, sudokuLegendElements } from './layout/sudoku';
 import { wordSearchElements } from './layout/wordsearch';
 import {
@@ -32,7 +32,7 @@ export type PuzzleItem =
   /** `symbols` überschreibt für dieses eine Rätsel die Darstellung. */
   | { kind: 'sudoku'; puzzle: SudokuPuzzle; symbols?: boolean }
   | { kind: 'dot-to-dot'; puzzle: DotToDotPuzzle }
-  | { kind: 'shadow-match'; puzzle: ShadowMatchPuzzle }
+  | { kind: 'nonogram'; puzzle: NonogramPuzzle }
   | { kind: 'crossword'; puzzle: CrosswordPuzzle };
 
 export interface PuzzlePageOptions extends PageFrameOptions {
@@ -184,10 +184,12 @@ export function solutionPages(
 const needsFullRow = (item: PuzzleItem): boolean =>
   item.kind === 'wordsearch' ||
   item.kind === 'crossword' ||
-  (item.kind === 'sudoku' && item.puzzle.size === 9);
+  (item.kind === 'sudoku' && item.puzzle.size === 9) ||
+  (item.kind === 'nonogram' && item.puzzle.width >= 20);
 // Punkte-zu-Punkte ist quadratisch und kompakt wie das Labyrinth: teilt sich
 // eine Zeile mit einem zweiten Rätsel, statt eine ganze Zeile zu belegen.
-// Das Schattenrätsel ist breit und flach, teilt sich ebenfalls eine Zeile.
+// Beim Nonogramm hängt es an der Grösse: Auf halber Breite wären die
+// Randzahlen des 20×20-Gitters nicht mehr lesbar.
 
 function captionedTile(
   entry: { item: PuzzleItem; caption: string },
@@ -280,12 +282,11 @@ function drawItem(
         compact,
         palette,
       });
-    case 'shadow-match':
-      return shadowMatchElements(item.puzzle, inset(box, compact ? 3 : 8), {
+    case 'nonogram':
+      return nonogramElements(item.puzzle, inset(box, compact ? 3 : 8), measurer, {
         solution: options.solution,
         compact,
         palette,
-        ...(theme.sudokuIcons.length > 0 ? { icons: theme.sudokuIcons } : {}),
       });
     case 'crossword':
       return crosswordElements(item.puzzle, inset(box, compact ? 3 : 8), measurer, {

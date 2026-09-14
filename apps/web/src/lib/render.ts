@@ -6,7 +6,7 @@ import {
   generateCrossword,
   generateDotToDot,
   generateMaze,
-  generateShadowMatch,
+  generateNonogram,
   generateSudoku,
   generateWordSearch,
 } from '@raetselheft/engine';
@@ -115,11 +115,15 @@ export function buildPuzzle(config: PuzzleConfig): PuzzleResult {
         },
         notes: [],
       };
-    case 'shadow-match':
+    case 'nonogram':
       return {
         item: {
-          kind: 'shadow-match',
-          puzzle: generateShadowMatch({ seed: config.seed, difficulty: config.difficulty }),
+          kind: 'nonogram',
+          puzzle: generateNonogram({
+            seed: config.seed,
+            difficulty: config.difficulty,
+            pictureId: config.pictureId,
+          }),
         },
         notes: [],
       };
@@ -251,6 +255,7 @@ export function buildBookletItems(config: BookletConfig): {
         difficulty: entry.difficulty,
         symbols: entry.sudokuSymbols,
         shapeId: entry.dotToDotShapeId,
+        pictureId: entry.nonogramPictureId,
         topics: entry.crosswordTopics,
         umlauts: 'keep',
       } as PuzzleConfig);

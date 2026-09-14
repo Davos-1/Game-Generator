@@ -38,7 +38,7 @@ export const RETURN_PATHS: Readonly<Record<Product, readonly string[]>> = {
     '/labyrinth',
     '/sudoku',
     '/punkte-zu-punkte',
-    '/schattenraetsel',
+    '/nonogramm',
     '/kreuzwortraetsel',
   ],
 };

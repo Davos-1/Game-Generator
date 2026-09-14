@@ -2,7 +2,7 @@ import {
   generateCrossword,
   generateDotToDot,
   generateMaze,
-  generateShadowMatch,
+  generateNonogram,
   generateSudoku,
   generateWordSearch,
 } from '@raetselheft/engine';
@@ -59,8 +59,13 @@ const items = (theme: Theme): PuzzleItem[] => [
     puzzle: generateDotToDot({ seed: `print-${theme.id}`, difficulty: 'hard' }),
   },
   {
-    kind: 'shadow-match',
-    puzzle: generateShadowMatch({ seed: `print-${theme.id}`, difficulty: 'hard' }),
+    // Grösstes Gitter: hier wird es mit den Randzahlen am engsten.
+    kind: 'nonogram',
+    puzzle: generateNonogram({ seed: `print-${theme.id}`, difficulty: 'hard' }),
+  },
+  {
+    kind: 'nonogram',
+    puzzle: generateNonogram({ seed: `print-klein-${theme.id}`, difficulty: 'easy' }),
   },
   {
     kind: 'crossword',

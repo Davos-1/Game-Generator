@@ -14,7 +14,7 @@ import {
   generateCrossword,
   generateDotToDot,
   generateMaze,
-  generateShadowMatch,
+  generateNonogram,
   generateSudoku,
   generateWordSearch,
 } from '@raetselheft/engine';
@@ -42,7 +42,11 @@ const FALLBACK_WORDS = [
   'Spalte',
 ];
 
-/** Passende Form, wo ein Thema eindeutig dazu passt; sonst entscheidet der Seed. */
+/**
+ * Passendes Motiv, wo ein Thema eindeutig dazu passt; sonst entscheidet der
+ * Seed. Gilt für Punkte-zu-Punkte und Nonogramm, die denselben Formenvorrat
+ * verwenden.
+ */
 const THEME_SHAPE: Readonly<Record<string, string>> = {
   hochzeit: 'herz',
   weihnachten: 'tannenbaum',
@@ -71,8 +75,17 @@ function buildItem(kind: ExampleKind, theme: Theme, seed: string): PuzzleItem {
         puzzle: generateDotToDot({ seed, difficulty: 'hard', ...(shapeId ? { shapeId } : {}) }),
       };
     }
-    case 'shadow-match':
-      return { kind, puzzle: generateShadowMatch({ seed, difficulty: 'hard' }) };
+    case 'nonogram': {
+      const pictureId = THEME_SHAPE[theme.id];
+      return {
+        kind,
+        puzzle: generateNonogram({
+          seed,
+          difficulty: 'medium',
+          ...(pictureId ? { pictureId } : {}),
+        }),
+      };
+    }
     case 'crossword':
       return {
         kind,

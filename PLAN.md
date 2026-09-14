@@ -156,11 +156,13 @@ Nach dem Launch: weitere Rätseltypen, in dieser Reihenfolge nach Zielgruppen-Pr
 
 **AP11 — Engine Punkte-zu-Punkte:** kuratierte Umriss-Formen (Stern, Herz, Haus, Pfeil, Tannenbaum) als geschlossene Polygone, per Bogenlänge auf die zur Schwierigkeit passende Punktanzahl umgerechnet (14/24/40). Abnahme: Tests grün, für jede Form und Stufe ausreichend Punktabstand fürs Drucken.
 
-**AP12 — Schattenrätsel:** Icon einer passenden Silhouette unter Ablenkern zuordnen; nutzt die bestehenden Icon-Pfade aus `packages/render/src/icons.ts`, braucht zusätzlich eine gefüllte, konturlose Darstellung derselben Pfade.
+**AP12 — Schattenrätsel: umgesetzt und auf Wunsch des Nutzers wieder vollständig entfernt.** Engine, Layout, Konfigurator, Heft-Builder, Texte, Landing-Pages und Gratis-Beispiel sind zurückgebaut; die Nummer AP12 bleibt vergeben, damit die späteren Nummern stimmen.
 
 **AP13 — Zahlenrätsel/Kakuro:** Gitter mit Summen-Vorgaben, Eindeutigkeits-Solver analog Sudoku, Schwierigkeit über Anzahl/Grösse der Blöcke.
 
 **AP14 — Kreuzworträtsel:** Wort-/Hinweis-Datenbank pro Thema, Gitter-Füllalgorithmus mit Kreuzungsbedingung, Hinweis-Spalte im Layout. Technisch am aufwändigsten, deshalb zuletzt und erst nach Abschluss laufender Render-Layout-Arbeiten.
+
+**AP15 — Nonogramm (Logik-Bilderrätsel):** Randzahlen je Zeile und Spalte, ausgemalt ergibt sich ein Bild. Die Motive kommen aus den vorhandenen Umriss-Polygonen von AP11, per Punkt-in-Polygon ins Gitter gerastert (reine Geometrie, keine Zeichen-Abhängigkeit in der Engine). Ein Zeilen-/Spalten-Logiksolver prüft jedes erzeugte Gitter: Ausgeliefert wird nur, was sich ohne Raten vollständig auflösen lässt — damit ist die Lösung zugleich eindeutig. Schwierigkeit über die Gittergrösse (10×10 / 15×15 / 20×20).
 
 ---
 
