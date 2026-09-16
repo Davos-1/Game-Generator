@@ -20,14 +20,7 @@
     "mazeStart": "explorer",
     "mazeEnd": "temple"
   },
-  "sudokuIcons": [
-    "jaguar",
-    "toucan",
-    "monkey",
-    "snake",
-    "frog",
-    "mask"
-  ],
+  "sudokuIcons": ["jaguar", "toucan", "monkey", "snake", "frog", "mask"],
   "availableIcons": [
     "jaguar",
     "toucan",

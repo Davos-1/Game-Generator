@@ -4,13 +4,14 @@
   "colors": {
     "ink": "#12304a",
     "muted": "#5b7186",
-    "light": "#cbd9e3",
-    "grid": "#93aec2",
+    "light": "#dce7ee",
+    "grid": "#8fabc0",
     "accent": "#0e7490",
     "solution": "#c2410c",
-    "watermark": "#93aec2",
-    "decor": "#b45309"
+    "watermark": "#8fabc0",
+    "decor": "#a16207"
   },
+  "frameRadiusMm": 4,
   "icons": {
     "corner": "anchor",
     "cover": "ship",

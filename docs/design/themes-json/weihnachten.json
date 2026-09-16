@@ -20,14 +20,7 @@
     "mazeStart": "snowman",
     "mazeEnd": "gift"
   },
-  "sudokuIcons": [
-    "tree",
-    "reindeer",
-    "snowflake",
-    "gift",
-    "bauble",
-    "gingerbread"
-  ],
+  "sudokuIcons": ["tree", "reindeer", "snowflake", "gift", "bauble", "gingerbread"],
   "availableIcons": [
     "tree",
     "reindeer",

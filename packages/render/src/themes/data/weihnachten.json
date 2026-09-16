@@ -4,13 +4,14 @@
   "colors": {
     "ink": "#1f3a2e",
     "muted": "#5f7a6c",
-    "light": "#d8e5da",
+    "light": "#e2ece3",
     "grid": "#9fbaa8",
     "accent": "#b91c1c",
-    "solution": "#b45309",
+    "solution": "#166534",
     "watermark": "#9fbaa8",
-    "decor": "#c99700"
+    "decor": "#b08400"
   },
+  "frameRadiusMm": 4,
   "icons": {
     "corner": "snowflake",
     "cover": "tree",

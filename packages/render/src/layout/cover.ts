@@ -31,7 +31,9 @@ export function coverElements(
   const elements: Element[] = [];
   const centerX = box.x + box.width / 2;
 
-  // Doppelter Zierrahmen in der Akzentfarbe.
+  // Doppelter Zierrahmen; der Eckenradius kommt aus dem Theme, damit die
+  // Designs sich schon am Rahmen unterscheiden (Hochzeit rechtwinklig).
+  const radius = theme.frameRadiusMm;
   elements.push(
     {
       type: 'rect',
@@ -39,7 +41,7 @@ export function coverElements(
       y: box.y,
       width: box.width,
       height: box.height,
-      rx: 4,
+      rx: radius,
       stroke: { color: colors.accent, width: 0.8 },
     },
     {
@@ -48,7 +50,7 @@ export function coverElements(
       y: box.y + 2.5,
       width: box.width - 5,
       height: box.height - 5,
-      rx: 3,
+      rx: Math.max(0, radius - 1),
       stroke: { color: colors.decor, width: 0.3 },
     },
   );
@@ -105,9 +107,9 @@ export function coverElements(
   // Feine Trennlinie zwischen Namen und Anlass.
   elements.push({
     type: 'line',
-    x1: centerX - 18,
+    x1: centerX - 11,
     y1: y + 4,
-    x2: centerX + 18,
+    x2: centerX + 11,
     y2: y + 4,
     stroke: { color: colors.decor, width: 0.4 },
   });
@@ -146,13 +148,13 @@ export function coverElements(
 
   // Kleine Deko unten in den Ecken.
   if (theme.id !== NEUTRAL_THEME.id) {
-    const size = 8;
-    for (const x of [box.x + 12, box.x + box.width - 12]) {
+    const size = 13;
+    for (const x of [box.x + 14, box.x + box.width - 14]) {
       elements.push({
         type: 'path',
-        d: iconPath(theme.icons.corner, x, box.y + box.height - 12, size),
+        d: iconPath(theme.icons.corner, x, box.y + box.height - 14, size),
         fill: colors.decor,
-        opacity: 0.7,
+        opacity: 0.85,
       });
     }
   }

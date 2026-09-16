@@ -14,6 +14,11 @@ export interface Theme {
     /** Farbe der Ecken-Deko; meist heller als der Akzent. */
     decor: string;
   };
+  /**
+   * Eckenradius der Zierrahmen in Millimetern. 0 ergibt rechtwinklige Ecken
+   * (Hochzeit), grössere Werte wirken verspielter (Einhörner).
+   */
+  frameRadiusMm: number;
   icons: {
     /** Ecken-Deko auf jeder Seite. */
     corner: IconName;

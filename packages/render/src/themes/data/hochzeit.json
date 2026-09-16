@@ -4,13 +4,14 @@
   "colors": {
     "ink": "#38343a",
     "muted": "#7a7480",
-    "light": "#e6e0e6",
+    "light": "#efe9ea",
     "grid": "#bfb6c2",
     "accent": "#9f1239",
     "solution": "#be123c",
     "watermark": "#bfb6c2",
-    "decor": "#c4a747"
+    "decor": "#a1873f"
   },
+  "frameRadiusMm": 0,
   "icons": {
     "corner": "flower",
     "cover": "ring",

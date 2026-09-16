@@ -4,3 +4,4 @@ dist
 pnpm-lock.yaml
 coverage
 PLAN.md
+docs/design/mockups

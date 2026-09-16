@@ -20,14 +20,7 @@
     "mazeStart": "map",
     "mazeEnd": "chest"
   },
-  "sudokuIcons": [
-    "flag",
-    "chest",
-    "parrot",
-    "compass",
-    "wheel",
-    "bottle"
-  ],
+  "sudokuIcons": ["flag", "chest", "parrot", "compass", "wheel", "bottle"],
   "availableIcons": [
     "flag",
     "chest",
