@@ -90,8 +90,13 @@ export function createPage(measurer: TextMeasurer, options: PageFrameOptions): P
   });
 
   const footerY = A4.height - MARGIN;
+  // Bei einem Themen-Design steht links unten das Eck-Icon; der Text rückt
+  // um dessen Breite nach rechts, damit sich beide nicht überlagern.
+  const footerIconSize: Mm = 8;
+  const themed = theme.id !== NEUTRAL_THEME.id;
   if (options.footerLeft) {
-    elements.push(footerText(options.footerLeft, MARGIN, footerY, 'start', colors.muted));
+    const footerLeftX = themed ? MARGIN + footerIconSize + 2 : MARGIN;
+    elements.push(footerText(options.footerLeft, footerLeftX, footerY, 'start', colors.muted));
   }
   if (options.footerRight) {
     elements.push(footerText(options.footerRight, A4.width - MARGIN, footerY, 'end', colors.muted));
@@ -104,21 +109,33 @@ export function createPage(measurer: TextMeasurer, options: PageFrameOptions): P
     height: footerY - FOOTER_HEIGHT - contentTop,
   };
 
-  // Ecken-Deko: zwei kleine Icons, die den Rätselbereich nicht stören.
-  if (theme.id !== NEUTRAL_THEME.id) {
-    const size = 9;
+  // Ecken-Deko: oben rechts als Themen-Marke, klein und blass in der
+  // Fusszeile. Beide stören den Rätselbereich nicht.
+  if (themed) {
+    const cornerSize = 13;
+    const footerSize = footerIconSize;
     elements.push(
       {
         type: 'path',
-        d: iconPath(theme.icons.corner, A4.width - MARGIN - size / 2, MARGIN + size / 2, size),
+        d: iconPath(
+          theme.icons.corner,
+          A4.width - MARGIN - cornerSize / 2,
+          MARGIN + cornerSize / 2,
+          cornerSize,
+        ),
         fill: colors.decor,
         opacity: 0.85,
       },
       {
         type: 'path',
-        d: iconPath(theme.icons.corner, MARGIN + size / 2, A4.height - MARGIN - size, size),
+        d: iconPath(
+          theme.icons.corner,
+          MARGIN + footerSize / 2,
+          A4.height - MARGIN - footerSize / 2,
+          footerSize,
+        ),
         fill: colors.decor,
-        opacity: 0.35,
+        opacity: 0.5,
       },
     );
   }

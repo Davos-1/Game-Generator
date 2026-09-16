@@ -147,3 +147,32 @@ Symbole aus fremden Icon-Sets. Die Symbole kommen aus
   (analog zu den Kreuzwort-Wortlisten als eigene JSON-Dateien ausserhalb des
   Theme-Schemas) — dafür bräuchte es Silhouetten als Polygone, die
   Icon-Pfade mit Kurven lassen sich in der Engine nicht rastern.
+- **Themen-Designs überarbeitet (Stufe 1 von 2), Bereich Session B.** Auf
+  Grundlage des Design-Handoffs in `docs/design/themes-handoff.md` sind die
+  fünf Paletten neu gesetzt (unter anderem hellere `light`- und andere
+  `decor`-Werte) und das Theme-Schema um `frameRadiusMm` erweitert
+  (`packages/render/src/themes/types.ts`, alle fünf JSONs, `NEUTRAL_THEME`
+  und `validateTheme`). `layout/cover.ts` zieht den Eckenradius jetzt aus dem
+  Theme statt aus festen Werten, Hochzeit ist damit bewusst rechtwinklig. In
+  `packages/render/src/page.ts` ist die Ecken-Deko auf 13 mm oben rechts und
+  8 mm in der Fusszeile umgestellt; der Fusszeilentext links rückt bei einem
+  Themen-Design um die Icon-Breite nach rechts, damit sich beide nicht
+  überlagern. Weil alle sechs Rätseltypen über `puzzlePage()` und damit über
+  `createPage()` laufen, erben Kreuzworträtsel, Punkte-zu-Punkte und
+  Nonogramm Kopf, Trennstrich, Ecken-Deko und Fusszeile automatisch mit —
+  keine Änderung in `layout/` nötig. Die Kontrastwerte aller fünf neuen
+  Paletten halten die Schwellen aus `print.test.ts` ein.
+- **Stufe 2 (Rasterbilder) bewusst noch offen.** Der Handoff sieht vor, die
+  Vektor-Icons durch vollfarbige PNGs zu ersetzen (Deckblatt-Illustration
+  85 mm, Sudoku-Symbole, Labyrinth-Marken). Das ist NICHT umgesetzt und
+  braucht drei Dinge, die heute fehlen: ein `ImageElement` in
+  `primitives.ts` samt Zweig in `pdf.ts` (`drawElement`) und `svg.ts`
+  (`elementToSvg`) plus Embed-Cache für `embedPng()`; freigestellte
+  PNG-Varianten (die gelieferten 62 Bilder unter
+  `packages/render/assets/themes/` sind durchgehend deckend und randlos
+  durchgefärbt, taugen also nicht für Sudoku-Zellen und Labyrinth-Marken);
+  und Deckblatt-Motive in mindestens 1000 px (400 px ergeben auf 85 mm nur
+  rund 120 dpi). Solange das nicht da ist, bleiben `icons.ts`, `symbols.ts`
+  und `theme.sudokuIcons` unverändert in Gebrauch. Details und die
+  vollständige Befundliste stehen in `docs/design/themes-handoff.md` und
+  `docs/design/UMSETZUNG.md`.

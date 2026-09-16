@@ -20,14 +20,7 @@
     "mazeStart": "foal",
     "mazeEnd": "chest"
   },
-  "sudokuIcons": [
-    "unicorn",
-    "skywheel",
-    "chest",
-    "elixir",
-    "tiara",
-    "compass"
-  ],
+  "sudokuIcons": ["unicorn", "skywheel", "chest", "elixir", "tiara", "compass"],
   "availableIcons": [
     "unicorn",
     "foal",

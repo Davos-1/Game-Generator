@@ -20,14 +20,7 @@
     "mazeStart": "verlobung",
     "mazeEnd": "ringwechsel"
   },
-  "sudokuIcons": [
-    "eleganz",
-    "torte",
-    "ringwechsel",
-    "brautpaar",
-    "deko",
-    "start"
-  ],
+  "sudokuIcons": ["eleganz", "torte", "ringwechsel", "brautpaar", "deko", "start"],
   "availableIcons": [
     "eleganz",
     "boho",

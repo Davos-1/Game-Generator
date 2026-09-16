@@ -3,8 +3,10 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { createMeasurer } from '../fonts';
 import { ICON_NAMES, iconPath } from '../icons';
 import type { TextMeasurer } from '../measure';
+import { COVER_BOX, coverElements } from '../layout/cover';
 import { loadFontsFromDisk } from '../node';
 import { puzzlePage, type PuzzleItem } from '../pages';
+import type { Element } from '../primitives';
 import { NEUTRAL_THEME, THEMES, themeById, validateTheme } from './index';
 import type { Theme } from './types';
 
@@ -76,6 +78,31 @@ describe('Theme-Definitionen', () => {
     }
   });
 
+  it('geben dem Zierrahmen einen themenspezifischen Eckenradius', () => {
+    const radii = new Map(THEMES.map((theme) => [theme.id, theme.frameRadiusMm]));
+    // Hochzeit ist bewusst rechtwinklig, Einhörner am verspieltesten.
+    expect(radii.get('hochzeit')).toBe(0);
+    expect(radii.get('einhorn')).toBe(7);
+    // Die fünf Designs sollen sich am Rahmen unterscheiden lassen.
+    expect(new Set(radii.values()).size).toBeGreaterThanOrEqual(3);
+    for (const theme of THEMES) {
+      expect(theme.frameRadiusMm, theme.id).toBeGreaterThanOrEqual(0);
+      expect(theme.frameRadiusMm, theme.id).toBeLessThanOrEqual(12);
+    }
+  });
+
+  it('zeichnet den Deckblatt-Rahmen mit dem Eckenradius des Themes', () => {
+    for (const theme of THEMES) {
+      const box = COVER_BOX(12);
+      const elements = coverElements({ title: 'Rätselheft' }, box, measurer, theme);
+      const frame = elements.find(
+        (element): element is Extract<Element, { type: 'rect' }> =>
+          element.type === 'rect' && element.stroke?.color === theme.colors.accent,
+      );
+      expect(frame?.rx, theme.id).toBe(theme.frameRadiusMm);
+    }
+  });
+
   it('themeById fällt bei unbekannter Id auf das Standarddesign zurück', () => {
     expect(themeById('piraten').id).toBe('piraten');
     expect(themeById('gibt-es-nicht')).toBe(NEUTRAL_THEME);
@@ -96,6 +123,9 @@ describe('Theme-Definitionen', () => {
     expect(problems.some((p) => p.includes('nicht eindeutig'))).toBe(true);
     expect(problems.some((p) => p.includes('mindestens 30'))).toBe(true);
     expect(problems.some((p) => p.includes('Ungeeignetes Wort'))).toBe(true);
+    expect(
+      validateTheme({ ...broken, frameRadiusMm: 99 }).some((p) => p.includes('Eckenradius')),
+    ).toBe(true);
   });
 });
 
@@ -183,7 +213,7 @@ describe('Themewechsel', () => {
     expect(paths(neutral)).toHaveLength(2);
     expect(paths(themed).length).toBeGreaterThan(2);
     // Ecken-Deko oben rechts: A4-Breite minus Rand minus halbe Icon-Grösse.
-    expect(paths(themed)).toContain(iconPath(theme.icons.corner, 210 - 12 - 4.5, 12 + 4.5, 9));
+    expect(paths(themed)).toContain(iconPath(theme.icons.corner, 210 - 12 - 6.5, 12 + 6.5, 13));
     expect(paths(themed)).toContain(
       paths(themed).find((d) => d.length > 0 && d !== paths(neutral)[0]),
     );

@@ -21,6 +21,7 @@ export const NEUTRAL_THEME: Theme = {
   id: 'neutral',
   name: 'Standard',
   colors: { ...COLORS, decor: COLORS.light },
+  frameRadiusMm: 4,
   icons: { corner: 'sparkle', cover: 'sparkle', mazeStart: 'sparkle', mazeEnd: 'sparkle' },
   sudokuIcons: [],
   words: [],
@@ -73,6 +74,14 @@ export function validateTheme(theme: Theme): string[] {
     if (typeof value !== 'string' || !HEX.test(value)) {
       problems.push(`Farbe ${key} ist kein Hex-Wert: ${String(value)}`);
     }
+  }
+
+  if (
+    !Number.isFinite(theme.frameRadiusMm) ||
+    theme.frameRadiusMm < 0 ||
+    theme.frameRadiusMm > 12
+  ) {
+    problems.push(`Eckenradius ausserhalb 0–12 mm: ${String(theme.frameRadiusMm)}`);
   }
 
   const icons: IconName[] = [

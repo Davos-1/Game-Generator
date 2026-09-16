@@ -13,6 +13,9 @@ export default tseslint.config(
       '**/.astro/**',
       '**/.wrangler/**',
       '**/coverage/**',
+      // Design-Vorlagen samt Laufzeit des Design-Werkzeugs: fremder Code,
+      // reine Referenz, nicht Teil des Produktivpfads.
+      'docs/design/mockups/**',
     ],
   },
   js.configs.recommended,
