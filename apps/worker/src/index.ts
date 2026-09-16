@@ -91,6 +91,7 @@ export default {
           purpose: body.purpose ?? 'Rätselheft',
           product: body.product ?? 'booklet',
           returnPath: body.returnPath ?? '/raetselheft',
+          consent: body.consent === true,
         });
         return json(result, 200, origin);
       }

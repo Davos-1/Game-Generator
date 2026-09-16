@@ -11,8 +11,10 @@ Es gibt zwei Produkte: ein Einzelrätsel (`single`, CHF 2) und ein Rätselheft
 beiden Fällen gratis; jede Vorschau trägt ein Wasserzeichen, erst der Kauf
 schaltet das PDF ohne Wasserzeichen frei.
 
-1. Nutzer konfiguriert ein Rätsel oder stellt ein Heft zusammen und klickt
-   «Rätsel kaufen» bzw. «Heft kaufen».
+1. Nutzer konfiguriert ein Rätsel oder stellt ein Heft zusammen, bestätigt mit
+   einem Häkchen die sofortige Bereitstellung (AGB Ziffer 8) und klickt
+   «Rätsel kaufen» bzw. «Heft kaufen». Ohne Häkchen bleibt der Knopf gesperrt,
+   und auch der Worker lehnt einen Kauf ohne `consent: true` mit 400 ab.
 2. Die Website schickt an `/api/checkout` die Konfiguration, das Produkt
    (`product`: «single» oder «booklet») und die Seite, auf die nach der
    Zahlung zurückgesprungen werden soll (`returnPath`, z. B. `/sudoku` oder
@@ -29,6 +31,26 @@ schaltet das PDF ohne Wasserzeichen frei.
 5. Das Token gilt für **genau diese Konfiguration**: es enthält deren Hash.
    Vor dem Erzeugen des sauberen PDFs prüft der Worker das Token gegen die
    aktuelle Konfiguration.
+
+## Zustimmung festhalten
+
+Der Zahlungsdatensatz in KV enthält `consentAt`: den Zeitpunkt, zu dem der
+Verzicht auf das Widerrufsrecht bestätigt wurde. Er steht dort 30 Tage lang
+zusammen mit der Zahlung und ist der Beleg, falls jemand nachfragt.
+
+## Zugang wiederherstellen
+
+Die Freischaltung hängt am Token im Speicher des Browsers. Wer das Gerät
+wechselt oder die Browserdaten löscht, käme sonst nicht mehr an sein bezahltes
+PDF. Deshalb zeigt die Website nach dem Kauf einen Wiederherstellungs-Link. Er
+enthält die Einstellungen **und** die Zahlungs-Id:
+`/<seite>?<einstellungen>&zahlung=<id>&status=ok`. Wird er geöffnet, holt die
+Website beim Worker erneut ein Token für dieselbe Konfiguration — solange der
+Datensatz in KV liegt, also 30 Tage.
+
+Ein Heft, dessen Einstellungen zu umfangreich für einen Link sind, zeigt statt
+des Links die Kaufnummer (die Zahlungs-Id) an. Damit lässt sich ein Kauf im
+Support nachvollziehen.
 
 Die Meldung von Payrexx (`/api/webhook`) beschleunigt nur den Normalfall.
 Massgeblich ist die Abfrage bei Payrexx, die auch dann greift, wenn die

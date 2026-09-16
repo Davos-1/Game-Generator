@@ -138,6 +138,7 @@ const checkout = (
     purpose,
     product: 'booklet',
     returnPath: '/raetselheft',
+    consent: true,
     ...extra,
   });
 
@@ -165,7 +166,29 @@ describe('Kauf-Ablauf', () => {
 
     const stored = s.store.entries.get(`payment:${result.paymentId}`);
     expect(stored?.ttl).toBe(RECORD_TTL_SECONDS);
-    expect(JSON.parse(stored?.value ?? '{}')).toMatchObject({ paid: false, gatewayId: 4711 });
+    expect(JSON.parse(stored?.value ?? '{}')).toMatchObject({
+      paid: false,
+      gatewayId: 4711,
+      // Beleg für den Verzicht auf das Widerrufsrecht (AGB Ziffer 8).
+      consentAt: 1_800_000_000_000,
+    });
+  });
+
+  it('verkauft nichts ohne Zustimmung zur sofortigen Bereitstellung', async () => {
+    // Fehlendes, falsches und nur scheinbar wahres Häkchen.
+    for (const consent of [false, undefined, 'ja']) {
+      const request = {
+        config: CONFIG,
+        purpose: 'X',
+        product: 'booklet',
+        returnPath: '/raetselheft',
+        consent,
+      } as unknown as CheckoutRequest;
+      await expect(startCheckout(s.deps, request)).rejects.toMatchObject({ status: 400 });
+    }
+    // Ohne Zustimmung darf auch keine Bezahlseite angelegt worden sein.
+    expect(s.fetchMock).not.toHaveBeenCalled();
+    expect(s.store.entries.size).toBe(0);
   });
 
   it('nimmt für ein Einzelrätsel den kleineren Preis', async () => {

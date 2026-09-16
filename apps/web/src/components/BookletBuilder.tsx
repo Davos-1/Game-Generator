@@ -14,8 +14,9 @@ import {
   type BookletConfig,
   type BookletEntry,
 } from '../lib/bookletConfig';
-import { bookletString } from '../lib/payment';
+import { bookletString, restoreUrl } from '../lib/payment';
 import { usePurchase } from '../lib/purchase';
+import { ConsentBox, RestoreLink } from './PurchaseExtras';
 import {
   defaultSymbols,
   newSeed,
@@ -47,6 +48,13 @@ export default function BookletBuilder(): React.ReactElement {
   const [busy, setBusy] = useState(false);
   const [loading, setLoading] = useState(true);
   const [linkState, setLinkState] = useState<'idle' | 'copied' | 'too-long'>('idle');
+  // Zustimmung zur sofortigen Bereitstellung; ohne sie kein Kauf.
+  const [consent, setConsent] = useState(false);
+  /**
+   * Heft als Abfrage für den Wiederherstellungs-Link. «undefined» heisst: noch
+   * nicht gerechnet, «null»: das Heft passt in keinen Link.
+   */
+  const [restoreQuery, setRestoreQuery] = useState<string | null | undefined>(undefined);
   const layoutRef = useRef<Awaited<ReturnType<typeof buildBookletPages>> | undefined>(undefined);
   const [dragId, setDragId] = useState<string | undefined>(undefined);
   const purchase = usePurchase({
@@ -96,8 +104,9 @@ export default function BookletBuilder(): React.ReactElement {
       void (async () => {
         setLoading(true);
         const { entries, notes: buildNotes } = buildBookletItems(config);
+        // Erst der Kauf nimmt das Wasserzeichen weg, aus Vorschau wie PDF.
         const layout = await buildBookletPages(config, entries, {
-          watermark: t('payment.watermark'),
+          ...(unlocked ? {} : { watermark: t('payment.watermark') }),
         });
         const svg = await Promise.all(layout.map((page) => pageToSvgString(page, config.theme)));
         if (cancelled) return;
@@ -155,8 +164,22 @@ export default function BookletBuilder(): React.ReactElement {
 
   const buy = useCallback(async (): Promise<void> => {
     const title = config.title.trim() || t('booklet.defaultTitle');
-    await purchase.buy(`${t('booklet.defaultTitle')}: ${title}`);
-  }, [config.title, purchase]);
+    await purchase.buy(`${t('booklet.defaultTitle')}: ${title}`, consent);
+  }, [config.title, consent, purchase]);
+
+  useEffect(() => {
+    if (!unlocked || !purchase.paymentId) return;
+    let cancelled = false;
+    void (async () => {
+      const query = `h=${await encodeBooklet(config)}`;
+      if (cancelled) return;
+      const url = restoreUrl(purchase.paymentId ?? '', query);
+      setRestoreQuery(url.length > MAX_LINK_LENGTH ? null : query);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [config, unlocked, purchase.paymentId]);
 
   const canRemove = config.entries.length > MIN_ENTRIES;
   const canAdd = config.entries.length < MAX_ENTRIES;
@@ -480,13 +503,17 @@ export default function BookletBuilder(): React.ReactElement {
                 {busy ? t('generator.common.downloading') : t('payment.downloadClean')}
               </button>
               <p className="text-sm text-emerald-700">{t('payment.unlockedBooklet')}</p>
+              {purchase.paymentId && restoreQuery !== undefined && (
+                <RestoreLink paymentId={purchase.paymentId} query={restoreQuery ?? undefined} />
+              )}
             </>
           ) : (
             <>
+              {purchase.enabled && <ConsentBox checked={consent} onChange={setConsent} />}
               <button
                 type="button"
                 className={primaryButton}
-                disabled={!purchase.enabled || purchase.busy}
+                disabled={!purchase.enabled || !consent || purchase.busy}
                 onClick={() => void buy()}
               >
                 {purchase.enabled ? `${t('booklet.buy')} – ${purchase.price}` : t('booklet.buy')}

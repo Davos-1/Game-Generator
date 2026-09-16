@@ -17,6 +17,13 @@ export interface PaymentRecord {
   gatewayId: number;
   paid: boolean;
   createdAt: number;
+  /**
+   * Zeitpunkt, zu dem die Käuferin oder der Käufer der sofortigen
+   * Bereitstellung zugestimmt und damit auf ein allfälliges Widerrufsrecht
+   * verzichtet hat (AGB Ziffer 8). Ohne Zustimmung kommt keine Zahlung
+   * zustande, der Wert ist deshalb der Beleg für den Verzicht.
+   */
+  consentAt: number;
 }
 
 /** 30 Tage: so lange lässt sich ein bezahltes Heft erneut herunterladen. */
@@ -60,6 +67,12 @@ export interface CheckoutRequest {
   product: Product;
   /** Seite, auf die Payrexx zurückführt, z. B. «/sudoku». */
   returnPath: string;
+  /**
+   * Zustimmung zur sofortigen Bereitstellung des PDF. Muss «true» sein: die
+   * Website verlangt sie vor dem Kauf als Häkchen, hier wird sie geprüft und
+   * mit Zeitstempel festgehalten.
+   */
+  consent: boolean;
 }
 
 const key = (paymentId: string): string => `payment:${paymentId}`;
@@ -85,7 +98,7 @@ export class RequestError extends Error {
  * Seite, von der aus gekauft wurde.
  */
 export async function startCheckout(deps: Deps, request: CheckoutRequest): Promise<CheckoutResult> {
-  const { config, purpose, product, returnPath } = request;
+  const { config, purpose, product, returnPath, consent } = request;
   if (typeof config !== 'string' || config.length === 0 || config.length > 20_000) {
     throw new RequestError('Ungültige Rätsel-Konfiguration', 400);
   }
@@ -95,6 +108,10 @@ export async function startCheckout(deps: Deps, request: CheckoutRequest): Promi
   if (!RETURN_PATHS[product].includes(returnPath)) {
     throw new RequestError('Unerlaubte Rücksprung-Adresse', 400);
   }
+  if (consent !== true) {
+    throw new RequestError('Ohne Zustimmung zur sofortigen Bereitstellung kein Kauf', 400);
+  }
+  const now = (deps.now ?? Date.now)();
   const configHash = await hashConfig(config);
   const paymentId = crypto.randomUUID();
   const returnUrl = `${deps.siteOrigin}${returnPath}?zahlung=${paymentId}`;
@@ -119,7 +136,8 @@ export async function startCheckout(deps: Deps, request: CheckoutRequest): Promi
     configHash,
     gatewayId: gateway.id,
     paid: false,
-    createdAt: (deps.now ?? Date.now)(),
+    createdAt: now,
+    consentAt: now,
   };
   await deps.store.put(key(paymentId), JSON.stringify(record), {
     expirationTtl: RECORD_TTL_SECONDS,

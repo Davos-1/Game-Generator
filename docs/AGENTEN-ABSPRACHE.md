@@ -194,3 +194,26 @@ Symbole aus fremden Icon-Sets. Die Symbole kommen aus
   aufhängen. `pageToSvgString(page, themeId)` nimmt neu die Theme-Id, damit die
   Vorschau die Bild-URLs kennt — beim Einzelgenerator noch nicht durchgereicht,
   weil dort das Deckblatt gar nicht vorkommt.
+
+## Session C — Launch-Vorbereitung Kauf (16. September 2026)
+
+Einmalige Arbeit auf `claude/optimistic-thompson-lwsjtn`, nicht dauerhaft
+belegt. Zwei rechtlich/betrieblich nötige Ergänzungen vor dem Live-Gang:
+
+- **Zustimmung vor dem Kauf.** `CheckoutRequest` im Worker hat neu das Feld
+  `consent`; ohne `true` antwortet `startCheckout` mit 400, und der
+  Zahlungsdatensatz hält `consentAt` fest. **Berührt Bereich A**
+  (`apps/worker/**`, `apps/web/src/lib/payment.ts`, `purchase.ts`):
+  `purchase.buy` nimmt neu ein zweites Argument `consent`.
+- **Wiederherstellungs-Link.** `usePurchase` gibt neu `paymentId` zurück;
+  `payment.ts` merkt sich die Zahlungs-Id je Konfiguration und baut daraus
+  mit `restoreUrl()` einen Link, der den Kauf auf einem anderen Gerät wieder
+  freischaltet. Neue gemeinsame Bausteine in
+  `apps/web/src/components/PurchaseExtras.tsx` (`ConsentBox`, `RestoreLink`),
+  eingehängt in `PuzzleGenerator.tsx` und `BookletBuilder.tsx`.
+- **Nebenbefund korrigiert:** `BookletBuilder.tsx` hat das Wasserzeichen
+  unabhängig von `unlocked` gesetzt, das gekaufte Heft-PDF trug es also
+  weiterhin. Jetzt wie im Einzelgenerator an `unlocked` gebunden.
+- Neu `docs/LIZENZEN.md`: Herkunft und Lizenz der Assets (die
+  Themen-Illustrationen sind KI-erzeugt, offene Angaben sind dort als
+  Checkliste vermerkt).

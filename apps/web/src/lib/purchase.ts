@@ -10,6 +10,8 @@ import {
   fetchStatus,
   formatPrice,
   isConfigured,
+  paymentFor,
+  rememberPayment,
   rememberToken,
   startCheckout,
   tokenFor,
@@ -61,7 +63,16 @@ export interface Purchase {
   /** Meldung zur Zahlung, leer wenn es nichts zu sagen gibt. */
   note: string;
   busy: boolean;
-  buy: (purpose: string) => Promise<void>;
+  /**
+   * Zahlungs-Id dieses Kaufs, sobald er bezahlt ist. Daraus baut die
+   * Oberfläche den Wiederherstellungs-Link für ein anderes Gerät.
+   */
+  paymentId: string | undefined;
+  /**
+   * Startet den Kauf. Ohne «consent» (Zustimmung zur sofortigen
+   * Bereitstellung, AGB Ziffer 8) lehnt bereits der Worker ab.
+   */
+  buy: (purpose: string, consent: boolean) => Promise<void>;
 }
 
 export interface PurchaseOptions {
@@ -77,6 +88,13 @@ export function usePurchase({ product, returnPath, config }: PurchaseOptions): P
   const [unlocked, setUnlocked] = useState(false);
   const [note, setNote] = useState('');
   const [busy, setBusy] = useState(false);
+  const [paymentId, setPaymentId] = useState<string | undefined>(undefined);
+  /**
+   * Token aus der Rückkehr von der Bezahlseite. Es wird hier gehalten, weil
+   * die Einstellungen aus der Adresse erst nach dem ersten Rendern feststehen:
+   * so lässt sich die Freischaltung nachziehen, sobald sie da sind.
+   */
+  const returned = useRef<{ paymentId: string; token: string } | undefined>(undefined);
   // Rückfall, falls die laufende Zahlung nicht im Speicher steht.
   const configRef = useRef(config);
   configRef.current = config;
@@ -88,16 +106,19 @@ export function usePurchase({ product, returnPath, config }: PurchaseOptions): P
     const params = new URLSearchParams(window.location.search);
     void (async () => {
       setInfo(await fetchPaymentInfo());
-      const paymentId = params.get('zahlung');
-      if (!paymentId) return;
+      const fromUrl = params.get('zahlung');
+      if (!fromUrl) return;
       if (params.get('status') === 'abbruch') {
         setNote(t('payment.cancelled'));
         return;
       }
       for (let attempt = 0; attempt < 8; attempt++) {
-        const status = await fetchStatus(paymentId);
+        const status = await fetchStatus(fromUrl);
         if (status.paid && status.token) {
-          rememberToken(readPending()[paymentId] ?? configRef.current, status.token);
+          const config = readPending()[fromUrl] ?? configRef.current;
+          returned.current = { paymentId: fromUrl, token: status.token };
+          rememberToken(config, status.token);
+          rememberPayment(config, fromUrl);
           setNote(t('payment.done'));
           setUnlocked(true);
           return;
@@ -113,8 +134,29 @@ export function usePurchase({ product, returnPath, config }: PurchaseOptions): P
     let cancelled = false;
     void (async () => {
       const token = tokenFor(config);
-      const ok = token ? await unlock(token, config) : false;
-      if (!cancelled) setUnlocked(ok);
+      if (token && (await unlock(token, config))) {
+        if (!cancelled) {
+          setUnlocked(true);
+          setPaymentId(paymentFor(config));
+        }
+        return;
+      }
+      // Rückkehr von der Bezahlseite: das eben erhaltene Token kann zu diesen
+      // Einstellungen gehören, auch wenn sie beim Abholen noch nicht standen.
+      const fresh = returned.current;
+      if (fresh && (await unlock(fresh.token, config))) {
+        rememberToken(config, fresh.token);
+        rememberPayment(config, fresh.paymentId);
+        if (!cancelled) {
+          setUnlocked(true);
+          setPaymentId(fresh.paymentId);
+        }
+        return;
+      }
+      if (!cancelled) {
+        setUnlocked(false);
+        setPaymentId(undefined);
+      }
     })();
     return () => {
       cancelled = true;
@@ -122,18 +164,23 @@ export function usePurchase({ product, returnPath, config }: PurchaseOptions): P
   }, [config, note]);
 
   const buy = useCallback(
-    async (purpose: string): Promise<void> => {
+    async (purpose: string, consent: boolean): Promise<void> => {
+      if (!consent) {
+        setNote(t('payment.consentRequired'));
+        return;
+      }
       setBusy(true);
       setNote('');
       try {
-        const { paymentId, url } = await startCheckout({
+        const started = await startCheckout({
           config,
           purpose,
           product,
           returnPath,
+          consent,
         });
-        rememberPending(paymentId, config);
-        window.location.href = url;
+        rememberPending(started.paymentId, config);
+        window.location.href = started.url;
       } catch (cause) {
         setNote(cause instanceof Error ? cause.message : t('generator.common.error'));
         setBusy(false);
@@ -148,6 +195,7 @@ export function usePurchase({ product, returnPath, config }: PurchaseOptions): P
     unlocked,
     note,
     busy,
+    paymentId,
     buy,
   };
 }

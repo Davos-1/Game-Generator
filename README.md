@@ -37,7 +37,7 @@ pnpm install
 - `apps/worker` – Cloudflare Worker für die Zahlung (Payrexx); standardmässig abgeschaltet, siehe [`docs/PAYMENT.md`](docs/PAYMENT.md)
 - `.github/workflows` – CI (Lint, Format, Typecheck, Test, Build)
 - `wrangler.jsonc` – Cloudflare-Konfiguration für das Deployment als Worker mit statischen Assets
-- `docs` – Anleitungen: Deployment, Zahlung, OG-Bilder und die Checkliste für den Testlauf vor dem Launch
+- `docs` – Anleitungen: Deployment, Zahlung, OG-Bilder, Asset-Lizenzen und die Checkliste für den Testlauf vor dem Launch
 
 ## Sprache
 

@@ -203,7 +203,17 @@
     "unlockedBooklet": "Dieses Heft ist freigeschaltet.",
     "done": "Zahlung bestätigt. Das PDF ist freigeschaltet.",
     "pending": "Die Zahlung ist noch nicht bestätigt. Lade die Seite in einer Minute neu.",
-    "cancelled": "Die Zahlung wurde abgebrochen. Deine Einstellungen bleiben gespeichert."
+    "cancelled": "Die Zahlung wurde abgebrochen. Deine Einstellungen bleiben gespeichert.",
+    "consentLabel": "Ich verlange die sofortige Bereitstellung des PDF und weiss, dass mein Widerrufsrecht damit erlischt.",
+    "consentHint": "Vor dem Kauf siehst du die vollständige Vorschau. Einzelheiten in den AGB, Ziffer 8.",
+    "consentRequired": "Bitte bestätige zuerst die sofortige Bereitstellung.",
+    "consentLink": "AGB, Ziffer 8",
+    "restoreTitle": "Zugang sichern",
+    "restoreHint": "Speichere diesen Link. Damit schaltest du dasselbe PDF während 30 Tagen auch auf einem anderen Gerät wieder frei.",
+    "restoreCopy": "Link kopieren",
+    "restoreCopied": "Link kopiert",
+    "restoreTooLong": "Dieses Heft ist für einen Link zu umfangreich. Lade das PDF jetzt herunter; auf diesem Gerät bleibt es freigeschaltet.",
+    "restoreNumber": "Kaufnummer"
   },
   "example": {
     "subtitle": "Gratis-Beispiel von raetselheft.ch",

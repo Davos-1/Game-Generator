@@ -58,6 +58,11 @@ export interface CheckoutOptions {
   product: Product;
   /** Seite, auf die nach der Zahlung zurückgesprungen wird, z. B. «/sudoku». */
   returnPath: string;
+  /**
+   * Zustimmung zur sofortigen Bereitstellung (AGB Ziffer 8). Der Worker
+   * verweigert den Kauf ohne sie und hält den Zeitpunkt fest.
+   */
+  consent: boolean;
 }
 
 /** Startet den Kauf und liefert die Adresse der Bezahlseite. */
@@ -96,6 +101,7 @@ export async function unlock(token: string, config: string): Promise<boolean> {
 }
 
 const TOKEN_KEY = 'raetselheft:tokens';
+const PAYMENT_KEY = 'raetselheft:zahlungen';
 
 /** Freigeschaltete Käufe: Konfiguration als Schlüssel, Token als Wert. */
 function readTokens(): Record<string, string> {
@@ -118,6 +124,43 @@ export function rememberToken(config: string, token: string): void {
 }
 
 export const tokenFor = (config: string): string | undefined => readTokens()[config];
+
+/**
+ * Zahlungs-Id je Konfiguration. Sie ist der Schlüssel zum
+ * Wiederherstellungs-Link: mit ihr holt sich ein anderes Gerät dasselbe
+ * Freischalt-Token beim Worker, solange der Zahlungsdatensatz dort liegt.
+ */
+function readPayments(): Record<string, string> {
+  try {
+    const raw = window.localStorage.getItem(PAYMENT_KEY);
+    return raw ? (JSON.parse(raw) as Record<string, string>) : {};
+  } catch {
+    return {};
+  }
+}
+
+export function rememberPayment(config: string, paymentId: string): void {
+  try {
+    window.localStorage.setItem(
+      PAYMENT_KEY,
+      JSON.stringify({ ...readPayments(), [config]: paymentId }),
+    );
+  } catch {
+    // Ohne Speicher bleibt der Link auf diese Sitzung beschränkt.
+  }
+}
+
+export const paymentFor = (config: string): string | undefined => readPayments()[config];
+
+/**
+ * Link, der einen bezahlten Kauf auf einem anderen Gerät wieder freischaltet.
+ * Er trägt die Einstellungen (damit dasselbe Rätsel entsteht) und die
+ * Zahlungs-Id (damit der Worker das Token erneut ausstellt).
+ */
+export function restoreUrl(paymentId: string, query: string): string {
+  const separator = query.length > 0 ? '&' : '';
+  return `${window.location.origin}${window.location.pathname}?${query}${separator}zahlung=${encodeURIComponent(paymentId)}&status=ok`;
+}
 
 /** Preis als Text, z. B. «CHF 5.00». */
 export const formatPrice = (info: PaymentInfo, product: Product): string =>

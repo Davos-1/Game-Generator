@@ -4,6 +4,7 @@ import { buildPages, buildPdf, buildPuzzle, pageToSvgString } from '../lib/rende
 import type { PuzzleItem } from '@raetselheft/render';
 import { puzzleString } from '../lib/payment';
 import { usePurchase } from '../lib/purchase';
+import { ConsentBox, RestoreLink } from './PurchaseExtras';
 import CrosswordTopicPicker from './CrosswordTopicPicker';
 import {
   configFromParams,
@@ -71,6 +72,8 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
   const [tab, setTab] = useState<'puzzle' | 'solution'>('puzzle');
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
+  // Zustimmung zur sofortigen Bereitstellung; ohne sie kein Kauf.
+  const [consent, setConsent] = useState(false);
   const itemRef = useRef<PuzzleItem | undefined>(undefined);
   const purchase = usePurchase({
     product: 'single',
@@ -183,8 +186,8 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
 
   const buy = useCallback(async (): Promise<void> => {
     const title = config.title.trim() || t(`generator.${config.kind}.defaultTitle`);
-    await purchase.buy(`${t(`booklet.kinds.${config.kind}`)}: ${title}`);
-  }, [config.kind, config.title, purchase]);
+    await purchase.buy(`${t(`booklet.kinds.${config.kind}`)}: ${title}`, consent);
+  }, [config.kind, config.title, consent, purchase]);
 
   const share = useCallback(async (): Promise<void> => {
     try {
@@ -288,13 +291,20 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
                 {busy ? t('generator.common.downloading') : t('payment.downloadClean')}
               </button>
               <p className="text-sm text-emerald-700">{t('payment.unlockedSingle')}</p>
+              {purchase.paymentId && (
+                <RestoreLink
+                  paymentId={purchase.paymentId}
+                  query={configToParams(config).toString()}
+                />
+              )}
             </>
           ) : (
             <>
+              {purchase.enabled && <ConsentBox checked={consent} onChange={setConsent} />}
               <button
                 type="button"
                 className={primaryButton}
-                disabled={!purchase.enabled || status !== 'ready' || purchase.busy}
+                disabled={!purchase.enabled || !consent || status !== 'ready' || purchase.busy}
                 onClick={() => void buy()}
               >
                 {purchase.enabled
