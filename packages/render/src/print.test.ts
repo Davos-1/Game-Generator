@@ -126,6 +126,8 @@ describe('Druckbarkeit', () => {
           points.push([el.x, el.y], [el.x + el.width, el.y + el.height]);
         } else if (el.type === 'circle') {
           points.push([el.cx - el.r, el.cy - el.r], [el.cx + el.r, el.cy + el.r]);
+        } else if (el.type === 'image') {
+          points.push([el.x, el.y], [el.x + el.width, el.y + el.height]);
         } else {
           for (const match of el.d.matchAll(/(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)/g)) {
             points.push([Number(match[1]), Number(match[2])]);

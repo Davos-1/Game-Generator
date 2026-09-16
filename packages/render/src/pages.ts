@@ -8,6 +8,7 @@ import type {
 } from '@raetselheft/engine';
 import type { TextMeasurer } from './measure';
 import { grid as gridBoxes, inset } from './layout/box';
+import type { PrintMode } from './artwork';
 import { coverElements, COVER_BOX, type CoverInfo } from './layout/cover';
 import { dotToDotElements } from './layout/dotToDot';
 import { crosswordElements } from './layout/crossword';
@@ -75,13 +76,15 @@ export interface CoverPageOptions extends CoverInfo {
   theme?: Theme;
   /** Diagonal wiederholter Text über der Seite (Premium-Vorschau). */
   watermark?: string;
+  /** Farbig mit Illustrationen oder sparsam mit Vektor-Icons. */
+  printMode?: PrintMode;
 }
 
 /** Deckblatt eines Rätselhefts. */
 export function coverPage(measurer: TextMeasurer, options: CoverPageOptions): PageLayout {
   const theme = options.theme ?? NEUTRAL_THEME;
   const box = COVER_BOX(MARGIN);
-  const elements = coverElements(options, box, measurer, theme);
+  const elements = coverElements(options, box, measurer, theme, options.printMode ?? 'sparsam');
   if (options.watermark) {
     elements.push(...watermarkElements(measurer, options.watermark, box, theme.colors.muted));
   }

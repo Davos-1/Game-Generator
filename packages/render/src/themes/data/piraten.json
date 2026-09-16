@@ -18,5 +18,12 @@
     "mazeStart": "ship",
     "mazeEnd": "chest"
   },
-  "sudokuIcons": ["ship", "chest", "anchor", "compass", "flag", "sparkle"]
+  "sudokuIcons": ["ship", "chest", "anchor", "compass", "flag", "sparkle"],
+  "illustrations": {
+    "cover": "captain",
+    "corner": "compass",
+    "mazeStart": "map",
+    "mazeEnd": "chest",
+    "sudoku": ["flag", "chest", "parrot", "compass", "wheel", "bottle"]
+  }
 }

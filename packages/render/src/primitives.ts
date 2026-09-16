@@ -67,6 +67,25 @@ export interface PathElement extends ShapeStyle {
   d: string;
 }
 
+/**
+ * Vollfarbiges Rasterbild. Das Element trägt nur einen Schlüssel der Form
+ * «<theme>/<name>», nicht die Bilddaten — die Layout-Schicht bleibt damit
+ * reine Geometrie und in SVG wie PDF identisch. Wer rendert, löst den
+ * Schlüssel über ein Verzeichnis auf (`renderPdf`, `pageToSvg`).
+ *
+ * Bewusst ohne Eckenradius: pdf-lib kann Bilder nicht beschneiden. Wo ein
+ * Motiv gerahmt wirken soll, zeichnet die Layout-Schicht ein `rect` darüber.
+ */
+export interface ImageElement {
+  type: 'image';
+  image: string;
+  x: Mm;
+  y: Mm;
+  width: Mm;
+  height: Mm;
+  opacity?: number;
+}
+
 export interface TextElement {
   type: 'text';
   x: Mm;
@@ -83,7 +102,13 @@ export interface TextElement {
 }
 
 export type Element =
-  RectElement | LineElement | PolylineElement | CircleElement | PathElement | TextElement;
+  | RectElement
+  | LineElement
+  | PolylineElement
+  | CircleElement
+  | PathElement
+  | ImageElement
+  | TextElement;
 
 export interface PageLayout {
   width: Mm;

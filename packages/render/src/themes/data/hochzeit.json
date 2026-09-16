@@ -18,5 +18,12 @@
     "mazeStart": "heart",
     "mazeEnd": "ring"
   },
-  "sudokuIcons": ["ring", "heart", "flower", "sparkle", "leaf", "sun"]
+  "sudokuIcons": ["ring", "heart", "flower", "sparkle", "leaf", "sun"],
+  "illustrations": {
+    "cover": "eleganz",
+    "corner": "deko",
+    "mazeStart": "verlobung",
+    "mazeEnd": "ringwechsel",
+    "sudoku": ["eleganz", "torte", "ringwechsel", "brautpaar", "deko", "start"]
+  }
 }

@@ -61,6 +61,10 @@ mindestens 1000 px, geliefert sind 400.
 
 ## Punkte, die mit der Design-Seite zu klären sind
 
+- **Deckblatt-Motive in mindestens 1000 px.** Solange sie fehlen, steht das
+  Motiv auf 60 statt 85 mm.
+- **Freigestellte Motive** wären weiterhin willkommen, sind mit der Rahmung
+  aber nicht mehr zwingend.
 - **Strichstärken sind widersprüchlich.** Die Übergabe schreibt im Fliesstext
   «äusserer Rahmen 0.8 mm», in der Masstabelle «0.8 pt» — das ist fast ein
   Faktor drei. Die Mockups zeigen `border:1.6px` bei 2 px pro Millimeter, also
@@ -71,9 +75,9 @@ mindestens 1000 px, geliefert sind 400.
   und das Kreuzworträtsel bekommt absichtlich eine ganze Lösungsseite, damit
   die Gitter deckungsgleich liegen. Ein hartes 2-mal-2 wäre ein Rückschritt.
 - **Tintenverbrauch.** `primitives.ts` hält als Grundsatz fest:
-  «tintenfreundlich: kein flächiger Hintergrund». 62 vollflächige Farbbilder
-  kehren das um. Die Übergabe hält einen Sparmodus für sinnvoll, entwirft ihn
-  aber nicht. Das ist ein Produktentscheid, kein Layoutdetail.
+  «tintenfreundlich: kein flächiger Hintergrund». Vollflächige Farbbilder
+  kehren das um. Gelöst über den Druckmodus (siehe oben); die Voreinstellung
+  «farbig» ist ein Produktentscheid, der sich jederzeit umdrehen lässt.
 - **Drei Rätseltypen ohne Vorgabe.** Kreuzworträtsel, Punkte-zu-Punkte und
   Nonogramm kommen in der Übergabe nicht vor. Stufe 1 hat sie sinngemäss
   mitgenommen; für eigene Motive bräuchte es Vorgaben.

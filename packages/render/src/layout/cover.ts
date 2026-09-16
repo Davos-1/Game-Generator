@@ -1,3 +1,4 @@
+import { artworkFor, type PrintMode } from '../artwork';
 import { iconPath } from '../icons';
 import type { TextMeasurer } from '../measure';
 import { fitText, type ContentBox } from '../page';
@@ -26,6 +27,7 @@ export function coverElements(
   box: ContentBox,
   measurer: TextMeasurer,
   theme: Theme = NEUTRAL_THEME,
+  mode: PrintMode = 'sparsam',
 ): Element[] {
   const colors = theme.colors;
   const elements: Element[] = [];
@@ -56,9 +58,28 @@ export function coverElements(
   );
 
   // Motiv oben, bei neutralem Design ein schlichtes Ornament.
-  const motifSize = 52;
+  const artwork = artworkFor(theme, 'cover', mode);
+  // Die gelieferten Bilder haben 400 px Kantenlänge. Auf 85 mm wären das rund
+  // 120 dpi, sichtbar zu wenig fürs Papier; 60 mm ergeben etwa 170 dpi. Sobald
+  // höher aufgelöste Motive da sind, darf der Wert wieder steigen.
+  const motifSize = artwork ? 60 : 52;
   const motifY = box.y + 46;
-  if (theme.id === NEUTRAL_THEME.id) {
+  if (artwork) {
+    elements.push(
+      {
+        type: 'image',
+        image: artwork,
+        x: centerX - motifSize / 2,
+        y: motifY - motifSize / 2,
+        width: motifSize,
+        height: motifSize,
+      },
+      // Die Bilder sind randlos durchgefärbt und haben keine Transparenz. Ein
+      // Doppelrahmen fasst sie ein, damit der Hintergrund gewollt statt
+      // versehentlich wirkt (siehe docs/design/UMSETZUNG.md).
+      ...frameAround(centerX, motifY, motifSize, colors),
+    );
+  } else if (theme.id === NEUTRAL_THEME.id) {
     elements.push({
       type: 'circle',
       cx: centerX,
@@ -159,6 +180,38 @@ export function coverElements(
     }
   }
   return elements;
+}
+
+/**
+ * Fassung um ein Rasterbild: aussen eine kräftige Linie in `decor`, innen eine
+ * feine helle. Beide liegen auf dem Bildrand, fressen also keinen Platz.
+ */
+export function frameAround(
+  cx: number,
+  cy: number,
+  size: number,
+  colors: Theme['colors'],
+): Element[] {
+  const half = size / 2;
+  return [
+    {
+      type: 'rect',
+      x: cx - half,
+      y: cy - half,
+      width: size,
+      height: size,
+      stroke: { color: colors.decor, width: 0.8 },
+    },
+    {
+      type: 'rect',
+      x: cx - half + 1,
+      y: cy - half + 1,
+      width: size - 2,
+      height: size - 2,
+      stroke: { color: '#ffffff', width: 0.5 },
+      opacity: 0.8,
+    },
+  ];
 }
 
 /** Höhe des Deckblatt-Inhalts; Deckblätter nutzen die ganze Seite. */

@@ -18,5 +18,12 @@
     "mazeStart": "cloud",
     "mazeEnd": "rainbow"
   },
-  "sudokuIcons": ["unicorn", "rainbow", "cloud", "sparkle", "heart", "flower"]
+  "sudokuIcons": ["unicorn", "rainbow", "cloud", "sparkle", "heart", "flower"],
+  "illustrations": {
+    "cover": "unicorn",
+    "corner": "horns",
+    "mazeStart": "foal",
+    "mazeEnd": "chest",
+    "sudoku": ["unicorn", "skywheel", "chest", "elixir", "tiara", "compass"]
+  }
 }

@@ -31,8 +31,30 @@ export interface Theme {
   };
   /** Symbole für das Kinder-Sudoku (4×4 und 6×6); mindestens sechs. */
   sudokuIcons: IconName[];
+  /**
+   * Vollfarbige Illustrationen als Gegenstück zu `icons` und `sudokuIcons`.
+   * Beide Sätze stehen bewusst nebeneinander: der Druckmodus «farbig» nutzt
+   * die Bilder, «sparsam» bleibt bei den Vektor-Icons (PLAN.md 6.1). Die
+   * Namen beziehen sich auf Dateien in `assets/themes-optimised/*<Theme>/`.
+   * Ohne Angabe kennt ein Theme nur die Vektor-Variante.
+   */
+  illustrations?: Illustrations;
   /** Wortliste für das Wortsuchrätsel, mindestens 30 Wörter. */
   words: string[];
+}
+
+/** Dateinamen der Illustrationen eines Themes, ohne Endung und Ordner. */
+export interface Illustrations {
+  /** Grosses Motiv fürs Deckblatt. */
+  cover: string;
+  /** Ecken-Deko auf jeder Seite. */
+  corner: string;
+  /** Markierung beim Labyrinth-Eingang. */
+  mazeStart: string;
+  /** Markierung beim Labyrinth-Ausgang. */
+  mazeEnd: string;
+  /** Symbole fürs Kinder-Sudoku; genau sechs, klar unterscheidbar. */
+  sudoku: string[];
 }
 
 export type ThemeInput = Omit<Theme, 'words'>;

@@ -58,7 +58,7 @@ function puzzleSvg(themeId: string, seed: string, kind: 'wordsearch' | 'maze' | 
   // Das Labyrinth trägt Marken ausserhalb des Gitters, daher mehr Rand.
   const viewBox = kind === 'maze' ? '-10 -14 120 128' : '-4 -6 108 112';
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}">${elements
-    .map(elementToSvg)
+    .map((el) => elementToSvg(el))
     .join('')}</svg>`;
 }
 
