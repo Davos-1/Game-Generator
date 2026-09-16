@@ -99,7 +99,7 @@ export default function BookletBuilder(): React.ReactElement {
         const layout = await buildBookletPages(config, entries, {
           watermark: t('payment.watermark'),
         });
-        const svg = await Promise.all(layout.map((page) => pageToSvgString(page)));
+        const svg = await Promise.all(layout.map((page) => pageToSvgString(page, config.theme)));
         if (cancelled) return;
         layoutRef.current = layout;
         setPages(svg);
@@ -188,6 +188,30 @@ export default function BookletBuilder(): React.ReactElement {
                     style={{ backgroundColor: choice.color }}
                   />
                   {choice.name}
+                </button>
+              ))}
+            </div>
+          </Field>
+          <Field label={t('booklet.printMode')} hint={t('booklet.printModeHint')}>
+            <div className="flex flex-wrap gap-2">
+              {(
+                [
+                  ['farbig', t('booklet.printModeColour')],
+                  ['sparsam', t('booklet.printModeThrifty')],
+                ] as const
+              ).map(([mode, label]) => (
+                <button
+                  key={mode}
+                  type="button"
+                  aria-pressed={config.printMode === mode}
+                  className={`rounded-full border px-3 py-2 text-sm ${
+                    config.printMode === mode
+                      ? 'border-accent-deep bg-paper text-ink'
+                      : 'border-line-strong text-muted hover:bg-paper'
+                  }`}
+                  onClick={() => update({ printMode: mode })}
+                >
+                  {label}
                 </button>
               ))}
             </div>

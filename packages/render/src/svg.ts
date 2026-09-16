@@ -16,6 +16,12 @@ export interface SvgOptions {
   fontUrls?: Partial<Record<'display' | 'body' | 'bodyBold', string>>;
   /** Zusätzliche Attribute am <svg>-Element, z. B. class oder role. */
   attributes?: Record<string, string>;
+  /**
+   * Quellen der Rasterbilder nach Schlüssel («<theme>/<name>»), passend zu den
+   * `ImageElement`-Primitiven. Data-URL oder Pfad. Ohne Eintrag bleibt die
+   * Fläche leer, statt dass ein kaputtes Bild erscheint.
+   */
+  imageUrls?: Record<string, string>;
 }
 
 const esc = (s: string): string =>
@@ -38,8 +44,14 @@ function shapeAttrs(el: { fill?: string; stroke?: Stroke; opacity?: number }): s
   return parts.join(' ');
 }
 
-export function elementToSvg(el: Element): string {
+export function elementToSvg(el: Element, imageUrls: Record<string, string> = {}): string {
   switch (el.type) {
+    case 'image': {
+      const href = imageUrls[el.image];
+      if (!href) return '';
+      const opacity = el.opacity !== undefined ? ` opacity="${el.opacity}"` : '';
+      return `<image href="${esc(href)}" x="${n(el.x)}" y="${n(el.y)}" width="${n(el.width)}" height="${n(el.height)}" preserveAspectRatio="xMidYMid slice"${opacity}/>`;
+    }
     case 'rect': {
       const rx = el.rx ? ` rx="${n(el.rx)}"` : '';
       return `<rect x="${n(el.x)}" y="${n(el.y)}" width="${n(el.width)}" height="${n(el.height)}"${rx} ${shapeAttrs(el)}/>`;
@@ -84,6 +96,6 @@ export function pageToSvg(page: PageLayout, options: SvgOptions = {}): string {
     })
     .join('');
   const style = `<style>${faces}text{font-kerning:none;font-variant-ligatures:none;white-space:pre;}</style>`;
-  const body = page.elements.map(elementToSvg).join('');
+  const body = page.elements.map((el) => elementToSvg(el, options.imageUrls ?? {})).join('');
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${n(page.width)} ${n(page.height)}" width="${n(page.width)}mm" height="${n(page.height)}mm"${extra}>${style}<rect width="${n(page.width)}" height="${n(page.height)}" fill="#ffffff"/>${body}</svg>`;
 }

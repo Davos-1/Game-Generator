@@ -176,3 +176,21 @@ Symbole aus fremden Icon-Sets. Die Symbole kommen aus
   und `theme.sudokuIcons` unverändert in Gebrauch. Details und die
   vollständige Befundliste stehen in `docs/design/themes-handoff.md` und
   `docs/design/UMSETZUNG.md`.
+- **Stufe 2 der Themen-Designs begonnen, Bereich Session B mit einem Ausläufer
+  nach A.** Neu `packages/render/src/artwork.ts` (Druckmodus «farbig» /
+  «sparsam»), ein `ImageElement` in `primitives.ts` samt Zweig in `pdf.ts` und
+  `svg.ts`, und `theme.illustrations` als zweiter Icon-Satz neben `icons` /
+  `sudokuIcons`. Die Vektor-Icons bleiben unverändert in Gebrauch und sind der
+  Rückfallpfad: «sparsam» braucht keine Assets. Das Deckblatt zeichnet im
+  farbigen Modus ein gerahmtes Rasterbild, alle übrigen Rollen noch nicht.
+  Die ausgelieferten Bilder erzeugt `scripts/optimise-assets.ts` aus den
+  Originalen (1.5 MB statt 21 MB); `assets/themes-optimised/` ist eingecheckt,
+  damit der Deploy kein `sharp` braucht.
+  **Berührt euren Bereich**: `apps/web/src/lib/render.ts` lädt die Bilder per
+  `import.meta.glob` und reicht sie an `pageToSvg` und `renderPdf` weiter,
+  `bookletConfig.ts` führt das neue Feld `printMode` (kompakt `pm`, fehlt
+  solange «farbig» gilt), und `BookletBuilder.tsx` hat einen Schalter dafür.
+  Ohne diese Kette bliebe die Arbeit unsichtbar. Bei Bedarf gerne anders
+  aufhängen. `pageToSvgString(page, themeId)` nimmt neu die Theme-Id, damit die
+  Vorschau die Bild-URLs kennt — beim Einzelgenerator noch nicht durchgereicht,
+  weil dort das Deckblatt gar nicht vorkommt.

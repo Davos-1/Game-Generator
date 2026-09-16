@@ -1,3 +1,4 @@
+import type { PrintMode } from '@raetselheft/render/artwork';
 import { NEUTRAL_THEME, themeById } from '@raetselheft/render/themes';
 import {
   defaultSymbols,
@@ -40,6 +41,11 @@ export interface BookletEntry {
 
 export interface BookletConfig {
   theme: string;
+  /**
+   * «farbig» druckt die Themen-Illustrationen, «sparsam» bleibt bei den
+   * Vektor-Icons und braucht deutlich weniger Tinte.
+   */
+  printMode: PrintMode;
   title: string;
   name: string;
   occasion: string;
@@ -73,6 +79,7 @@ export function defaultBooklet(): BookletConfig {
   const theme = 'piraten';
   return {
     theme,
+    printMode: 'farbig',
     title: 'Rätselheft',
     name: '',
     occasion: '',
@@ -104,6 +111,8 @@ interface CompactEntry {
 
 interface CompactBooklet {
   th: string;
+  /** Druckmodus; fehlt, solange «farbig» gilt. */
+  pm?: PrintMode;
   t: string;
   n?: string;
   o?: string;
@@ -115,6 +124,7 @@ interface CompactBooklet {
 export function toCompact(config: BookletConfig): CompactBooklet {
   const compact: CompactBooklet = {
     th: config.theme,
+    ...(config.printMode === 'sparsam' ? { pm: 'sparsam' as const } : {}),
     t: config.title,
     e: config.entries.map((entry) => {
       const item: CompactEntry = { k: entry.kind, s: entry.seed };
@@ -175,6 +185,7 @@ export function fromCompact(input: unknown): BookletConfig {
   const entries = Array.isArray(compact.e) ? compact.e.slice(0, MAX_ENTRIES) : [];
   return {
     theme,
+    printMode: compact.pm === 'sparsam' ? 'sparsam' : 'farbig',
     title: typeof compact.t === 'string' ? compact.t : base.title,
     name: typeof compact.n === 'string' ? compact.n : '',
     occasion: typeof compact.o === 'string' ? compact.o : '',

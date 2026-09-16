@@ -18,5 +18,12 @@
     "mazeStart": "palm",
     "mazeEnd": "sun"
   },
-  "sudokuIcons": ["leaf", "palm", "sun", "flower", "sparkle", "cloud"]
+  "sudokuIcons": ["leaf", "palm", "sun", "flower", "sparkle", "cloud"],
+  "illustrations": {
+    "cover": "temple",
+    "corner": "orchid",
+    "mazeStart": "explorer",
+    "mazeEnd": "temple",
+    "sudoku": ["jaguar", "toucan", "monkey", "snake", "frog", "mask"]
+  }
 }

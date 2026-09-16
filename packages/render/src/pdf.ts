@@ -1,5 +1,5 @@
 import fontkit from '@pdf-lib/fontkit';
-import { PDFDocument, degrees, rgb, type PDFFont, type PDFPage } from 'pdf-lib';
+import { PDFDocument, degrees, rgb, type PDFFont, type PDFImage, type PDFPage } from 'pdf-lib';
 import type { FontSet } from './fonts';
 import {
   PT_PER_MM,
@@ -9,6 +9,12 @@ import {
   type RectElement,
   type Stroke,
 } from './primitives';
+
+/**
+ * Rohdaten der Bilder nach Schlüssel («<theme>/<name>»), wie sie die
+ * `ImageElement`-Primitive nennen. Nur PNG.
+ */
+export type ImageSet = Record<string, Uint8Array>;
 
 export interface PdfMetadata {
   title?: string;
@@ -68,6 +74,8 @@ interface DrawContext {
   /** Seitenhöhe in mm, für die Umrechnung von y (oben) nach PDF (unten). */
   height: number;
   fonts: Record<FontKey, PDFFont>;
+  /** Eingebettete Bilder nach Schlüssel; leer, wenn keine übergeben wurden. */
+  images: Map<string, PDFImage>;
 }
 
 const strokeOptions = (
@@ -97,6 +105,20 @@ function drawPath(
 
 function drawElement(ctx: DrawContext, el: Element): void {
   switch (el.type) {
+    case 'image': {
+      const image = ctx.images.get(el.image);
+      // Fehlt ein Bild, bleibt die Fläche leer statt dass der Export scheitert:
+      // im sparsamen Druckmodus werden gar keine Bilder mitgegeben.
+      if (!image) return;
+      ctx.page.drawImage(image, {
+        x: el.x * PT_PER_MM,
+        y: (ctx.height - el.y - el.height) * PT_PER_MM,
+        width: el.width * PT_PER_MM,
+        height: el.height * PT_PER_MM,
+        ...(el.opacity !== undefined ? { opacity: el.opacity } : {}),
+      });
+      return;
+    }
     case 'rect':
       if (el.rx) {
         drawPath(ctx, roundedRectPath(el), el);
@@ -183,6 +205,7 @@ export async function renderPdf(
   pages: readonly PageLayout[],
   fonts: FontSet,
   meta: PdfMetadata = {},
+  images: ImageSet = {},
 ): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   doc.registerFontkit(fontkit);
@@ -192,6 +215,13 @@ export async function renderPdf(
     bodyBold: await doc.embedFont(fonts.bodyBold, EMBED_OPTIONS),
   };
 
+  // Jedes Bild wird genau einmal eingebettet, auch wenn es auf mehreren
+  // Seiten steht — im Sudoku steht dasselbe Symbol bis zu sechsmal.
+  const embeddedImages = new Map<string, PDFImage>();
+  for (const [key, bytes] of Object.entries(images)) {
+    embeddedImages.set(key, await doc.embedPng(bytes));
+  }
+
   doc.setProducer('raetselheft.ch');
   doc.setCreator(meta.creator ?? 'raetselheft.ch');
   if (meta.title) doc.setTitle(meta.title);
@@ -200,7 +230,12 @@ export async function renderPdf(
 
   for (const layout of pages) {
     const page = doc.addPage([layout.width * PT_PER_MM, layout.height * PT_PER_MM]);
-    const ctx: DrawContext = { page, height: layout.height, fonts: embedded };
+    const ctx: DrawContext = {
+      page,
+      height: layout.height,
+      fonts: embedded,
+      images: embeddedImages,
+    };
     for (const el of layout.elements) drawElement(ctx, el);
   }
   return doc.save();

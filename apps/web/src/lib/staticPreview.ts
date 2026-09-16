@@ -109,7 +109,7 @@ export function previewSvg(kind: PuzzleKind, themeId: string, seed: string): str
   return [
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" role="img" class="h-auto w-full">`,
     `<style>${faces}text{font-kerning:none;font-variant-ligatures:none;}</style>`,
-    elements.map(elementToSvg).join(''),
+    elements.map((el) => elementToSvg(el)).join(''),
     '</svg>',
   ].join('');
 }

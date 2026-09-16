@@ -19,6 +19,58 @@ import { t } from '../i18n';
 
 export const FONT_URLS = { display: nunitoBold, body: interRegular, bodyBold: interSemiBold };
 
+/**
+ * Alle Themen-Illustrationen als URL, aufgeschlüsselt nach «<theme>/<name>» —
+ * genau die Schlüssel, die die ImageElement-Primitive nennen. Vite legt die
+ * Dateien als statische Assets ab und liefert hier nur die URL, geladen wird
+ * erst, wenn ein Theme sie wirklich braucht.
+ */
+const ARTWORK_URLS: Record<string, string> = Object.fromEntries(
+  Object.entries(
+    import.meta.glob<string>('../../../../packages/render/assets/themes-optimised/*/*.png', {
+      eager: true,
+      query: '?url',
+      import: 'default',
+    }),
+  ).map(([path, url]) => {
+    const parts = path.split('/');
+    const name = (parts.pop() ?? '').replace(/\.png$/, '');
+    return [`${parts.pop() ?? ''}/${name}`, url];
+  }),
+);
+
+const artworkBytes = new Map<string, Promise<Uint8Array>>();
+
+/** Lädt die Bilder eines Themes als Rohdaten fürs PDF; Ergebnis wird gemerkt. */
+async function loadArtwork(keys: readonly string[]): Promise<Record<string, Uint8Array>> {
+  const entries = await Promise.all(
+    keys.map(async (key) => {
+      const url = ARTWORK_URLS[key];
+      if (!url) return [key, undefined] as const;
+      let pending = artworkBytes.get(key);
+      if (!pending) {
+        pending = fetch(url).then(async (response) => {
+          if (!response.ok) throw new Error(`Bild ${key} konnte nicht geladen werden`);
+          return new Uint8Array(await response.arrayBuffer());
+        });
+        artworkBytes.set(key, pending);
+      }
+      return [key, await pending] as const;
+    }),
+  );
+  return Object.fromEntries(entries.filter((entry): entry is [string, Uint8Array] => !!entry[1]));
+}
+
+/** URLs der Bilder eines Themes für die SVG-Vorschau. */
+function artworkUrls(keys: readonly string[]): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const key of keys) {
+    const url = ARTWORK_URLS[key];
+    if (url) out[key] = url;
+  }
+  return out;
+}
+
 let measurerPromise: Promise<TextMeasurer> | undefined;
 let fontsPromise: Promise<FontSet> | undefined;
 
@@ -210,10 +262,14 @@ export async function buildPages(
   return { puzzle, solution: solution ?? puzzle };
 }
 
-export async function pageToSvgString(page: PageLayout): Promise<string> {
-  const { pageToSvg } = await import('@raetselheft/render/svg');
+export async function pageToSvgString(page: PageLayout, themeId?: string): Promise<string> {
+  const [{ pageToSvg }, { artworkKeys }] = await Promise.all([
+    import('@raetselheft/render/svg'),
+    import('@raetselheft/render/artwork'),
+  ]);
   return pageToSvg(page, {
     fontUrls: FONT_URLS,
+    imageUrls: artworkUrls(artworkKeys(themeById(themeId))),
     attributes: { 'aria-hidden': 'true', style: 'width:100%;height:auto;display:block' },
   });
 }
@@ -283,6 +339,7 @@ export async function buildBookletPages(
   ]);
   return bookletPages(entries, measurer, {
     theme: themeById(config.theme),
+    printMode: config.printMode,
     title: config.title.trim() || t('booklet.defaultTitle'),
     ...(config.name.trim() ? { name: config.name.trim() } : {}),
     ...(config.occasion.trim() ? { occasion: config.occasion.trim() } : {}),
@@ -299,13 +356,21 @@ export async function buildBookletPdf(
   config: BookletConfig,
   pages: readonly PageLayout[],
 ): Promise<Blob> {
-  const [{ renderPdf }, fonts] = await Promise.all([
+  const [{ renderPdf }, { artworkKeys }, fonts] = await Promise.all([
     import('@raetselheft/render/pdf'),
+    import('@raetselheft/render/artwork'),
     loadFonts(),
   ]);
-  const bytes = await renderPdf(pages, fonts, {
-    title: config.title.trim() || t('booklet.defaultTitle'),
-    subject: t('site.description'),
-  });
+  const images =
+    config.printMode === 'farbig' ? await loadArtwork(artworkKeys(themeById(config.theme))) : {};
+  const bytes = await renderPdf(
+    pages,
+    fonts,
+    {
+      title: config.title.trim() || t('booklet.defaultTitle'),
+      subject: t('site.description'),
+    },
+    images,
+  );
   return new Blob([bytes as BlobPart], { type: 'application/pdf' });
 }
