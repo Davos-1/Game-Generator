@@ -1,0 +1,45 @@
+{
+  "id": "einhorn",
+  "name": "Einhörner",
+  "colors": {
+    "ink": "#3f2d63",
+    "muted": "#7c6aa3",
+    "light": "#ece5f8",
+    "grid": "#b7a7dd",
+    "accent": "#db2777",
+    "solution": "#0891b2",
+    "watermark": "#b7a7dd",
+    "decor": "#8b5cf6"
+  },
+  "artStyle": "raster",
+  "assetDir": "assets/themes/einhorn",
+  "frameRadiusMm": 7,
+  "icons": {
+    "corner": "horns",
+    "cover": "unicorn",
+    "mazeStart": "foal",
+    "mazeEnd": "chest"
+  },
+  "sudokuIcons": [
+    "unicorn",
+    "skywheel",
+    "chest",
+    "elixir",
+    "tiara",
+    "compass"
+  ],
+  "availableIcons": [
+    "unicorn",
+    "foal",
+    "horns",
+    "banner",
+    "chest",
+    "map",
+    "spyglass",
+    "skywheel",
+    "compass",
+    "rainbowgun",
+    "elixir",
+    "tiara"
+  ]
+}

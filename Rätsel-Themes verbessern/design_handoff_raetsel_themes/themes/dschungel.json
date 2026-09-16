@@ -1,0 +1,47 @@
+{
+  "id": "dschungel",
+  "name": "Dschungel",
+  "colors": {
+    "ink": "#14432a",
+    "muted": "#5c7a63",
+    "light": "#dbe8dc",
+    "grid": "#94b79e",
+    "accent": "#15803d",
+    "solution": "#c2410c",
+    "watermark": "#94b79e",
+    "decor": "#a16207"
+  },
+  "artStyle": "raster",
+  "assetDir": "assets/themes/dschungel",
+  "frameRadiusMm": 3,
+  "icons": {
+    "corner": "orchid",
+    "cover": "temple",
+    "mazeStart": "explorer",
+    "mazeEnd": "temple"
+  },
+  "sudokuIcons": [
+    "jaguar",
+    "toucan",
+    "monkey",
+    "snake",
+    "frog",
+    "mask"
+  ],
+  "availableIcons": [
+    "jaguar",
+    "toucan",
+    "monkey",
+    "snake",
+    "frog",
+    "parrot",
+    "temple",
+    "mask",
+    "totem",
+    "explorer",
+    "orchid",
+    "canoe",
+    "waterfall",
+    "banana"
+  ]
+}

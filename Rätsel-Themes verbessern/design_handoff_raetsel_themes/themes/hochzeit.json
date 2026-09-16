@@ -1,0 +1,45 @@
+{
+  "id": "hochzeit",
+  "name": "Hochzeit",
+  "colors": {
+    "ink": "#38343a",
+    "muted": "#7a7480",
+    "light": "#efe9ea",
+    "grid": "#bfb6c2",
+    "accent": "#9f1239",
+    "solution": "#be123c",
+    "watermark": "#bfb6c2",
+    "decor": "#a1873f"
+  },
+  "artStyle": "raster",
+  "assetDir": "assets/themes/hochzeit",
+  "frameRadiusMm": 0,
+  "icons": {
+    "corner": "deko",
+    "cover": "eleganz",
+    "mazeStart": "verlobung",
+    "mazeEnd": "ringwechsel"
+  },
+  "sudokuIcons": [
+    "eleganz",
+    "torte",
+    "ringwechsel",
+    "brautpaar",
+    "deko",
+    "start"
+  ],
+  "availableIcons": [
+    "eleganz",
+    "boho",
+    "strand",
+    "tafel",
+    "brautpaar",
+    "gaeste",
+    "deko",
+    "ringwechsel",
+    "trauzeugen",
+    "torte",
+    "verlobung",
+    "start"
+  ]
+}

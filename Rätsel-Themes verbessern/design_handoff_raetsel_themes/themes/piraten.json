@@ -1,0 +1,45 @@
+{
+  "id": "piraten",
+  "name": "Piraten",
+  "colors": {
+    "ink": "#12304a",
+    "muted": "#5b7186",
+    "light": "#dce7ee",
+    "grid": "#8fabc0",
+    "accent": "#0e7490",
+    "solution": "#c2410c",
+    "watermark": "#8fabc0",
+    "decor": "#a16207"
+  },
+  "artStyle": "raster",
+  "assetDir": "assets/themes/piraten",
+  "frameRadiusMm": 4,
+  "icons": {
+    "corner": "compass",
+    "cover": "captain",
+    "mazeStart": "map",
+    "mazeEnd": "chest"
+  },
+  "sudokuIcons": [
+    "flag",
+    "chest",
+    "parrot",
+    "compass",
+    "wheel",
+    "bottle"
+  ],
+  "availableIcons": [
+    "flag",
+    "chest",
+    "captain",
+    "sabres",
+    "parrot",
+    "map",
+    "spyglass",
+    "wheel",
+    "compass",
+    "cannon",
+    "bottle",
+    "hook"
+  ]
+}

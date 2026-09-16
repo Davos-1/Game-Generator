@@ -1,0 +1,45 @@
+{
+  "id": "weihnachten",
+  "name": "Weihnachten",
+  "colors": {
+    "ink": "#1f3a2e",
+    "muted": "#5f7a6c",
+    "light": "#e2ece3",
+    "grid": "#9fbaa8",
+    "accent": "#b91c1c",
+    "solution": "#166534",
+    "watermark": "#9fbaa8",
+    "decor": "#b08400"
+  },
+  "artStyle": "raster",
+  "assetDir": "assets/themes/weihnachten",
+  "frameRadiusMm": 4,
+  "icons": {
+    "corner": "snowflake",
+    "cover": "tree",
+    "mazeStart": "snowman",
+    "mazeEnd": "gift"
+  },
+  "sudokuIcons": [
+    "tree",
+    "reindeer",
+    "snowflake",
+    "gift",
+    "bauble",
+    "gingerbread"
+  ],
+  "availableIcons": [
+    "tree",
+    "reindeer",
+    "snowflake",
+    "gift",
+    "hat",
+    "snowman",
+    "spices",
+    "wreath",
+    "gingerbread",
+    "bauble",
+    "candle",
+    "poinsettia"
+  ]
+}

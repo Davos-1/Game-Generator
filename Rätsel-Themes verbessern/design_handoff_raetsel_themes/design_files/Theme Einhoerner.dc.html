@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  body { margin:0; background:#f3f1ec; }
+  a { color:#db2777; } a:hover { color:#3f2d63; }
+</style>
+</helmet>
+<div style="font-family:Inter,sans-serif;color:#3f2d63;padding:40px;display:flex;flex-direction:column;gap:40px;max-width:1180px;margin:0 auto">
+
+  <header style="display:flex;flex-direction:column;gap:10px">
+    <div style="font:600 12px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#7c6aa3">Designsystem · Theme 3 von 5</div>
+    <h1 style="font:800 44px/1 Nunito,sans-serif;margin:0;color:#db2777">Einhörner</h1>
+    <p style="margin:0;max-width:62ch;font-size:15px;line-height:1.6;color:#7c6aa3;text-wrap:pretty">Violett als Tinte, Pink als Akzent, Flieder als Deko. Die Illustrationen sind vollfarbig und pastellig, Rahmen und Typografie bleiben in der Theme-Palette.</p>
+  </header>
+
+  <section style="display:flex;flex-direction:column;gap:14px">
+    <h2 style="font:700 13px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;margin:0;color:#7c6aa3">Palette</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px">
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;border-radius:3px;background:#3f2d63"></div><div style="font-size:11px;font-weight:600">ink</div><div style="font-size:11px;color:#7c6aa3;font-family:ui-monospace,monospace">#3F2D63</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;border-radius:3px;background:#7c6aa3"></div><div style="font-size:11px;font-weight:600">muted</div><div style="font-size:11px;color:#7c6aa3;font-family:ui-monospace,monospace">#7C6AA3</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;border-radius:3px;background:#ece5f8"></div><div style="font-size:11px;font-weight:600">light</div><div style="font-size:11px;color:#7c6aa3;font-family:ui-monospace,monospace">#ECE5F8</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;border-radius:3px;background:#b7a7dd"></div><div style="font-size:11px;font-weight:600">grid</div><div style="font-size:11px;color:#7c6aa3;font-family:ui-monospace,monospace">#B7A7DD</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;border-radius:3px;background:#db2777"></div><div style="font-size:11px;font-weight:600">accent</div><div style="font-size:11px;color:#7c6aa3;font-family:ui-monospace,monospace">#DB2777</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;border-radius:3px;background:#0891b2"></div><div style="font-size:11px;font-weight:600">solution</div><div style="font-size:11px;color:#7c6aa3;font-family:ui-monospace,monospace">#0891B2</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;border-radius:3px;background:#8b5cf6"></div><div style="font-size:11px;font-weight:600">decor</div><div style="font-size:11px;color:#7c6aa3;font-family:ui-monospace,monospace">#8B5CF6</div></div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:14px">
+    <h2 style="font:700 13px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;margin:0;color:#7c6aa3">Icons · 12 Illustrationen</h2>
+    <p style="margin:0;font-size:13px;color:#7c6aa3;max-width:70ch">Aus deiner Themen-Kollage freigeschnitten. Jedes Icon hat eine feste Rolle im Heft; die sechs Sudoku-Symbole sind untereinander klar unterscheidbar.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:12px">
+      <div style="background:#fff;border:1px solid #ece5f8;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/einhorn/unicorn.png" alt="Majestätisches Einhorn" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Majestätisches Einhorn</div>
+        <div style="font-size:9px;color:#7c6aa3;text-align:center;min-height:11px">Deckblatt · Sudoku</div>
+      </div>
+      <div style="background:#fff;border:1px solid #ece5f8;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/einhorn/foal.png" alt="Einhornfohlen" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Einhornfohlen</div>
+        <div style="font-size:9px;color:#7c6aa3;text-align:center;min-height:11px">Start</div>
+      </div>
+      <div style="background:#fff;border:1px solid #ece5f8;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/einhorn/horns.png" alt="Gekreuzte Hörner" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Gekreuzte Hörner</div>
+        <div style="font-size:9px;color:#7c6aa3;text-align:center;min-height:11px">Ecke</div>
+      </div>
+      <div style="background:#fff;border:1px solid #ece5f8;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/einhorn/banner.png" alt="Einhorn-Banner" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Einhorn-Banner</div>
+        <div style="font-size:9px;color:#7c6aa3;text-align:center;min-height:11px"></div>
+      </div>
+      <div style="background:#fff;border:1px solid #ece5f8;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/einhorn/chest.png" alt="Regenbogen-Schatztruhe" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Regenbogen-Schatztruhe</div>
+        <div style="font-size:9px;color:#7c6aa3;text-align:center;min-height:11px">Ziel · Sudoku</div>
+      </div>
+      <div style="background:#fff;border:1px solid #ece5f8;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/einhorn/map.png" alt="Regenbogen-Landkarte" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Regenbogen-Landkarte</div>
+        <div style="font-size:9px;color:#7c6aa3;text-align:center;min-height:11px"></div>
+      </div>
+      <div style="background:#fff;border:1px solid #ece5f8;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/einhorn/spyglass.png" alt="Magisches Fernrohr" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Magisches Fernrohr</div>
+        <div style="font-size:9px;color:#7c6aa3;text-align:center;min-height:11px"></div>
+      </div>
+      <div style="background:#fff;border:1px solid #ece5f8;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/einhorn/skywheel.png" alt="Himmelsrad" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Himmelsrad</div>
+        <div style="font-size:9px;color:#7c6aa3;text-align:center;min-height:11px">Sudoku</div>
+      </div>
+      <div style="background:#fff;border:1px solid #ece5f8;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/einhorn/compass.png" alt="Magischer Kompass" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Magischer Kompass</div>
+        <div style="font-size:9px;color:#7c6aa3;text-align:center;min-height:11px">Sudoku</div>
+      </div>
+      <div style="background:#fff;border:1px solid #ece5f8;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/einhorn/rainbowgun.png" alt="Regenbogen-Generator" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Regenbogen-Generator</div>
+        <div style="font-size:9px;color:#7c6aa3;text-align:center;min-height:11px"></div>
+      </div>
+      <div style="background:#fff;border:1px solid #ece5f8;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/einhorn/elixir.png" alt="Magisches Elixier" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Magisches Elixier</div>
+        <div style="font-size:9px;color:#7c6aa3;text-align:center;min-height:11px">Sudoku</div>
+      </div>
+      <div style="background:#fff;border:1px solid #ece5f8;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/einhorn/tiara.png" alt="Einhorn-Zubehör" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Einhorn-Zubehör</div>
+        <div style="font-size:9px;color:#7c6aa3;text-align:center;min-height:11px">Sudoku</div>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:14px">
+    <h2 style="font:700 13px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;margin:0;color:#7c6aa3">A4-Seiten · 12 mm Rand</h2>
+    <div style="display:flex;gap:24px;flex-wrap:wrap">
+
+      <figure style="margin:0;display:flex;flex-direction:column;gap:8px">
+        <div style="width:420px;height:594px;background:#fff;box-shadow:0 1px 12px rgba(0,0,0,.14);position:relative;box-sizing:border-box;padding:24px">
+          <div style="position:absolute;inset:24px;border:1.6px solid #db2777;border-radius:14px"></div>
+          <div style="position:absolute;inset:29px;border:0.6px solid #8b5cf6;border-radius:12px"></div>
+          <div style="position:absolute;inset:24px;display:flex;flex-direction:column;align-items:center;padding:44px 40px 40px;box-sizing:border-box">
+            <img src="assets/einhorn/unicorn.png" alt="" style="width:170px;aspect-ratio:1;object-fit:cover;border-radius:8px;border:1px solid #ece5f8;display:block" />
+            <div style="font:800 24px/1.15 Nunito,sans-serif;color:#db2777;margin-top:22px;text-align:center;white-space:nowrap">Einhorn-Rätselheft</div>
+            <div style="font:600 11px/1.2 Inter,sans-serif;color:#3f2d63;margin-top:14px;letter-spacing:.04em">Für Lina</div>
+            <div style="width:44px;height:1px;background:#8b5cf6;margin:14px 0"></div>
+            <div style="font-size:8.5px;color:#7c6aa3">Kindergeburtstag</div>
+            <div style="font-size:8.5px;color:#7c6aa3;margin-top:5px">8. Mai 2026</div>
+            <div style="margin-top:auto;font-size:8.5px;color:#3f2d63">Viel Spass beim Rätseln!</div>
+            <div style="display:flex;justify-content:space-between;align-items:flex-end;width:100%;margin-top:16px">
+              <img src="assets/einhorn/horns.png" alt="" style="width:26px;height:26px;object-fit:cover;border-radius:3px;display:block;opacity:.85" />
+              <img src="assets/einhorn/horns.png" alt="" style="width:26px;height:26px;object-fit:cover;border-radius:3px;display:block;opacity:.85" />
+            </div>
+          </div>
+        </div>
+        <figcaption style="font-size:12px;color:#7c6aa3">Deckblatt</figcaption>
+      </figure>
+
+      <figure style="margin:0;display:flex;flex-direction:column;gap:8px">
+        <div style="width:420px;height:594px;background:#fff;box-shadow:0 1px 12px rgba(0,0,0,.14);position:relative;box-sizing:border-box;padding:24px">
+          <img src="assets/einhorn/horns.png" alt="" style="position:absolute;right:24px;top:24px;width:26px;height:26px;object-fit:cover;border-radius:3px;display:block" />
+          <div style="font:800 15.5px/1.1 Nunito,sans-serif;color:#db2777">Kinder-Sudoku</div>
+          <div style="font-size:8px;color:#7c6aa3;margin-top:5px">Für Lina · Kindergeburtstag</div>
+          <div style="height:1px;background:#8b5cf6;margin:14px 0 0"></div>
+          <div style="margin:22px auto 0;width:330px;display:grid;grid-template-columns:repeat(6,1fr);border-top:1.6px solid #3f2d63;border-left:1.6px solid #3f2d63"><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/unicorn.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/skywheel.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/elixir.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/compass.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/elixir.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/compass.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/skywheel.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/chest.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/elixir.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/compass.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/unicorn.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/tiara.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/compass.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/skywheel.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/elixir.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/chest.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/compass.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/unicorn.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/unicorn.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/skywheel.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/elixir.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div><div style="aspect-ratio:1;border-right:1px solid #b7a7dd;border-bottom:1px solid #b7a7dd;display:flex;align-items:center;justify-content:center"><img src="assets/einhorn/tiara.png" alt="" style="width:76%;aspect-ratio:1;object-fit:cover;border-radius:3px;display:block" /></div></div>
+          <div style="margin-top:22px;font-size:8px;color:#7c6aa3;text-align:center">Jedes Symbol kommt in jeder Zeile, Spalte und in jedem 2×3-Feld genau einmal vor.</div>
+          <div style="position:absolute;left:24px;bottom:24px;display:flex;align-items:center;gap:6px">
+            <img src="assets/einhorn/horns.png" alt="" style="width:16px;height:16px;object-fit:cover;border-radius:2px;display:block;opacity:.5" />
+            <span style="font-size:5.6px;color:#7c6aa3">raetselheft.ch</span>
+          </div>
+          <div style="position:absolute;right:24px;bottom:24px;font-size:5.6px;color:#7c6aa3">EIN-9B4D</div>
+        </div>
+        <figcaption style="font-size:12px;color:#7c6aa3">Rätselseite</figcaption>
+      </figure>
+
+      <figure style="margin:0;display:flex;flex-direction:column;gap:8px">
+        <div style="width:420px;height:594px;background:#fff;box-shadow:0 1px 12px rgba(0,0,0,.14);position:relative;box-sizing:border-box;padding:24px">
+          <div style="font:800 15.5px/1.1 Nunito,sans-serif;color:#db2777">Lösungen</div>
+          <div style="height:1px;background:#8b5cf6;margin:14px 0"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <div style="border:0.6px solid #ece5f8;border-radius:3px;padding:8px">
+              <div style="font:600 5.6px/1 Inter,sans-serif;color:#7c6aa3;margin-bottom:6px">Seite 2 · Wortsuchrätsel</div>
+              <div style="aspect-ratio:1;background:repeating-linear-gradient(0deg,#b7a7dd 0 0.5px,transparent 0.5px 12.5px),repeating-linear-gradient(90deg,#b7a7dd 0 0.5px,transparent 0.5px 12.5px);position:relative">
+                <div style="position:absolute;left:8%;top:22%;width:60%;height:10%;background:#0891b2;opacity:.25;border-radius:99px"></div>
+                <div style="position:absolute;left:30%;top:40%;width:10%;height:50%;background:#0891b2;opacity:.25;border-radius:99px"></div>
+              </div>
+            </div>
+            <div style="border:0.6px solid #ece5f8;border-radius:3px;padding:8px">
+              <div style="font:600 5.6px/1 Inter,sans-serif;color:#7c6aa3;margin-bottom:6px">Seite 3 · Labyrinth</div>
+              <div style="aspect-ratio:1;border:0.8px solid #3f2d63;position:relative;overflow:hidden">
+                <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 14px,#3f2d63 14px 14.6px),repeating-linear-gradient(90deg,transparent 0 14px,#3f2d63 14px 14.6px);opacity:.5"></div>
+                <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,#fff 0 6px,transparent 6px 30px),repeating-linear-gradient(90deg,#fff 0 8px,transparent 8px 36px)"></div>
+                <div style="position:absolute;left:10%;top:12%;width:4%;height:52%;background:#0891b2;opacity:.45"></div>
+                <div style="position:absolute;left:10%;top:60%;width:56%;height:4%;background:#0891b2;opacity:.45"></div>
+                <div style="position:absolute;left:62%;top:60%;width:4%;height:30%;background:#0891b2;opacity:.45"></div>
+              </div>
+            </div>
+            <div style="border:0.6px solid #ece5f8;border-radius:3px;padding:8px">
+              <div style="font:600 5.6px/1 Inter,sans-serif;color:#7c6aa3;margin-bottom:6px">Seite 4 · Sudoku</div>
+              <div style="aspect-ratio:1;display:grid;grid-template-columns:repeat(3,1fr);border-top:1.2px solid #3f2d63;border-left:1.2px solid #3f2d63">
+                <div style="border-right:1.2px solid #3f2d63;border-bottom:1.2px solid #3f2d63;display:flex;align-items:center;justify-content:center;font:600 13px/1 Inter,sans-serif;color:#0891b2">5</div>
+                <div style="border-right:1.2px solid #3f2d63;border-bottom:1.2px solid #3f2d63;display:flex;align-items:center;justify-content:center;font:600 13px/1 Inter,sans-serif;color:#0891b2">2</div>
+                <div style="border-right:1.2px solid #3f2d63;border-bottom:1.2px solid #3f2d63;display:flex;align-items:center;justify-content:center;font:600 13px/1 Inter,sans-serif;color:#0891b2">8</div>
+                <div style="border-right:1.2px solid #3f2d63;border-bottom:1.2px solid #3f2d63;display:flex;align-items:center;justify-content:center;font:600 13px/1 Inter,sans-serif;color:#0891b2">1</div>
+                <div style="border-right:1.2px solid #3f2d63;border-bottom:1.2px solid #3f2d63;display:flex;align-items:center;justify-content:center;font:600 13px/1 Inter,sans-serif;color:#0891b2">7</div>
+                <div style="border-right:1.2px solid #3f2d63;border-bottom:1.2px solid #3f2d63;display:flex;align-items:center;justify-content:center;font:600 13px/1 Inter,sans-serif;color:#0891b2">4</div>
+                <div style="border-right:1.2px solid #3f2d63;border-bottom:1.2px solid #3f2d63;display:flex;align-items:center;justify-content:center;font:600 13px/1 Inter,sans-serif;color:#0891b2">9</div>
+                <div style="border-right:1.2px solid #3f2d63;border-bottom:1.2px solid #3f2d63;display:flex;align-items:center;justify-content:center;font:600 13px/1 Inter,sans-serif;color:#0891b2">6</div>
+                <div style="border-right:1.2px solid #3f2d63;border-bottom:1.2px solid #3f2d63;display:flex;align-items:center;justify-content:center;font:600 13px/1 Inter,sans-serif;color:#0891b2">3</div>
+              </div>
+            </div>
+            <div style="border:0.6px solid #ece5f8;border-radius:3px;padding:8px">
+              <div style="font:600 5.6px/1 Inter,sans-serif;color:#7c6aa3;margin-bottom:6px">Seite 5 · Kreuzworträtsel</div>
+              <div style="aspect-ratio:1;position:relative;background:repeating-linear-gradient(0deg,#b7a7dd 0 0.5px,transparent 0.5px 16.6px),repeating-linear-gradient(90deg,#b7a7dd 0 0.5px,transparent 0.5px 16.6px)">
+                <div style="position:absolute;left:0;top:0;width:33%;height:17%;background:#3f2d63"></div>
+                <div style="position:absolute;right:0;top:34%;width:17%;height:33%;background:#3f2d63"></div>
+                <div style="position:absolute;left:17%;bottom:0;width:33%;height:17%;background:#3f2d63"></div>
+                <div style="position:absolute;left:36%;top:20%;font:600 10px/1 Inter,sans-serif;color:#0891b2">WOLKE</div>
+                <div style="position:absolute;left:8%;top:52%;font:600 10px/1 Inter,sans-serif;color:#0891b2">MAGIE</div>
+              </div>
+            </div>
+          </div>
+          <div style="position:absolute;left:24px;bottom:24px;font-size:5.6px;color:#7c6aa3">raetselheft.ch</div>
+        </div>
+        <figcaption style="font-size:12px;color:#7c6aa3">Lösungsteil</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:12px">
+    <h2 style="font:700 13px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;margin:0;color:#7c6aa3">einhorn.json</h2>
+    <pre style="margin:0;background:#3f2d63;color:#ece5f8;padding:18px;border-radius:4px;font:12px/1.6 ui-monospace,monospace;overflow:auto">{
+  "id": "einhorn",
+  "name": "Einhörner",
+  "colors": {
+    "ink": "#3f2d63", "muted": "#7c6aa3", "light": "#ece5f8",
+    "grid": "#b7a7dd", "accent": "#db2777", "solution": "#0891b2",
+    "watermark": "#b7a7dd", "decor": "#8b5cf6"
+  },
+  "artStyle": "raster",
+  "assetDir": "assets/einhorn",
+  "icons": { "corner": "horns", "cover": "unicorn", "mazeStart": "foal", "mazeEnd": "chest" },
+  "sudokuIcons": ["unicorn", "skywheel", "chest", "elixir", "tiara", "compass"]
+}</pre>
+  </section>
+</div>
+</x-dc>
+<script data-dc-script type="text/plain" data-props='{"$preview":{"width":1260,"height":1600}}'>
+</script>
+</body>
+</html>

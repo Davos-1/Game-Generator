@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  body { margin:0; background:#f3f1ec; }
+  a { color:#b91c1c; } a:hover { color:#1f3a2e; }
+</style>
+</helmet>
+<div style="font-family:Inter,sans-serif;color:#1f3a2e;padding:40px;display:flex;flex-direction:column;gap:40px;max-width:1180px;margin:0 auto">
+
+  <header style="display:flex;flex-direction:column;gap:10px">
+    <div style="font:600 12px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#5f7a6c">Designsystem · Theme 2 von 5</div>
+    <h1 style="font:800 44px/1 Nunito,sans-serif;margin:0;color:#b91c1c">Weihnachten</h1>
+    <p style="margin:0;max-width:62ch;font-size:15px;line-height:1.6;color:#5f7a6c;text-wrap:pretty">Tannengrün als Tinte, warmes Rot als Akzent, Gold als Deko. Die Illustrationen sind vollfarbig, Rahmen und Typografie bleiben in der Theme-Palette.</p>
+  </header>
+
+  <section style="display:flex;flex-direction:column;gap:14px">
+    <h2 style="font:700 13px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;margin:0;color:#5f7a6c">Palette</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px">
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;border-radius:3px;background:#1f3a2e"></div><div style="font-size:11px;font-weight:600">ink</div><div style="font-size:11px;color:#5f7a6c;font-family:ui-monospace,monospace">#1F3A2E</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;border-radius:3px;background:#5f7a6c"></div><div style="font-size:11px;font-weight:600">muted</div><div style="font-size:11px;color:#5f7a6c;font-family:ui-monospace,monospace">#5F7A6C</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;border-radius:3px;background:#e2ece3"></div><div style="font-size:11px;font-weight:600">light</div><div style="font-size:11px;color:#5f7a6c;font-family:ui-monospace,monospace">#E2ECE3</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;border-radius:3px;background:#9fbaa8"></div><div style="font-size:11px;font-weight:600">grid</div><div style="font-size:11px;color:#5f7a6c;font-family:ui-monospace,monospace">#9FBAA8</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;border-radius:3px;background:#b91c1c"></div><div style="font-size:11px;font-weight:600">accent</div><div style="font-size:11px;color:#5f7a6c;font-family:ui-monospace,monospace">#B91C1C</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;border-radius:3px;background:#166534"></div><div style="font-size:11px;font-weight:600">solution</div><div style="font-size:11px;color:#5f7a6c;font-family:ui-monospace,monospace">#166534</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;border-radius:3px;background:#b08400"></div><div style="font-size:11px;font-weight:600">decor</div><div style="font-size:11px;color:#5f7a6c;font-family:ui-monospace,monospace">#B08400</div></div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:14px">
+    <h2 style="font:700 13px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;margin:0;color:#5f7a6c">Icons · 12 Illustrationen</h2>
+    <p style="margin:0;font-size:13px;color:#5f7a6c;max-width:70ch">Aus deiner Themen-Kollage freigeschnitten. Jedes Icon hat eine feste Rolle im Heft; die sechs Sudoku-Symbole sind untereinander klar unterscheidbar.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:12px">
+      <div style="background:#fff;border:1px solid #e2ece3;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/weihnachten/tree.png" alt="Christbaum" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Christbaum</div>
+        <div style="font-size:9px;color:#5f7a6c;text-align:center;min-height:11px">Deckblatt · Sudoku</div>
+      </div>
+      <div style="background:#fff;border:1px solid #e2ece3;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/weihnachten/reindeer.png" alt="Rentier" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Rentier</div>
+        <div style="font-size:9px;color:#5f7a6c;text-align:center;min-height:11px">Sudoku</div>
+      </div>
+      <div style="background:#fff;border:1px solid #e2ece3;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/weihnachten/snowflake.png" alt="Schneeflocke" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Schneeflocke</div>
+        <div style="font-size:9px;color:#5f7a6c;text-align:center;min-height:11px">Ecke · Sudoku</div>
+      </div>
+      <div style="background:#fff;border:1px solid #e2ece3;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/weihnachten/gift.png" alt="Geschenk" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Geschenk</div>
+        <div style="font-size:9px;color:#5f7a6c;text-align:center;min-height:11px">Ziel · Sudoku</div>
+      </div>
+      <div style="background:#fff;border:1px solid #e2ece3;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/weihnachten/hat.png" alt="Weihnachtsmütze" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Weihnachtsmütze</div>
+        <div style="font-size:9px;color:#5f7a6c;text-align:center;min-height:11px"></div>
+      </div>
+      <div style="background:#fff;border:1px solid #e2ece3;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/weihnachten/snowman.png" alt="Schneemann" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Schneemann</div>
+        <div style="font-size:9px;color:#5f7a6c;text-align:center;min-height:11px">Start</div>
+      </div>
+      <div style="background:#fff;border:1px solid #e2ece3;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/weihnachten/spices.png" alt="Zimt & Sternanis" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Zimt & Sternanis</div>
+        <div style="font-size:9px;color:#5f7a6c;text-align:center;min-height:11px"></div>
+      </div>
+      <div style="background:#fff;border:1px solid #e2ece3;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/weihnachten/wreath.png" alt="Kranz" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Kranz</div>
+        <div style="font-size:9px;color:#5f7a6c;text-align:center;min-height:11px"></div>
+      </div>
+      <div style="background:#fff;border:1px solid #e2ece3;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/weihnachten/gingerbread.png" alt="Lebkuchenmann" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Lebkuchenmann</div>
+        <div style="font-size:9px;color:#5f7a6c;text-align:center;min-height:11px">Sudoku</div>
+      </div>
+      <div style="background:#fff;border:1px solid #e2ece3;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/weihnachten/bauble.png" alt="Christbaumkugel" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Christbaumkugel</div>
+        <div style="font-size:9px;color:#5f7a6c;text-align:center;min-height:11px">Sudoku</div>
+      </div>
+      <div style="background:#fff;border:1px solid #e2ece3;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/weihnachten/candle.png" alt="Kerze" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Kerze</div>
+        <div style="font-size:9px;color:#5f7a6c;text-align:center;min-height:11px"></div>
+      </div>
+      <div style="background:#fff;border:1px solid #e2ece3;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <img src="assets/weihnachten/poinsettia.png" alt="Weihnachtsstern" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block" />
+        <div style="font-size:11px;font-weight:600;text-align:center;line-height:1.3">Weihnachtsstern</div>
+        <div style="font-size:9px;color:#5f7a6c;text-align:center;min-height:11px"></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:14px">
+    <h2 style="font:700 13px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;margin:0;color:#5f7a6c">A4-Seiten · 12 mm Rand</h2>
+    <div style="display:flex;gap:24px;flex-wrap:wrap">
+
+      <figure style="margin:0;display:flex;flex-direction:column;gap:8px">
+        <div style="width:420px;height:594px;background:#fff;box-shadow:0 1px 12px rgba(0,0,0,.14);position:relative;box-sizing:border-box;padding:24px">
+          <div style="position:absolute;inset:24px;border:1.6px solid #b91c1c;border-radius:8px"></div>
+          <div style="position:absolute;inset:29px;border:0.6px solid #b08400;border-radius:6px"></div>
+          <div style="position:absolute;inset:24px;display:flex;flex-direction:column;align-items:center;padding:44px 40px 40px;box-sizing:border-box">
+            <img src="assets/weihnachten/tree.png" alt="" style="width:170px;aspect-ratio:1;object-fit:cover;border-radius:8px;border:1px solid #e2ece3;display:block" />
+            <div style="font:800 24px/1.15 Nunito,sans-serif;color:#b91c1c;margin-top:22px;text-align:center;white-space:nowrap">Weihnachts-Rätselheft</div>
+            <div style="font:600 11px/1.2 Inter,sans-serif;color:#1f3a2e;margin-top:14px;letter-spacing:.04em">Für Mia</div>
+            <div style="width:44px;height:1px;background:#b08400;margin:14px 0"></div>
+            <div style="font-size:8.5px;color:#5f7a6c">Heiligabend</div>
+            <div style="font-size:8.5px;color:#5f7a6c;margin-top:5px">24. Dezember 2026</div>
+            <div style="margin-top:auto;font-size:8.5px;color:#1f3a2e">Viel Spass beim Rätseln!</div>
+            <div style="display:flex;justify-content:space-between;align-items:flex-end;width:100%;margin-top:16px">
+              <img src="assets/weihnachten/snowflake.png" alt="" style="width:26px;height:26px;object-fit:cover;border-radius:3px;display:block;opacity:.85" />
+              <img src="assets/weihnachten/snowflake.png" alt="" style="width:26px;height:26px;object-fit:cover;border-radius:3px;display:block;opacity:.85" />
+            </div>
+          </div>
+        </div>
+        <figcaption style="font-size:12px;color:#5f7a6c">Deckblatt</figcaption>
+      </figure>
+
+      <figure style="margin:0;display:flex;flex-direction:column;gap:8px">
+        <div style="width:420px;height:594px;background:#fff;box-shadow:0 1px 12px rgba(0,0,0,.14);position:relative;box-sizing:border-box;padding:24px">
+          <img src="assets/weihnachten/snowflake.png" alt="" style="position:absolute;right:24px;top:24px;width:26px;height:26px;object-fit:cover;border-radius:3px;display:block" />
+          <div style="font:800 15.5px/1.1 Nunito,sans-serif;color:#b91c1c">Wortsuchrätsel</div>
+          <div style="font-size:8px;color:#5f7a6c;margin-top:5px">Für Mia · Heiligabend</div>
+          <div style="height:1px;background:#b08400;margin:14px 0 0"></div>
+          <div style="margin-top:14px;display:grid;grid-template-columns:repeat(12,1fr);border-top:1px solid #9fbaa8;border-left:1px solid #9fbaa8;font:600 13px/1 Inter,sans-serif;color:#1f3a2e"><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">G</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">C</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">R</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">T</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">S</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">D</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">N</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">F</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">S</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">A</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">M</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">I</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">N</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">C</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">F</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">A</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">P</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">Z</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">G</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">E</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">V</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">V</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">F</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">P</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">K</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">U</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">U</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">N</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">K</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">E</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">C</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">M</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">O</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">I</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">A</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">U</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">S</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">F</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">W</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">L</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">W</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">W</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">N</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">C</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">L</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">V</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">U</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">T</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">G</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">R</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">F</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">M</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">U</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">V</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">V</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">C</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">O</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">Z</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">M</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">U</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">F</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">N</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">L</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">R</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">G</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">K</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">I</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">C</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">S</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">M</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">Z</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">M</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">D</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">G</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">A</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">G</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">O</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">M</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">W</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">I</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">P</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">A</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">I</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">W</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">W</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">F</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">T</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">O</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">K</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">L</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">V</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">R</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">C</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">C</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">F</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">W</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">H</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">F</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">R</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">H</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">Z</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">N</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">O</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">O</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">N</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">M</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">P</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">D</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">T</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">G</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">C</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">I</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">P</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">L</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">H</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">V</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">M</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">Z</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">L</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">R</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">E</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">F</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">B</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">U</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">D</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">T</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">R</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">W</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">M</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">M</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">D</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">B</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">Z</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">G</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">V</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">E</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">L</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">D</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">R</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">K</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">O</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">P</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">V</div><div style="border-right:1px solid #9fbaa8;border-bottom:1px solid #9fbaa8;aspect-ratio:1;display:flex;align-items:center;justify-content:center">B</div></div>
+          <div style="margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:3px 8px;font-size:7px;color:#1f3a2e"><div>TANNE</div><div>STERN</div><div>KERZE</div><div>GLOCKE</div><div>SCHLITTEN</div><div>ENGEL</div><div>KUGEL</div><div>KRANZ</div><div>GESCHENK</div><div>SCHNEE</div><div>ZIMT</div><div>LICHT</div></div>
+          <div style="position:absolute;left:24px;bottom:24px;display:flex;align-items:center;gap:6px">
+            <img src="assets/weihnachten/snowflake.png" alt="" style="width:16px;height:16px;object-fit:cover;border-radius:2px;display:block;opacity:.5" />
+            <span style="font-size:5.6px;color:#5f7a6c">raetselheft.ch</span>
+          </div>
+          <div style="position:absolute;right:24px;bottom:24px;font-size:5.6px;color:#5f7a6c">WEI-7C1B</div>
+        </div>
+        <figcaption style="font-size:12px;color:#5f7a6c">Rätselseite</figcaption>
+      </figure>
+
+      <figure style="margin:0;display:flex;flex-direction:column;gap:8px">
+        <div style="width:420px;height:594px;background:#fff;box-shadow:0 1px 12px rgba(0,0,0,.14);position:relative;box-sizing:border-box;padding:24px">
+          <div style="font:800 15.5px/1.1 Nunito,sans-serif;color:#b91c1c">Lösungen</div>
+          <div style="height:1px;background:#b08400;margin:14px 0"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <div style="border:0.6px solid #e2ece3;border-radius:3px;padding:8px">
+              <div style="font:600 5.6px/1 Inter,sans-serif;color:#5f7a6c;margin-bottom:6px">Seite 2 · Wortsuchrätsel</div>
+              <div style="aspect-ratio:1;background:repeating-linear-gradient(0deg,#9fbaa8 0 0.5px,transparent 0.5px 12.5px),repeating-linear-gradient(90deg,#9fbaa8 0 0.5px,transparent 0.5px 12.5px);position:relative">
+                <div style="position:absolute;left:8%;top:22%;width:60%;height:10%;background:#166534;opacity:.25;border-radius:99px"></div>
+                <div style="position:absolute;left:30%;top:40%;width:10%;height:50%;background:#166534;opacity:.25;border-radius:99px"></div>
+              </div>
+            </div>
+            <div style="border:0.6px solid #e2ece3;border-radius:3px;padding:8px">
+              <div style="font:600 5.6px/1 Inter,sans-serif;color:#5f7a6c;margin-bottom:6px">Seite 3 · Labyrinth</div>
+              <div style="aspect-ratio:1;border:0.8px solid #1f3a2e;position:relative;overflow:hidden">
+                <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 14px,#1f3a2e 14px 14.6px),repeating-linear-gradient(90deg,transparent 0 14px,#1f3a2e 14px 14.6px);opacity:.5"></div>
+                <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,#fff 0 6px,transparent 6px 30px),repeating-linear-gradient(90deg,#fff 0 8px,transparent 8px 36px)"></div>
+                <div style="position:absolute;left:10%;top:12%;width:4%;height:52%;background:#166534;opacity:.45"></div>
+                <div style="position:absolute;left:10%;top:60%;width:56%;height:4%;background:#166534;opacity:.45"></div>
+                <div style="position:absolute;left:62%;top:60%;width:4%;height:30%;background:#166534;opacity:.45"></div>
+              </div>
+            </div>
+            <div style="border:0.6px solid #e2ece3;border-radius:3px;padding:8px">
+              <div style="font:600 5.6px/1 Inter,sans-serif;color:#5f7a6c;margin-bottom:6px">Seite 4 · Sudoku</div>
+              <div style="aspect-ratio:1;display:grid;grid-template-columns:repeat(3,1fr);border-top:1.2px solid #1f3a2e;border-left:1.2px solid #1f3a2e">
+                <div style="border-right:1.2px solid #1f3a2e;border-bottom:1.2px solid #1f3a2e;display:flex;align-items:center;justify-content:center;font:600 13px/1 Inter,sans-serif;color:#166534">5</div>
+                <div style="border-right:1.2px solid #1f3a2e;border-bottom:1.2px solid #1f3a2e;display:flex;align-items:center;justify-content:center;font:600 13px/1 Inter,sans-serif;color:#166534">2</div>
+                <div style="border-right:1.2px solid #1f3a2e;border-bottom:1.2px solid #1f3a2e;display:flex;align-items:center;justify-content:center;font:600 13px/1 Inter,sans-serif;color:#166534">8</div>
+                <div style="border-right:1.2px solid #1f3a2e;border-bottom:1.2px solid #1f3a2e;display:flex;align-items:center;justify-content:center;font:600 13px/1 Inter,sans-serif;color:#166534">1</div>
+                <div style="border-right:1.2px solid #1f3a2e;border-bottom:1.2px solid #1f3a2e;display:flex;align-items:center;justify-content:center;font:600 13px/1 Inter,sans-serif;color:#166534">7</div>
+                <div style="border-right:1.2px solid #1f3a2e;border-bottom:1.2px solid #1f3a2e;display:flex;align-items:center;justify-content:center;font:600 13px/1 Inter,sans-serif;color:#166534">4</div>
+                <div style="border-right:1.2px solid #1f3a2e;border-bottom:1.2px solid #1f3a2e;display:flex;align-items:center;justify-content:center;font:600 13px/1 Inter,sans-serif;color:#166534">9</div>
+                <div style="border-right:1.2px solid #1f3a2e;border-bottom:1.2px solid #1f3a2e;display:flex;align-items:center;justify-content:center;font:600 13px/1 Inter,sans-serif;color:#166534">6</div>
+                <div style="border-right:1.2px solid #1f3a2e;border-bottom:1.2px solid #1f3a2e;display:flex;align-items:center;justify-content:center;font:600 13px/1 Inter,sans-serif;color:#166534">3</div>
+              </div>
+            </div>
+            <div style="border:0.6px solid #e2ece3;border-radius:3px;padding:8px">
+              <div style="font:600 5.6px/1 Inter,sans-serif;color:#5f7a6c;margin-bottom:6px">Seite 5 · Kreuzworträtsel</div>
+              <div style="aspect-ratio:1;position:relative;background:repeating-linear-gradient(0deg,#9fbaa8 0 0.5px,transparent 0.5px 16.6px),repeating-linear-gradient(90deg,#9fbaa8 0 0.5px,transparent 0.5px 16.6px)">
+                <div style="position:absolute;left:0;top:0;width:33%;height:17%;background:#1f3a2e"></div>
+                <div style="position:absolute;right:0;top:34%;width:17%;height:33%;background:#1f3a2e"></div>
+                <div style="position:absolute;left:17%;bottom:0;width:33%;height:17%;background:#1f3a2e"></div>
+                <div style="position:absolute;left:36%;top:20%;font:600 10px/1 Inter,sans-serif;color:#166534">KERZE</div>
+                <div style="position:absolute;left:8%;top:52%;font:600 10px/1 Inter,sans-serif;color:#166534">STERN</div>
+              </div>
+            </div>
+          </div>
+          <div style="position:absolute;left:24px;bottom:24px;font-size:5.6px;color:#5f7a6c">raetselheft.ch</div>
+        </div>
+        <figcaption style="font-size:12px;color:#5f7a6c">Lösungsteil</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:12px">
+    <h2 style="font:700 13px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;margin:0;color:#5f7a6c">weihnachten.json</h2>
+    <pre style="margin:0;background:#1f3a2e;color:#e2ece3;padding:18px;border-radius:4px;font:12px/1.6 ui-monospace,monospace;overflow:auto">{
+  "id": "weihnachten",
+  "name": "Weihnachten",
+  "colors": {
+    "ink": "#1f3a2e", "muted": "#5f7a6c", "light": "#e2ece3",
+    "grid": "#9fbaa8", "accent": "#b91c1c", "solution": "#166534",
+    "watermark": "#9fbaa8", "decor": "#b08400"
+  },
+  "artStyle": "raster",
+  "assetDir": "assets/weihnachten",
+  "icons": { "corner": "snowflake", "cover": "tree", "mazeStart": "snowman", "mazeEnd": "gift" },
+  "sudokuIcons": ["tree", "reindeer", "snowflake", "gift", "bauble", "gingerbread"]
+}</pre>
+  </section>
+</div>
+</x-dc>
+<script data-dc-script type="text/plain" data-props='{"$preview":{"width":1260,"height":1600}}'>
+</script>
+</body>
+</html>
