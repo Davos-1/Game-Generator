@@ -58,7 +58,20 @@ export interface CheckoutOptions {
   product: Product;
   /** Seite, auf die nach der Zahlung zurückgesprungen wird, z. B. «/sudoku». */
   returnPath: string;
+  /**
+   * Adresse für die Bestellbestätigung. Sie wird nur an den Zahlungsdienst
+   * weitergereicht, der die Bestätigung verschickt; die Website speichert sie
+   * nicht.
+   */
+  email: string;
 }
+
+/**
+ * Schlichte Plausibilitätsprüfung vor dem Absenden: genau ein @, beidseits
+ * etwas, hinten ein Punkt, keine Leerzeichen. Dieselbe Regel gilt im Worker.
+ */
+export const isPlausibleEmail = (value: string): boolean =>
+  value.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
 /** Startet den Kauf und liefert die Adresse der Bezahlseite. */
 export async function startCheckout(

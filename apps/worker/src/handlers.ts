@@ -60,7 +60,17 @@ export interface CheckoutRequest {
   product: Product;
   /** Seite, auf die Payrexx zurückführt, z. B. «/sudoku». */
   returnPath: string;
+  /** Adresse für die Bestellbestätigung; wird nur an Payrexx weitergereicht. */
+  email: string;
 }
+
+/**
+ * Schlichte Plausibilitätsprüfung: genau ein @, beidseits etwas, im hinteren
+ * Teil ein Punkt und keine Leerzeichen. Mehr braucht es nicht, denn die
+ * verbindliche Prüfung macht Payrexx beim Versand.
+ */
+export const isPlausibleEmail = (value: unknown): value is string =>
+  typeof value === 'string' && value.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
 const key = (paymentId: string): string => `payment:${paymentId}`;
 
@@ -85,7 +95,7 @@ export class RequestError extends Error {
  * Seite, von der aus gekauft wurde.
  */
 export async function startCheckout(deps: Deps, request: CheckoutRequest): Promise<CheckoutResult> {
-  const { config, purpose, product, returnPath } = request;
+  const { config, purpose, product, returnPath, email } = request;
   if (typeof config !== 'string' || config.length === 0 || config.length > 20_000) {
     throw new RequestError('Ungültige Rätsel-Konfiguration', 400);
   }
@@ -94,6 +104,9 @@ export async function startCheckout(deps: Deps, request: CheckoutRequest): Promi
   }
   if (!RETURN_PATHS[product].includes(returnPath)) {
     throw new RequestError('Unerlaubte Rücksprung-Adresse', 400);
+  }
+  if (!isPlausibleEmail(email)) {
+    throw new RequestError('Ungültige E-Mail-Adresse', 400);
   }
   const configHash = await hashConfig(config);
   const paymentId = crypto.randomUUID();
@@ -109,6 +122,9 @@ export async function startCheckout(deps: Deps, request: CheckoutRequest): Promi
       failedRedirectUrl: `${returnUrl}&status=fehler`,
       cancelRedirectUrl: `${returnUrl}&status=abbruch`,
       referenceId: configHash,
+      // Payrexx verschickt die Bestellbestätigung an diese Adresse. Sie wird
+      // bewusst nicht im eigenen Speicher abgelegt.
+      fields: { email: { value: email, mandatory: true } },
     });
   } catch (cause) {
     const status = cause instanceof PayrexxError ? 502 : 500;

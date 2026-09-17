@@ -4,6 +4,7 @@ import { buildPages, buildPdf, buildPuzzle, pageToSvgString } from '../lib/rende
 import type { PuzzleItem } from '@raetselheft/render';
 import { puzzleString } from '../lib/payment';
 import { usePurchase } from '../lib/purchase';
+import { PurchaseEmail, PurchaseTerms } from './PurchaseEmail';
 import CrosswordTopicPicker from './CrosswordTopicPicker';
 import {
   configFromParams,
@@ -291,10 +292,15 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
             </>
           ) : (
             <>
+              {purchase.enabled && (
+                <PurchaseEmail value={purchase.email} onChange={purchase.setEmail} />
+              )}
               <button
                 type="button"
                 className={primaryButton}
-                disabled={!purchase.enabled || status !== 'ready' || purchase.busy}
+                disabled={
+                  !purchase.enabled || status !== 'ready' || purchase.busy || !purchase.emailValid
+                }
                 onClick={() => void buy()}
               >
                 {purchase.enabled
@@ -304,6 +310,7 @@ export default function PuzzleGenerator({ kind, theme }: Props): React.ReactElem
               <p className="text-sm text-muted">
                 {purchase.enabled ? t('payment.ready') : t('payment.notReady')}
               </p>
+              {purchase.enabled && <PurchaseTerms />}
               <button
                 type="button"
                 className={secondaryButton}

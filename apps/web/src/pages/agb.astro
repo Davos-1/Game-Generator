@@ -15,7 +15,9 @@ import { t } from '@/i18n';
       Diese Bedingungen gelten für den Kauf digitaler Rätsel und Rätselhefte über diese Website.
       Anbieter ist {OPERATOR.name}, {OPERATOR.street}, {OPERATOR.postalCode}
       {OPERATOR.city}, {OPERATOR.country}, erreichbar unter
-      <a href={`mailto:${OPERATOR.email}`}>{OPERATOR.email}</a>.
+      <a href={`mailto:${OPERATOR.email}`}>{OPERATOR.email}</a>. Das Angebot richtet sich an
+      Kundschaft in der Schweiz. Preise, Zahlungsarten und diese Bedingungen sind auf das Schweizer
+      Recht ausgerichtet.
     </p>
 
     <h2>2. Gratis-Angebot</h2>
@@ -25,18 +27,41 @@ import { t } from '@/i18n';
       bereit. Für dieses Gratis-Angebot besteht kein Anspruch auf ständige Verfügbarkeit.
     </p>
 
-    <h2>3. Vertragsschluss</h2>
+    <h2>3. Bestellablauf und Vertragsschluss</h2>
+    <p>Der Kauf läuft immer in denselben Schritten ab:</p>
+    <ol>
+      <li>
+        Du stellst dein Rätsel oder Heft zusammen und siehst die vollständige Vorschau mit
+        Wasserzeichen.
+      </li>
+      <li>
+        Du gibst eine E-Mail-Adresse für die Bestellbestätigung an und wählst «Rätsel kaufen»
+        beziehungsweise «Heft kaufen». Der Preis steht direkt auf dieser Schaltfläche.
+      </li>
+      <li>Du wirst auf die Bezahlseite der Payrexx AG geführt und wählst dort Karte oder TWINT.</li>
+      <li>Mit dem Absenden der Zahlung gibst du ein verbindliches Angebot ab.</li>
+      <li>
+        Der Vertrag kommt zustande, sobald die Zahlung bestätigt ist und das PDF ohne Wasserzeichen
+        freigeschaltet wird. Du erhältst die Bestätigung der Bestellung per E-Mail an die von dir
+        angegebene Adresse.
+      </li>
+    </ol>
     <p>
-      Mit dem Absenden der Zahlung gibst du ein verbindliches Angebot ab. Der Vertrag kommt
-      zustande, sobald die Zahlung bestätigt ist und das PDF zum Download freigeschaltet wird.
+      Bis zum Absenden der Zahlung lässt sich jede Eingabe ändern: Rätselart, Schwierigkeit, Wörter,
+      Titel, Themen-Design und die E-Mail-Adresse. Auf der Bezahlseite kommst du mit «Zurück» oder
+      mit dem Abbruch der Zahlung wieder zum Konfigurator, ohne dass Kosten entstehen. Ein
+      Nutzerkonto ist nicht nötig; ein Vertragstext wird nicht gespeichert, die jeweils gültige
+      Fassung dieser Bedingungen steht auf dieser Seite.
     </p>
 
     <h2>4. Preise und Zahlung</h2>
     <p>
       Ein einzelnes Rätsel kostet CHF {PRICE_SINGLE_CHF}.00, ein Rätselheft CHF {
         PRICE_BOOKLET_CHF
-      }.00. Es besteht keine Mehrwertsteuerpflicht, daher wird keine Mehrwertsteuer ausgewiesen. Die
-      Zahlung erfolgt über die Payrexx AG mit Karte oder TWINT. Ein Konto ist nicht nötig.
+      }.00. Das sind Endpreise in Schweizer Franken; weitere Kosten wie Zuschläge für
+      personalisierte Rätsel oder Versandkosten fallen nicht an. Es besteht keine
+      Mehrwertsteuerpflicht, daher wird keine Mehrwertsteuer ausgewiesen. Die Zahlung erfolgt über
+      die Payrexx AG mit Karte oder TWINT. Ein Konto ist nicht nötig.
     </p>
 
     <h2>5. Leistung</h2>
@@ -62,12 +87,12 @@ import { t } from '@/i18n';
       und die Verwendung in kommerziellen Publikationen.
     </p>
 
-    <h2>8. Widerrufsrecht und Rückerstattung</h2>
+    <h2>8. Rückgabe und Rückerstattung</h2>
     <p>
-      Es handelt sich um digitale Inhalte, die sofort nach der Zahlung bereitgestellt werden. Mit
-      dem Kauf stimmst du der sofortigen Bereitstellung zu und erklärst dein Einverständnis, dass
-      ein allfälliges Widerrufsrecht damit erlischt. Genau deshalb steht vor dem Kauf die
-      vollständige Vorschau zur Verfügung.
+      Nach Schweizer Recht besteht für Käufe im Internet kein gesetzliches Widerrufsrecht. Der Kauf
+      ist deshalb mit der bestätigten Zahlung verbindlich. Genau darum steht vor dem Kauf die
+      vollständige Vorschau des Rätsels oder Hefts zur Verfügung: Was du in der Vorschau siehst,
+      entspricht dem PDF, das du erhältst, einzig ohne Wasserzeichen.
     </p>
     <p>
       Kommt die Freischaltung aus technischen Gründen nicht zustande, wird der Betrag
@@ -84,8 +109,11 @@ import { t } from '@/i18n';
 
     <h2>10. Anwendbares Recht und Gerichtsstand</h2>
     <p>
-      Es gilt schweizerisches Recht. Gerichtsstand ist {OPERATOR.city}. Zwingende
-      Verbraucherschutzbestimmungen des Wohnsitzstaates bleiben vorbehalten.
+      Es gilt ausschliesslich schweizerisches Recht unter Ausschluss des Übereinkommens der
+      Vereinten Nationen über Verträge über den internationalen Warenkauf. Gerichtsstand ist {
+        OPERATOR.city
+      }. Zwingende Bestimmungen zum Schutz von Konsumentinnen und Konsumenten an deren Wohnsitz
+      bleiben vorbehalten.
     </p>
   </Prose>
 </BaseLayout>

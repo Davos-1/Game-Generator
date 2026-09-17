@@ -194,3 +194,22 @@ Symbole aus fremden Icon-Sets. Die Symbole kommen aus
   aufhängen. `pageToSvgString(page, themeId)` nimmt neu die Theme-Id, damit die
   Vorschau die Bild-URLs kennt — beim Einzelgenerator noch nicht durchgereicht,
   weil dort das Deckblatt gar nicht vorkommt.
+- **Rechtstexte und Bestellbestätigung, quer durch beide Bereiche.** Nach
+  einer rechtlichen Abklärung des Nutzers sind Impressum, AGB und
+  Datenschutzerklärung überarbeitet: Ausrichtung ausschliesslich auf die
+  Schweiz (DSGVO-Verweise entfernt, nur noch DSG), neuer Abschnitt zu
+  personalisierten Angaben über Kinder, KI-Hinweis beim Bildnachweis und ein
+  Bestellablauf nach UWG Art. 3 Abs. 1 lit. s in AGB Ziff. 3. Die Grundlagen
+  und die Regeln für neue Inhalte stehen neu in `docs/RECHTLICHES.md`, darauf
+  verweist ein kurzer Abschnitt in `CLAUDE.md`.
+  **Berührt den Bereich von Session A**: Der Kauf verlangt neu eine
+  E-Mail-Adresse für die Bestellbestätigung. Betroffen sind
+  `apps/web/src/lib/payment.ts` (`CheckoutOptions.email`, `isPlausibleEmail`),
+  `apps/web/src/lib/purchase.ts` (`email`, `setEmail`, `emailValid`, Prüfung
+  vor dem Absenden) und `apps/worker/src/{handlers,payrexx,index}.ts`, wo die
+  Adresse als Pflichtfeld `fields.email` an Payrexx geht und bewusst nicht in
+  KV landet. Neu ist das gemeinsame `apps/web/src/components/PurchaseEmail.tsx`
+  (Feld plus Hinweiszeile auf AGB und Datenschutz), eingehängt in
+  `PuzzleGenerator.tsx` und `BookletBuilder.tsx`; die Kauf-Schaltfläche bleibt
+  ohne gültige Adresse gesperrt. Die neuen Texte liegen unter `payment.*` in
+  `apps/web/src/i18n/de-CH.json`. Bei Bedarf gerne anders aufhängen.

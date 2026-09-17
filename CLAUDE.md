@@ -25,6 +25,15 @@ nachsehen und eigene Vorhaben eintragen.
 - `apps/web`: Astro (statisch) + React-Islands nur wo Interaktivität nötig ist.
 - Rendering-Prinzip: eine Layout-Quelle für SVG-Vorschau und PDF (PLAN.md 6.1).
 
+## Rechtliches
+
+Die Website verkauft an Private in der Schweiz. Welche Pflichten wo umgesetzt
+sind und welche Regeln für neue Inhalte gelten, steht in
+`docs/RECHTLICHES.md`. Wichtigste Punkte: keine geschützten Figuren oder
+Marken in Wortlisten, Motiven und Beispielen; neue Datenempfänger
+(Analyse, KI-Dienste, Mailversand) vor der Aufschaltung in die
+Datenschutzerklärung eintragen; Preise immer als Endpreise in CHF.
+
 ## Qualität
 
 Vor jedem Commit müssen lokal grün sein: `pnpm lint`, `pnpm format:check`, `pnpm typecheck`, `pnpm test`, `pnpm build`. Neue Engine-Funktionen brauchen Unit-Tests (inkl. Determinismus per Seed).

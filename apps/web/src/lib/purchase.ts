@@ -10,6 +10,7 @@ import {
   fetchStatus,
   formatPrice,
   isConfigured,
+  isPlausibleEmail,
   rememberToken,
   startCheckout,
   tokenFor,
@@ -61,6 +62,11 @@ export interface Purchase {
   /** Meldung zur Zahlung, leer wenn es nichts zu sagen gibt. */
   note: string;
   busy: boolean;
+  /** Adresse für die Bestellbestätigung, wie sie im Feld steht. */
+  email: string;
+  setEmail: (value: string) => void;
+  /** Die Adresse taugt für den Versand der Bestätigung. */
+  emailValid: boolean;
   buy: (purpose: string) => Promise<void>;
 }
 
@@ -77,6 +83,9 @@ export function usePurchase({ product, returnPath, config }: PurchaseOptions): P
   const [unlocked, setUnlocked] = useState(false);
   const [note, setNote] = useState('');
   const [busy, setBusy] = useState(false);
+  // Bewusst nur im Zustand dieser Seite: die Adresse wird weder gespeichert
+  // noch in den Teilen-Link geschrieben.
+  const [email, setEmail] = useState('');
   // Rückfall, falls die laufende Zahlung nicht im Speicher steht.
   const configRef = useRef(config);
   configRef.current = config;
@@ -121,8 +130,15 @@ export function usePurchase({ product, returnPath, config }: PurchaseOptions): P
     };
   }, [config, note]);
 
+  const emailValid = isPlausibleEmail(email.trim());
+
   const buy = useCallback(
     async (purpose: string): Promise<void> => {
+      const address = email.trim();
+      if (!isPlausibleEmail(address)) {
+        setNote(t('payment.emailInvalid'));
+        return;
+      }
       setBusy(true);
       setNote('');
       try {
@@ -131,6 +147,7 @@ export function usePurchase({ product, returnPath, config }: PurchaseOptions): P
           purpose,
           product,
           returnPath,
+          email: address,
         });
         rememberPending(paymentId, config);
         window.location.href = url;
@@ -139,7 +156,7 @@ export function usePurchase({ product, returnPath, config }: PurchaseOptions): P
         setBusy(false);
       }
     },
-    [config, product, returnPath],
+    [config, email, product, returnPath],
   );
 
   return {
@@ -148,6 +165,9 @@ export function usePurchase({ product, returnPath, config }: PurchaseOptions): P
     unlocked,
     note,
     busy,
+    email,
+    setEmail,
+    emailValid,
     buy,
   };
 }

@@ -195,6 +195,11 @@
   "payment": {
     "watermark": "VORSCHAU",
     "buySingle": "Rätsel kaufen",
+    "emailLabel": "E-Mail für die Bestellbestätigung",
+    "emailPlaceholder": "name@beispiel.ch",
+    "emailHint": "Die Adresse geht nur an den Zahlungsdienst, der die Bestätigung verschickt. Wir speichern sie nicht.",
+    "emailInvalid": "Bitte eine gültige E-Mail-Adresse angeben.",
+    "terms": "Mit dem Kauf gelten die AGB. Wie mit deinen Angaben umgegangen wird, steht in der Datenschutzerklärung.",
     "ready": "Bezahlung mit Karte oder TWINT, ohne Konto. Danach lädt das PDF ohne Wasserzeichen.",
     "notReady": "Der Kauf ist noch nicht aufgeschaltet. Bis dahin gibt es die Vorschau mit Wasserzeichen.",
     "downloadPreview": "Vorschau als PDF (mit Wasserzeichen)",

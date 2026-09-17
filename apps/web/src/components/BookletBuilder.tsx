@@ -16,6 +16,7 @@ import {
 } from '../lib/bookletConfig';
 import { bookletString } from '../lib/payment';
 import { usePurchase } from '../lib/purchase';
+import { PurchaseEmail, PurchaseTerms } from './PurchaseEmail';
 import {
   defaultSymbols,
   newSeed,
@@ -483,10 +484,13 @@ export default function BookletBuilder(): React.ReactElement {
             </>
           ) : (
             <>
+              {purchase.enabled && (
+                <PurchaseEmail value={purchase.email} onChange={purchase.setEmail} />
+              )}
               <button
                 type="button"
                 className={primaryButton}
-                disabled={!purchase.enabled || purchase.busy}
+                disabled={!purchase.enabled || purchase.busy || !purchase.emailValid}
                 onClick={() => void buy()}
               >
                 {purchase.enabled ? `${t('booklet.buy')} – ${purchase.price}` : t('booklet.buy')}
@@ -494,6 +498,7 @@ export default function BookletBuilder(): React.ReactElement {
               <p className="text-sm text-muted">
                 {purchase.enabled ? t('payment.ready') : t('payment.notReady')}
               </p>
+              {purchase.enabled && <PurchaseTerms />}
             </>
           )}
           {purchase.note && <p className="text-sm text-brand-700">{purchase.note}</p>}

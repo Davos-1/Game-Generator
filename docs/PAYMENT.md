@@ -11,16 +11,22 @@ Es gibt zwei Produkte: ein Einzelrätsel (`single`, CHF 2) und ein Rätselheft
 beiden Fällen gratis; jede Vorschau trägt ein Wasserzeichen, erst der Kauf
 schaltet das PDF ohne Wasserzeichen frei.
 
-1. Nutzer konfiguriert ein Rätsel oder stellt ein Heft zusammen und klickt
-   «Rätsel kaufen» bzw. «Heft kaufen».
+1. Nutzer konfiguriert ein Rätsel oder stellt ein Heft zusammen, gibt eine
+   E-Mail-Adresse für die Bestellbestätigung an und klickt «Rätsel kaufen»
+   bzw. «Heft kaufen». Ohne plausible Adresse bleibt die Schaltfläche
+   gesperrt; die Adresse ist rechtlich nötig (UWG Art. 3 Abs. 1 lit. s
+   Ziff. 4, siehe `docs/RECHTLICHES.md`).
 2. Die Website schickt an `/api/checkout` die Konfiguration, das Produkt
    (`product`: «single» oder «booklet») und die Seite, auf die nach der
    Zahlung zurückgesprungen werden soll (`returnPath`, z. B. `/sudoku` oder
    `/raetselheft`). Erlaubt sind nur die im Worker unter `RETURN_PATHS`
-   hinterlegten Adressen. Der Worker legt bei Payrexx eine Bezahlseite zum
-   Preis des gewählten Produkts an, merkt sich in KV
+   hinterlegten Adressen, dazu die E-Mail-Adresse (`email`). Der Worker legt
+   bei Payrexx eine Bezahlseite zum Preis des gewählten Produkts an, setzt
+   dort `fields.email` mit der Adresse als Pflichtfeld, merkt sich in KV
    `{Zahlung → Konfigurations-Hash}` und gibt die Adresse der Bezahlseite
-   zurück.
+   zurück. Die E-Mail-Adresse landet bewusst **nicht** in KV: die Bestätigung
+   verschickt Payrexx. Dafür muss in der Payrexx-Instanz der Belegversand an
+   die Kundschaft eingeschaltet sein.
 3. Der Nutzer bezahlt (Karte oder TWINT) und kehrt zurück auf
    `<returnPath>?zahlung=<id>&status=ok`, also etwa
    `/sudoku?zahlung=<id>&status=ok`.

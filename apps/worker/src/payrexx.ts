@@ -18,6 +18,12 @@ export interface GatewayRequest {
   cancelRedirectUrl: string;
   /** Eigene Referenz; hier der Hash der Heft-Konfiguration. */
   referenceId: string;
+  /**
+   * Felder, die Payrexx auf der Bezahlseite führt. Genutzt wird nur «email»:
+   * die Adresse kommt von der Website und Payrexx verschickt daran die
+   * Bestellbestätigung (UWG Art. 3 Abs. 1 lit. s Ziff. 4).
+   */
+  fields?: { email: { value: string; mandatory: boolean } };
 }
 
 export interface Gateway {

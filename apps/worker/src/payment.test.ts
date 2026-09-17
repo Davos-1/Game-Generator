@@ -138,8 +138,37 @@ const checkout = (
     purpose,
     product: 'booklet',
     returnPath: '/raetselheft',
+    email: 'kundin@example.ch',
     ...extra,
   });
+
+describe('E-Mail für die Bestellbestätigung', () => {
+  let s: Scenario;
+  beforeEach(() => {
+    s = scenario();
+  });
+
+  it('reicht die Adresse als Pflichtfeld an Payrexx weiter', async () => {
+    await checkout(s.deps, CONFIG, 'X', { email: 'kundin@example.ch' });
+    const request = s.fetchMock.mock.calls[0] as unknown as [
+      string,
+      RequestInit & { body: string },
+    ];
+    const body = JSON.parse(request[1].body) as {
+      fields?: { email?: { value?: string; mandatory?: boolean } };
+    };
+    expect(body.fields?.email?.value).toBe('kundin@example.ch');
+    expect(body.fields?.email?.mandatory).toBe(true);
+  });
+
+  it('weist eine fehlende oder unbrauchbare Adresse ab', async () => {
+    for (const email of ['', 'keine-adresse', 'a@b', 'mit leer@example.ch']) {
+      await expect(checkout(s.deps, CONFIG, 'X', { email })).rejects.toBeInstanceOf(RequestError);
+    }
+    // Ohne gültige Adresse wird gar keine Bezahlseite angelegt.
+    expect(s.fetchMock.mock.calls).toHaveLength(0);
+  });
+});
 
 describe('Kauf-Ablauf', () => {
   let s: Scenario;

@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { bookletString, formatPrice, puzzleString, type PaymentInfo } from './payment';
+import {
+  bookletString,
+  formatPrice,
+  isPlausibleEmail,
+  puzzleString,
+  type PaymentInfo,
+} from './payment';
 import { defaultBooklet } from './bookletConfig';
 import { defaultConfig } from './puzzleConfig';
 
@@ -38,5 +44,19 @@ describe('Preisangabe', () => {
   it('zeigt den Preis je Produkt', () => {
     expect(formatPrice(INFO, 'single')).toBe('CHF 2.00');
     expect(formatPrice(INFO, 'booklet')).toBe('CHF 5.00');
+  });
+});
+
+describe('E-Mail-Adresse für die Bestellbestätigung', () => {
+  it('lässt übliche Adressen zu', () => {
+    for (const value of ['kundin@example.ch', 'vor.name+heft@mail.example.com']) {
+      expect(isPlausibleEmail(value)).toBe(true);
+    }
+  });
+
+  it('weist unbrauchbare Angaben ab', () => {
+    for (const value of ['', 'keine-adresse', 'a@b', 'mit leer@example.ch', 'zwei@@example.ch']) {
+      expect(isPlausibleEmail(value)).toBe(false);
+    }
   });
 });
